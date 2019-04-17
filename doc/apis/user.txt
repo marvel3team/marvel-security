@@ -1,0 +1,46 @@
+1.用户登录
+请求url: /v1/user/login.json
+请求类型：POST
+请求参数：
+登录类型    type    int 必填，默认50游客登录，10应急管理部门，20应急专家，30企业客户，40员工
+登录账号    username    string  必填
+登录密码    password    string  必填
+返回结果
+{
+	"code": 1,
+	"data": {
+		"token": "MAuth-3ac12f094b458b16172a047b9018413a42d4518a874b2466bec6801f18b7618f-MAuth"
+	},
+	"message": "success",
+	"httpStatus": 200
+}
+
+2.密码重置
+请求url: /v1/user/reset_password.json
+请求类型：POST
+请求头：
+Authorization:MAuth-229c8ccfb9edcb7eb13cac1ca8e457bbca61787431471ff67c1af914ced7121b-MAuth
+请求参数：
+原密码    oldPassword    string  必填
+新密码    newPassword    string  必填
+返回结果
+{
+	"code": 1,
+	"data": {},
+	"message": "success",
+	"httpStatus": 200
+}
+
+3.密码重置
+  请求url: /v1/user/reset_password.json
+  请求类型：POST
+  请求参数：
+  原密码    oldPassword    string  必填
+  新密码    newPassword    string  必填
+  返回结果
+  {
+  	"code": 1,
+  	"data": {},
+  	"message": "success",
+  	"httpStatus": 200
+  }
