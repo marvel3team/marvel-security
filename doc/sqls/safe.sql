@@ -11,11 +11,63 @@
  Target Server Version : 50724
  File Encoding         : 65001
 
- Date: 18/04/2019 00:08:27
+ Date: 19/04/2019 00:44:49
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for t_big_recreation_facility_info
+-- ----------------------------
+DROP TABLE IF EXISTS `t_big_recreation_facility_info`;
+CREATE TABLE `t_big_recreation_facility_info` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) DEFAULT NULL COMMENT '企业id',
+  `admin_id` int(11) DEFAULT NULL COMMENT '管理人员id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='大型娱乐设施信息表';
+
+-- ----------------------------
+-- Table structure for t_bolier_info
+-- ----------------------------
+DROP TABLE IF EXISTS `t_bolier_info`;
+CREATE TABLE `t_bolier_info` (
+  `id` int(11) NOT NULL,
+  `company_id` int(11) DEFAULT NULL COMMENT '企业id',
+  `device_no` varchar(100) DEFAULT NULL COMMENT '设备编号或厂家编号',
+  `volume` int(11) DEFAULT NULL COMMENT '容积',
+  `pressure` int(11) DEFAULT NULL COMMENT '压力',
+  `filing_no` varchar(100) DEFAULT NULL COMMENT '备案证存档编号',
+  `admin_id` int(11) DEFAULT NULL COMMENT '管理员id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='锅炉信息表';
+
+-- ----------------------------
+-- Table structure for t_bureau_info
+-- ----------------------------
+DROP TABLE IF EXISTS `t_bureau_info`;
+CREATE TABLE `t_bureau_info` (
+  `id` int(11) NOT NULL COMMENT '科局人员idd',
+  `ares_id` int(11) DEFAULT NULL COMMENT '地区id',
+  `name` varchar(50) DEFAULT NULL COMMENT '姓名',
+  `mobile` varchar(11) DEFAULT NULL COMMENT '手机号',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='科局人员信息表';
+
+-- ----------------------------
+-- Table structure for t_company_appraise_info
+-- ----------------------------
+DROP TABLE IF EXISTS `t_company_appraise_info`;
+CREATE TABLE `t_company_appraise_info` (
+  `id` int(11) NOT NULL,
+  `company_id` int(11) NOT NULL COMMENT '公司id',
+  `appraise_methos` smallint(255) NOT NULL COMMENT '鉴定方式 1 年检 2 三年检 3 半年检 4 月检',
+  `last_appraise_time` bigint(20) DEFAULT NULL COMMENT '上次鉴定日期',
+  `last_plan_execute_id` int(11) NOT NULL COMMENT '上次计划执行id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='企业鉴定信息表';
 
 -- ----------------------------
 -- Table structure for t_company_base_info
@@ -34,14 +86,14 @@ CREATE TABLE `t_company_base_info` (
   `accessories_dosage` int(11) DEFAULT NULL COMMENT '辅料年用量',
   `yearly_capacity` int(11) DEFAULT NULL COMMENT '年产量',
   `output_unit` varchar(50) DEFAULT NULL COMMENT '产量单位',
-  `has_special_equipment` bit(1) DEFAULT NULL COMMENT '有无特种设备',
-  `has_distribution_room` bit(1) DEFAULT NULL COMMENT '有无配电室',
-  `has_transformer` bit(1) DEFAULT NULL COMMENT '有无变压器',
-  `has_stdn_certificate` bit(1) DEFAULT NULL COMMENT '是否取得标准化证书',
+  `is_special_equipment` bit(1) DEFAULT NULL COMMENT '有无特种设备',
+  `is_distribution_room` bit(1) DEFAULT NULL COMMENT '有无配电室',
+  `is_transformer` bit(1) DEFAULT NULL COMMENT '有无变压器',
+  `is_stdn_certificate` bit(1) DEFAULT NULL COMMENT '是否取得标准化证书',
   `stdn_certificate_type` varchar(255) DEFAULT NULL COMMENT '标准化证书类型',
   `stdn_certificate_id` int(11) DEFAULT NULL COMMENT '标准化证书编号',
-  `has_declare_online` varchar(255) DEFAULT NULL COMMENT '是否网上申报',
-  `has_safe_proof` varchar(255) DEFAULT NULL COMMENT '是否有安全部员证',
+  `is_declare_online` varchar(255) DEFAULT NULL COMMENT '是否网上申报',
+  `is_safe_proof` varchar(255) DEFAULT NULL COMMENT '是否有安全部员证',
   `safe_proof_archive_no` int(11) DEFAULT NULL COMMENT '安全部员证存档编号',
   `work_system` smallint(6) DEFAULT NULL COMMENT '工作制度（1 一班倒 2 两班倒 3 三班倒）',
   `production_department_peploes` int(11) DEFAULT NULL COMMENT '生产车间人数',
@@ -70,6 +122,19 @@ CREATE TABLE `t_company_device` (
   `safe_check_cycle` int(11) DEFAULT NULL COMMENT '安全检验周期（甜）',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='公司设备表';
+
+-- ----------------------------
+-- Table structure for t_company_industry
+-- ----------------------------
+DROP TABLE IF EXISTS `t_company_industry`;
+CREATE TABLE `t_company_industry` (
+  `id` int(11) NOT NULL,
+  `type` smallint(6) NOT NULL COMMENT '行业分类type',
+  `content` varchar(255) DEFAULT NULL COMMENT '行业信息',
+  `service_cycle` int(11) NOT NULL COMMENT '服务周期',
+  `cost` bigint(19) DEFAULT NULL COMMENT '费用',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='企业行业信息';
 
 -- ----------------------------
 -- Table structure for t_company_manager
@@ -139,6 +204,44 @@ CREATE TABLE `t_company_standard` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='企业基本信息表';
 
 -- ----------------------------
+-- Table structure for t_company_user
+-- ----------------------------
+DROP TABLE IF EXISTS `t_company_user`;
+CREATE TABLE `t_company_user` (
+  `id` int(11) NOT NULL COMMENT '员工id',
+  `department_type` int(11) NOT NULL COMMENT '部门类型',
+  `task_area_id` int(11) NOT NULL COMMENT '任务区域id',
+  `company_id` int(11) NOT NULL COMMENT '公司id',
+  `mobile` varchar(255) NOT NULL COMMENT '手机号',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='公司员工表';
+
+-- ----------------------------
+-- Table structure for t_elevator_info
+-- ----------------------------
+DROP TABLE IF EXISTS `t_elevator_info`;
+CREATE TABLE `t_elevator_info` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) NOT NULL COMMENT '企业id',
+  `certificate_no` varchar(50) DEFAULT NULL COMMENT '合格证编号',
+  `production_date` bigint(20) DEFAULT NULL COMMENT '出厂日期',
+  `factory` varchar(255) DEFAULT NULL COMMENT '生产厂家',
+  `admin_id` int(11) DEFAULT NULL COMMENT '管理员id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='电梯信息记录表';
+
+-- ----------------------------
+-- Table structure for t_engineering_plan_info
+-- ----------------------------
+DROP TABLE IF EXISTS `t_engineering_plan_info`;
+CREATE TABLE `t_engineering_plan_info` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) NOT NULL COMMENT '企业id',
+  `file_id` int(11) DEFAULT NULL COMMENT '存档id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='工程平面图存档表（平面图拍照或者扫描存档）';
+
+-- ----------------------------
 -- Table structure for t_expert_info
 -- ----------------------------
 DROP TABLE IF EXISTS `t_expert_info`;
@@ -162,19 +265,252 @@ CREATE TABLE `t_expert_info` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='专家信息表';
 
 -- ----------------------------
+-- Table structure for t_expert_plan
+-- ----------------------------
+DROP TABLE IF EXISTS `t_expert_plan`;
+CREATE TABLE `t_expert_plan` (
+  `plan_id` int(11) NOT NULL COMMENT '计划id',
+  `expert_id` int(11) NOT NULL COMMENT '专家id',
+  PRIMARY KEY (`plan_id`,`expert_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='专家计划映射表';
+
+-- ----------------------------
+-- Table structure for t_expert_respond_plan
+-- ----------------------------
+DROP TABLE IF EXISTS `t_expert_respond_plan`;
+CREATE TABLE `t_expert_respond_plan` (
+  `plan_id` int(11) NOT NULL COMMENT '计划id',
+  `expert_id` int(11) NOT NULL COMMENT '专家id',
+  PRIMARY KEY (`plan_id`,`expert_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='专家响应计划映射表';
+
+-- ----------------------------
+-- Table structure for t_expert_time
+-- ----------------------------
+DROP TABLE IF EXISTS `t_expert_time`;
+CREATE TABLE `t_expert_time` (
+  `time_id` int(11) NOT NULL COMMENT '时间id',
+  `expert_id` int(11) NOT NULL COMMENT '专家id',
+  `expert_type` smallint(6) NOT NULL COMMENT '专家类型 1 空闲专家 2 待定专家',
+  PRIMARY KEY (`time_id`,`expert_id`,`expert_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='专家时间映射表';
+
+-- ----------------------------
+-- Table structure for t_fire_equipment
+-- ----------------------------
+DROP TABLE IF EXISTS `t_fire_equipment`;
+CREATE TABLE `t_fire_equipment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) NOT NULL COMMENT '企业id',
+  `equipment_type` int(11) DEFAULT NULL COMMENT '器材种类',
+  `placement` varchar(255) DEFAULT NULL COMMENT '摆放位置',
+  `number` int(11) DEFAULT NULL COMMENT '数量',
+  `buy_time` bigint(20) DEFAULT NULL COMMENT '购买时间',
+  `due_time` bigint(20) DEFAULT NULL COMMENT '到期时间',
+  `inspection_time` bigint(20) DEFAULT NULL COMMENT '检查时间',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='消防器材收集表';
+
+-- ----------------------------
+-- Table structure for t_hoisting_machine_info
+-- ----------------------------
+DROP TABLE IF EXISTS `t_hoisting_machine_info`;
+CREATE TABLE `t_hoisting_machine_info` (
+  `id` int(11) NOT NULL,
+  `company_id` int(11) NOT NULL COMMENT '企业id',
+  `certificate_file_no` varchar(50) DEFAULT NULL COMMENT '合格证存档编号',
+  `tonnage` int(11) DEFAULT NULL COMMENT '吨位',
+  `factory` varchar(255) DEFAULT NULL COMMENT '生产厂家',
+  `admin_id` int(11) DEFAULT NULL COMMENT '管理员id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='起重设备信息表';
+
+-- ----------------------------
+-- Table structure for t_load_bearing
+-- ----------------------------
+DROP TABLE IF EXISTS `t_load_bearing`;
+CREATE TABLE `t_load_bearing` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) NOT NULL COMMENT '企业id',
+  `volume` int(11) DEFAULT NULL COMMENT '容积',
+  `pressure` int(11) DEFAULT NULL COMMENT '压力',
+  `admin_id` int(11) DEFAULT NULL COMMENT '管理员id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='承重设备信息记录表';
+
+-- ----------------------------
+-- Table structure for t_passenger_ropeway_info
+-- ----------------------------
+DROP TABLE IF EXISTS `t_passenger_ropeway_info`;
+CREATE TABLE `t_passenger_ropeway_info` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) NOT NULL COMMENT '企业id',
+  `length` int(11) DEFAULT NULL COMMENT '长度',
+  `admin_id` int(11) DEFAULT NULL COMMENT '管理人员id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='客运索道信息表';
+
+-- ----------------------------
+-- Table structure for t_plan
+-- ----------------------------
+DROP TABLE IF EXISTS `t_plan`;
+CREATE TABLE `t_plan` (
+  `id` int(11) NOT NULL,
+  `company_id` int(11) NOT NULL COMMENT '企业id',
+  `bureau_id` int(11) NOT NULL COMMENT '科局id',
+  `plan_time` bigint(20) NOT NULL COMMENT '计划时间',
+  `tima_slot` int(11) NOT NULL COMMENT '时间段（天）',
+  `staff_id` int(11) NOT NULL COMMENT '企业工作人员id',
+  `superversion_level` int(11) DEFAULT NULL COMMENT '监管等级',
+  `plan_subject` varchar(255) DEFAULT NULL COMMENT '计划科目',
+  `non_conformance_id` int(11) DEFAULT NULL COMMENT '不符合项id',
+  `rectification_result_id` int(11) DEFAULT NULL COMMENT '整改结果id',
+  `finish_time` bigint(20) DEFAULT NULL COMMENT '完成时间',
+  `status` smallint(6) DEFAULT NULL COMMENT '0：科局发起 1：企业工作人员认领任务 2： 专家确认时间 3.准备执行 4. 执行中 5. 开具不符合项 6. 整改完毕  -1：科局取消 -2：未确定时间计划取消 -3：执行前异常取消 ',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='计划表';
+
+-- ----------------------------
+-- Table structure for t_pressure_piping_info
+-- ----------------------------
+DROP TABLE IF EXISTS `t_pressure_piping_info`;
+CREATE TABLE `t_pressure_piping_info` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) NOT NULL COMMENT '企业id',
+  `length` int(11) NOT NULL COMMENT '长度',
+  `pressure` int(255) NOT NULL COMMENT '压力',
+  `admin_id` int(11) DEFAULT NULL COMMENT '管理员id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='压力管道信息记录表';
+
+-- ----------------------------
+-- Table structure for t_pressure_vessel_info
+-- ----------------------------
+DROP TABLE IF EXISTS `t_pressure_vessel_info`;
+CREATE TABLE `t_pressure_vessel_info` (
+  `id` int(11) NOT NULL,
+  `company_id` int(11) NOT NULL COMMENT '公司id',
+  `device_no` int(11) DEFAULT NULL COMMENT '设备编号或者厂家编号',
+  `pressure` int(11) DEFAULT NULL COMMENT '压力',
+  `admin_id` int(11) DEFAULT NULL COMMENT '管理员id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='压力容器信息表';
+
+-- ----------------------------
+-- Table structure for t_raw_stock
+-- ----------------------------
+DROP TABLE IF EXISTS `t_raw_stock`;
+CREATE TABLE `t_raw_stock` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) NOT NULL COMMENT '企业id',
+  `product_name` varchar(255) DEFAULT NULL COMMENT '产品名称',
+  `stock_name` varchar(255) DEFAULT NULL COMMENT '材料名称',
+  `standards` varchar(255) DEFAULT NULL COMMENT '规格',
+  `annual_consumption` float DEFAULT NULL COMMENT '年产量',
+  `storage_mode` varchar(255) DEFAULT NULL COMMENT '存储方式',
+  `is_dangerous_goods` bit(1) DEFAULT NULL COMMENT '是否危险品 true 是 false 否',
+  `is_xx_goods` bit(1) DEFAULT NULL COMMENT '是否xx品 true 是 false 否',
+  `is_raw` bit(1) DEFAULT NULL COMMENT '原料/辅料 true 原料 false 辅料',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='原材料记录表';
+
+-- ----------------------------
+-- Table structure for t_rescue_drag_info
+-- ----------------------------
+DROP TABLE IF EXISTS `t_rescue_drag_info`;
+CREATE TABLE `t_rescue_drag_info` (
+  `id` int(11) NOT NULL,
+  `drag_name` varchar(255) DEFAULT NULL COMMENT '药品名称',
+  `average_person` float DEFAULT NULL COMMENT '平均数量（单位/人）',
+  `average_square_metre` float DEFAULT NULL COMMENT '单位/平米',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='应急救援物资及药品清单模板';
+
+-- ----------------------------
+-- Table structure for t_respond_plan
+-- ----------------------------
+DROP TABLE IF EXISTS `t_respond_plan`;
+CREATE TABLE `t_respond_plan` (
+  `id` int(11) NOT NULL,
+  `plan_id` int(11) NOT NULL COMMENT '计划id',
+  `plan_time` bigint(20) NOT NULL COMMENT '计划时间',
+  `type` smallint(6) NOT NULL COMMENT '方式：1 远程 2 县城',
+  `status` smallint(6) NOT NULL COMMENT '状态 1 未完成 2 已经完成 3 超时取消',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='响应计划表';
+
+-- ----------------------------
+-- Table structure for t_service_info
+-- ----------------------------
+DROP TABLE IF EXISTS `t_service_info`;
+CREATE TABLE `t_service_info` (
+  `id` int(11) NOT NULL,
+  `service_type` smallint(255) NOT NULL COMMENT '服务类型\n1 安全隐患排查\n2 安全生产培训\n3 双控培训\n4 职业健康培训\n5 应急救援培训\n6 应急救援\n7 事故调查',
+  `service_name` varchar(255) NOT NULL COMMENT '对应的服务类型名称',
+  `service_cycle` int(11) NOT NULL COMMENT '服务周期',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='服务内容表';
+
+-- ----------------------------
+-- Table structure for t_technological_process_info
+-- ----------------------------
+DROP TABLE IF EXISTS `t_technological_process_info`;
+CREATE TABLE `t_technological_process_info` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) NOT NULL COMMENT '企业id',
+  `product_name` varchar(255) DEFAULT NULL COMMENT '产品名称',
+  `process_id` int(11) DEFAULT NULL COMMENT '工艺流程id',
+  `photo_id` int(11) DEFAULT NULL COMMENT '环评拍照图图片id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='工艺流程存档表';
+
+-- ----------------------------
+-- Table structure for t_time_config
+-- ----------------------------
+DROP TABLE IF EXISTS `t_time_config`;
+CREATE TABLE `t_time_config` (
+  `id` int(11) NOT NULL,
+  `date` bigint(20) DEFAULT NULL COMMENT '日期',
+  `ares_id` int(11) DEFAULT NULL COMMENT '地区id',
+  `plan_not_execute` varchar(255) DEFAULT NULL COMMENT '计划中未执行？不知道是啥',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='时间设置表';
+
+-- ----------------------------
 -- Table structure for t_user_login
 -- ----------------------------
 DROP TABLE IF EXISTS `t_user_login`;
 CREATE TABLE `t_user_login` (
-  `id` int(11) NOT NULL COMMENT '登陆人id',
-  `account` varchar(20) NOT NULL COMMENT '账号',
-  `name` varchar(50) DEFAULT NULL COMMENT '姓名',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `name` varchar(50) NOT NULL COMMENT '姓名',
   `password` varchar(50) NOT NULL COMMENT '密码',
   `type` smallint(6) NOT NULL COMMENT '类型\n1 专家\n2 员工\n3 科局\n',
   `mobile` varchar(11) NOT NULL COMMENT '手机号',
   `login_time` datetime DEFAULT NULL COMMENT '登陆时间',
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  `status` int(1) DEFAULT NULL COMMENT '状态 1 正常 2 无效',
+  `user_id` int(11) DEFAULT NULL COMMENT '用户id',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='登陆账号表';
+
+-- ----------------------------
+-- Table structure for t_vehicle_info
+-- ----------------------------
+DROP TABLE IF EXISTS `t_vehicle_info`;
+CREATE TABLE `t_vehicle_info` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) NOT NULL COMMENT '企业id',
+  `type` smallint(6) DEFAULT NULL COMMENT '类型 1 客车 2货车',
+  `factory` varchar(255) DEFAULT NULL COMMENT '生产厂家',
+  `car_numer` varchar(50) DEFAULT NULL COMMENT '车牌号',
+  `frame_number` varchar(50) DEFAULT NULL COMMENT '车架号',
+  `engine_number` varchar(50) DEFAULT NULL COMMENT '发动机号',
+  `driving_permit_no` varchar(50) DEFAULT NULL COMMENT '行驶证编号',
+  `admin_id` int(11) DEFAULT NULL COMMENT '管理员id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='机动车信息表';
 
 SET FOREIGN_KEY_CHECKS = 1;
