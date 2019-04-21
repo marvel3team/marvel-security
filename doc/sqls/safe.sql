@@ -48,7 +48,7 @@ CREATE TABLE `t_bolier_info` (
 -- ----------------------------
 DROP TABLE IF EXISTS `t_bureau_info`;
 CREATE TABLE `t_bureau_info` (
-  `id` bigint(20) NOT NULL COMMENT '科局人员idd',
+  `id` bigint(20) NOT NULL COMMENT '科局人员id',
   `ares_id` int(11) NOT NULL DEFAULT '0' COMMENT '地区id',
   `name` varchar(100) NOT NULL DEFAULT '' COMMENT '姓名',
   `mobile` varchar(11) NOT NULL DEFAULT '' COMMENT '手机号',
@@ -261,7 +261,7 @@ CREATE TABLE `t_expert_info` (
   `home_address` varchar(255) NOT NULL DEFAULT '' COMMENT '居住地址',
   `mobile` varchar(11) NOT NULL DEFAULT '' COMMENT '手机号',
   `remark` varchar(512) NOT NULL DEFAULT '' COMMENT '备注',
-  `sign_url` varchar(512) NOT NULL DEFAULT '' COMMENT '本人签名图片地址',
+  `` varchar(512) NOT NULL DEFAULT '' COMMENT '本人签名图片地址',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='专家信息表';
 
