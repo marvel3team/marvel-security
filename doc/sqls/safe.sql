@@ -514,4 +514,35 @@ CREATE TABLE `t_vehicle_info` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='机动车信息表';
 
+
+DROP TABLE IF EXISTS `t_problem_project`;
+CREATE TABLE `t_problem_project` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `plan_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '计划id',
+  `expert_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '专家id',
+  `name` varchar(100) NOT NULL DEFAULT '' COMMENT '项目名称',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='现场问题项目表';
+
+
+DROP TABLE IF EXISTS `t_problem_project_rule`;
+CREATE TABLE `t_problem_project_rule` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `project_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '项目id',
+  `name` varchar(100) NOT NULL DEFAULT '' COMMENT '项目细则名称',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='项目细则表';
+
+
+DROP TABLE IF EXISTS `t_problem_info`;
+CREATE TABLE `t_problem_info` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `rule_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '项目细则id',
+  `problem_content` varchar(255) NOT NULL DEFAULT '-1' COMMENT '问题',
+  `corrective_action` varchar(255) NOT NULL DEFAULT '' COMMENT '整改措施',
+  `status` unsigned tinyint(3) NOT NULL DEFAULT '1' COMMENT '整改状态 1 待整改 2 已整改 3 整改不合格 4 整改完成',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='现场问题表';
+
+
 SET FOREIGN_KEY_CHECKS = 1;
