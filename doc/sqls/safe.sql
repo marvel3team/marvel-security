@@ -63,7 +63,7 @@ DROP TABLE IF EXISTS `t_company_appraise_info`;
 CREATE TABLE `t_company_appraise_info` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `company_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '公司id',
-  `appraise_methos` unsigned tinyint(3) NOT NULL COMMENT '鉴定方式 1 年检 2 三年检 3 半年检 4 月检',
+  `appraise_method` unsigned tinyint(3) NOT NULL COMMENT '鉴定方式 1 年检 2 三年检 3 半年检 4 月检',
   `last_appraise_time` bigint(20) NOT NULL DEFAULT '-1' COMMENT '上次鉴定日期',
   `last_plan_execute_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '上次计划执行id',
   PRIMARY KEY (`id`)
@@ -88,9 +88,9 @@ CREATE TABLE `t_company_base_info` (
   `is_special_equipment` tinyint(1) NOT NULL DEFAULT '1' COMMENT '有无特种设备 1有',
   `is_distribution_room` tinyint(1) NOT NULL DEFAULT '1' COMMENT '有无配电室 1有',
   `is_transformer` tinyint(1) NOT NULL DEFAULT '1' COMMENT '有无变压器 1有',
-  `is_stdn_certificate` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否取得标准化证书 1是',
-  `stdn_certificate_type` varchar(255) NOT NULL DEFAULT '' COMMENT '标准化证书类型（是否采用枚举更合适？）',
-  `stdn_certificate_id` varchar(255) NOT NULL DEFAULT '' COMMENT '标准化证书编号',
+  `is_stan_certificate` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否取得标准化证书 1是',
+  `stan_certificate_type` varchar(255) NOT NULL DEFAULT '' COMMENT '标准化证书类型（是否采用枚举更合适？）',
+  `stan_certificate_id` varchar(255) NOT NULL DEFAULT '' COMMENT '标准化证书编号',
   `is_declare_online` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否网上申报 1是',
   `is_safe_proof` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否有安全部员证 1是',
   `safe_proof_archive_no` varchar(255) NOT NULL DEFAULT '' COMMENT '安全部员证存档编号',
@@ -99,7 +99,7 @@ CREATE TABLE `t_company_base_info` (
   `office_peoples` int(11) NOT NULL DEFAULT '0' COMMENT '办公室及后勤人数',
   `work_days_yearly` int(11) NOT NULL DEFAULT '0' COMMENT '年工作天数',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='企业基础数据信息';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='';
 
 -- ----------------------------
 -- Table structure for t_company_device
@@ -114,11 +114,11 @@ CREATE TABLE `t_company_device` (
   `norm_type` varchar(255) NOT NULL DEFAULT '' COMMENT '规格型号(是否是确认的几种？用枚举类型？)',
   `is_special_device` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否特殊设备 1是',
   `is_main_device` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否主要设备 1是',
-  `is_enviroment_device` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否环保设备 1是',
+  `is_environment_device` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否环保设备 1是',
   `is_occupational_health_device` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否职业健康设备 1是',
   `is_mobile_device` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否移动设备 1是',
   `is_safe_check` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否安全检验 1是',
-  `safe_check_cycle` int(11) NOT NULL DEFAULT '0' COMMENT '安全检验周期（甜）',
+  `safe_check_cycle` int(11) NOT NULL DEFAULT '0' COMMENT '安全检验周期（天）',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='公司设备表';
 
@@ -261,7 +261,7 @@ CREATE TABLE `t_expert_info` (
   `home_address` varchar(255) NOT NULL DEFAULT '' COMMENT '居住地址',
   `mobile` varchar(11) NOT NULL DEFAULT '' COMMENT '手机号',
   `remark` varchar(512) NOT NULL DEFAULT '' COMMENT '备注',
-  `` varchar(512) NOT NULL DEFAULT '' COMMENT '本人签名图片地址',
+  `sign_url` varchar(512) NOT NULL DEFAULT '' COMMENT '本人签名图片地址',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='专家信息表';
 
