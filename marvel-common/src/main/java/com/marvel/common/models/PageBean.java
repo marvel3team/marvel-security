@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * @Classname PageBean
- * @Description TODO
+ * @Description 翻页对象
  * @Date 2019/4/21 下午11:13
  * @Author zhongjie
  */
