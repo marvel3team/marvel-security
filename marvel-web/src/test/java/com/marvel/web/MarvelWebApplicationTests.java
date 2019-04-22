@@ -94,7 +94,7 @@ public class MarvelWebApplicationTests {
      */
     private User getUser(){
         User user = new User();
-        user.setUid(100000L);
+        user.setId(100000L);
         return user;
     }
 }

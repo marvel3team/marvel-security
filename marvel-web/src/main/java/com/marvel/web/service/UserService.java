@@ -1,5 +1,9 @@
 package com.marvel.web.service;
 
+import com.marvel.framework.context.RequestContext;
+import com.marvel.web.po.User;
+import com.marvel.web.vo.LoginUserVo;
+
 /**
  * @Classname UserService
  * @Description 用户service接口类
@@ -11,14 +15,13 @@ public interface UserService {
     /**
      * Description: 用户登录
      *
-     * @param type
-     * @param username
-     * @param code
+     * @param mobile
+     * @param password
      * @return
      * @Date 下午10:12 2019/3/27
      * @Author zhongjie
      **/
-    String login(Integer type, String username, String code);
+    LoginUserVo login(String mobile, String password);
 
     /**
      * Description: 后台注册
@@ -35,12 +38,19 @@ public interface UserService {
     /**
      * Description: 更新密码
      *
-     * @param uid
-     * @param oldPassword
-     * @param newPassword
+     * @param requestContext
+     * @param code
+     * @param password
      * @return
      * @Date 下午11:29 2019/3/27
      * @Author zhongjie
      **/
-    boolean resetPassword(long uid, String oldPassword, String newPassword);
+    boolean resetPassword(RequestContext requestContext, String code, String password);
+
+    /**
+     * 根据用户ID获取用户
+     * @param uid
+     * @return
+     */
+    User getUser(Long uid);
 }

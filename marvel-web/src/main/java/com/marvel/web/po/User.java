@@ -19,15 +19,19 @@ public class User implements Serializable {
     /**
      * 编号
      */
-    private Long uid;
+    private Long id;
+    /**
+     * 密码
+     */
+    private String password;
     /**
      * 用户名
      */
     private String username;
     /**
-     * 密码
+     * 手机号
      */
-    private String password;
+    private String mobile;
     /**
      * 登录状态
      */
@@ -44,5 +48,9 @@ public class User implements Serializable {
      * 更新时间,精确到毫秒
      */
     private Long updateTime;
+    /**
+     * 备注
+     */
+    private String remark;
 
 }

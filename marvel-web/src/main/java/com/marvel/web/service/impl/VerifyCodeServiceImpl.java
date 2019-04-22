@@ -40,25 +40,25 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
     private ApiHttpClient apiHttpClient;
 
     @Override
-    public VerifyCode getVerify(RequestContext requestContext, String phoneNo) {
-        String key = RedisKeys.getKey(RedisKeys.VERIFY_CODE, phoneNo);
+    public VerifyCode getVerify(Long uid) {
+        String key = RedisKeys.getKey(RedisKeys.VERIFY_CODE, String.valueOf(uid));
         Map<String, Long> entries = redisTemplate.opsForHash().entries(key);
         //验证码不存在，如第一次请求或者验证码过期后再次请求
         if (CollectionUtils.isEmpty(entries) || CollectionUtils.isEmpty(entries.keySet())
                 || CollectionUtils.isEmpty(entries.values())) {
-            return new VerifyCode(sendCode(key, phoneNo), expireTime);
+            return new VerifyCode(sendCode(key, uid), expireTime);
         }
         //如果验证码存在，就是说验证码未过期，如果距离上一次验证码发送超过90s，则进行一次验证码发送
         Long createTime = entries.values().iterator().next();
         if (System.currentTimeMillis() - createTime > intervalTime) {
-            return new VerifyCode(sendCode(key, phoneNo), expireTime);
+            return new VerifyCode(sendCode(key, uid), expireTime);
         }
         throw BusinessException.LAST_VERIFY_CODE_EFFECTIVE;
     }
 
     @Override
-    public String getCode(String phoneNo) {
-        String key = RedisKeys.getKey(RedisKeys.VERIFY_CODE, phoneNo);
+    public String getCode(Long uid) {
+        String key = RedisKeys.getKey(RedisKeys.VERIFY_CODE, String.valueOf(uid));
         Map<String, Long> entries = redisTemplate.opsForHash().entries(key);
         if (!CollectionUtils.isEmpty(entries) && !CollectionUtils.isEmpty(entries.keySet())) {
             return entries.keySet().iterator().next();
@@ -67,20 +67,20 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
     }
 
     @Override
-    public void clearCode(String phoneNo) {
-        String key = RedisKeys.getKey(RedisKeys.VERIFY_CODE, phoneNo);
+    public void clearCode(Long uid) {
+        String key = RedisKeys.getKey(RedisKeys.VERIFY_CODE, String.valueOf(uid));
         redisTemplate.delete(key);
     }
 
     /**
      * 获取验证码
      * @param key
-     * @param phoneNo
+     * @param uid
      * @return
      */
-    private String sendCode(String key, String phoneNo) {
+    private String sendCode(String key, Long uid) {
         //发送验证码
-        String code = sendCode(phoneNo);
+        String code = sendCode(uid);
         if (StringUtils.isBlank(code)) {
             throw BusinessException.VERIFY_CODE_SEND_FAIL;
         }
@@ -92,10 +92,10 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
 
     /**
      * 往指定手机号发送
-     * @param phoneNo
+     * @param uid
      * @return
      */
-    public String sendCode(String phoneNo) {
+    public String sendCode(Long uid) {
         return "6666";
     }
 }
