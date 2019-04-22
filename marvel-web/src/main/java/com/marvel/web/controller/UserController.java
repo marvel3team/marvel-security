@@ -5,6 +5,8 @@ import com.marvel.web.exception.BusinessException;
 import com.marvel.framework.annotation.MarvelCheck;
 import com.marvel.framework.context.RequestContext;
 import com.marvel.web.service.UserService;
+import com.marvel.web.service.VerifyCodeService;
+import com.marvel.web.vo.VerifyCode;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,11 +32,26 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private VerifyCodeService verifyCodeService;
+
+
+    @MarvelCheck
+    @RequestMapping(value = "/send_verify.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public VerifyCode getVerify(@RequestParam(name = "phoneNo") String phoneNo){
+        if (StringUtils.isBlank(phoneNo)) {
+            throw BusinessException.INVALID_PARAMS;
+        }
+        VerifyCode code = verifyCodeService.getVerify(RequestContext.getRequestContext(), phoneNo);
+        return code;
+    }
+
     /**
      * 用户登录
      * @param type 默认50游客登录，10应急管理部门，20应急专家，30企业客户，40员工
      * @param username 用户名
-     * @param password 密码
+     * @param code 验证码
      * @return
      */
     @MarvelCheck
@@ -42,9 +59,9 @@ public class UserController {
     @ResponseBody
     public String login(@RequestParam(name = "type", required = false, defaultValue = "50") Integer type,
                         @RequestParam(name = "username") String username,
-                        @RequestParam(name = "password") String password){
-        checkParams(type, username, password);
-        String token = userService.login(type, username, password);
+                        @RequestParam(name = "code") String code){
+        checkParams(type, username, code);
+        String token = userService.login(type, username, code);
         return "{\"token\":\"" + token + "\"}";
     }
 

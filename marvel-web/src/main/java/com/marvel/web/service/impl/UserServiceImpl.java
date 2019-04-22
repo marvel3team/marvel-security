@@ -9,6 +9,9 @@ import com.marvel.framework.utils.MauthUtils;
 import com.marvel.web.mapper.UserMapper;
 import com.marvel.web.po.User;
 import com.marvel.web.service.UserService;
+import com.marvel.web.service.VerifyCodeService;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -35,21 +38,25 @@ public class UserServiceImpl implements UserService {
     @Resource
     private UserMapper userMapper;
 
+    @Autowired
+    private VerifyCodeService verifyCodeService;
 
     @Override
-    public String login(Integer type, String username, String password) {
+    public String login(Integer type, String username, String code) {
+        String verifyCode = verifyCodeService.getCode(username);
+        if (StringUtils.isBlank(verifyCode) || !verifyCode.equals(code)) {
+            throw BusinessException.VERIFY_CODE_ERROR;
+        }
         User user = get(username);
         if (user == null) {
             throw BusinessException.USERNAME_NO_EXISTS;
-        }
-        if (!MD5Utils.md5Digest(password.getBytes()).equals(user.getPassword())) {
-            throw BusinessException.PASSWORD_ERROR;
         }
         if (user.getStatus() == LoginStatus.LOGOUT.value()) {
             //更新用户状态
             user.setStatus(LoginStatus.LOGIN.value());
             update(user);
         }
+        verifyCodeService.clearCode(username);
         return MauthUtils.create(user.getUid());
     }
 

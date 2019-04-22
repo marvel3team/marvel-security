@@ -50,4 +50,19 @@ public class BusinessException {
      */
     public static CommonException PASSWORD_SET_FAIL = new CommonException(300008, "密码重置失败");
 
+    /**
+     * 验证码发送失败
+     */
+    public static CommonException VERIFY_CODE_SEND_FAIL = new CommonException(300009, "验证码发送失败");
+
+    /**
+     * 上次验证码还在有效期内
+     */
+    public static CommonException LAST_VERIFY_CODE_EFFECTIVE = new CommonException(300010, "上次验证码还在有效期内");
+
+    /**
+     * 验证码错误
+     */
+    public static CommonException VERIFY_CODE_ERROR = new CommonException(300011, "验证码错误");
+
 }

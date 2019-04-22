@@ -1,5 +1,6 @@
 package com.marvel.web;
 
+import com.alibaba.fastjson.JSON;
 import com.marvel.common.http.template.ApiHttpClient;
 import com.marvel.common.uuid.SnowflakeIdGenerator;
 import com.marvel.web.po.User;
@@ -14,7 +15,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -42,6 +45,20 @@ public class MarvelWebApplicationTests {
         redisTemplate.opsForValue().set("test_key", "test_value");
         Object value = redisTemplate.opsForValue().get("test_key");
         Assert.assertTrue(Objects.equals("test_value", value));
+    }
+
+    @Test
+    public void redisTemplateForGetHash() {
+        Assert.assertTrue(Objects.nonNull(redisTemplate));
+        Map entries = redisTemplate.opsForHash().entries("code:13761231122");
+        System.out.println(JSON.toJSONString(entries));
+    }
+
+    @Test
+    public void redisTemplateForSetHash() {
+        Assert.assertTrue(Objects.nonNull(redisTemplate));
+        redisTemplate.opsForHash().put("code:13761231122", "6666", 1555932166000L);
+        redisTemplate.expire("code:13761231122", 1, TimeUnit.MINUTES);
     }
 
     @Test

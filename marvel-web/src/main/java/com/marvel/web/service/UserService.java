@@ -13,12 +13,12 @@ public interface UserService {
      *
      * @param type
      * @param username
-     * @param password
+     * @param code
      * @return
      * @Date 下午10:12 2019/3/27
      * @Author zhongjie
      **/
-    String login(Integer type, String username, String password);
+    String login(Integer type, String username, String code);
 
     /**
      * Description: 后台注册
