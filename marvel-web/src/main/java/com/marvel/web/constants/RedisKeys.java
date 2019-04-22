@@ -11,7 +11,7 @@ public class RedisKeys {
     /**
      * 验证码
      */
-    public static final String VERIFY_CODE = "v:c:";
+    public static final String VERIFY_CODE = "v:c:u:";
 
     /**
      * key组装

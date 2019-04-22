@@ -2,6 +2,9 @@ package com.marvel.web.service.impl;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.marvel.common.uuid.SnowflakeIdGenerator;
+import com.marvel.framework.context.RequestContext;
+import com.marvel.web.converts.LoginUserVoConvert;
 import com.marvel.web.enums.LoginStatus;
 import com.marvel.web.exception.BusinessException;
 import com.marvel.common.utils.MD5Utils;
@@ -10,6 +13,7 @@ import com.marvel.web.mapper.UserMapper;
 import com.marvel.web.po.User;
 import com.marvel.web.service.UserService;
 import com.marvel.web.service.VerifyCodeService;
+import com.marvel.web.vo.LoginUserVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,32 +36,39 @@ public class UserServiceImpl implements UserService {
      * expireAfterWrite(long, TimeUnit) 当缓存项在指定的时间段内没有更新就会被回收
      * maximumSize(long) 当前缓存可存的最大记录数
      * */
-    private static Cache<String, User> cache = CacheBuilder.newBuilder().maximumSize(1000)
+    private static Cache<String, User> mobileCache = CacheBuilder.newBuilder().maximumSize(1000)
+            .expireAfterAccess(30, TimeUnit.MINUTES).build();
+    /**
+     * id纬度
+     */
+    private static Cache<Long, User> uidCache = CacheBuilder.newBuilder().maximumSize(1000)
             .expireAfterAccess(30, TimeUnit.MINUTES).build();
 
     @Resource
     private UserMapper userMapper;
 
     @Autowired
+    private SnowflakeIdGenerator snowflakeIdGenerator;
+
+    @Autowired
     private VerifyCodeService verifyCodeService;
 
     @Override
-    public String login(Integer type, String username, String code) {
-        String verifyCode = verifyCodeService.getCode(username);
-        if (StringUtils.isBlank(verifyCode) || !verifyCode.equals(code)) {
-            throw BusinessException.VERIFY_CODE_ERROR;
-        }
-        User user = get(username);
+    public LoginUserVo login(String mobile, String password) {
+        User user = get(mobile);
         if (user == null) {
             throw BusinessException.USERNAME_NO_EXISTS;
+        }
+        if (!MD5Utils.md5Digest(password.getBytes()).equals(user.getPassword())) {
+            throw BusinessException.PASSWORD_ERROR;
         }
         if (user.getStatus() == LoginStatus.LOGOUT.value()) {
             //更新用户状态
             user.setStatus(LoginStatus.LOGIN.value());
             update(user);
         }
-        verifyCodeService.clearCode(username);
-        return MauthUtils.create(user.getUid());
+        String token = MauthUtils.create(user.getId());
+        return LoginUserVoConvert.toLoginUserVo(user, token);
     }
 
     @Override
@@ -71,16 +82,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean resetPassword(long uid, String oldPassword, String newPassword) {
-        User user = userMapper.findByUid(uid);
+    public boolean resetPassword(RequestContext requestContext, String code, String password) {
+        long uid = requestContext.getUid();
+        String verifyCode = verifyCodeService.getCode(uid);
+        if (StringUtils.isBlank(verifyCode) || !verifyCode.equals(code)) {
+            throw BusinessException.VERIFY_CODE_ERROR;
+        }
+        User user = get(uid);
         if (user == null) {
             throw BusinessException.USER_NO_EXISTS;
         }
-        if (!user.getPassword().equals(MD5Utils.md5Digest(oldPassword.getBytes()))) {
-            throw BusinessException.PASSWORD_ERROR;
-        }
-        user.setPassword(MD5Utils.md5Digest(newPassword.getBytes()));
+        user.setPassword(MD5Utils.md5Digest(password.getBytes()));
+        verifyCodeService.clearCode(uid);
         return update(user);
+    }
+
+    @Override
+    public User getUser(Long uid) {
+        User user = get(uid);
+        if (user == null) {
+            throw BusinessException.USER_NO_EXISTS;
+        }
+        return user;
     }
 
     /**
@@ -92,14 +115,16 @@ public class UserServiceImpl implements UserService {
      */
     private User assembleUser(Integer type, String username, String password) {
         User user = new User();
-        long currentTimeMillis = System.currentTimeMillis();
-        user.setUid(currentTimeMillis);
+        user.setId(snowflakeIdGenerator.generateId());
         user.setUsername(username);
         user.setPassword(MD5Utils.md5Digest(password.getBytes()));
+        user.setMobile(username);
         user.setType(type);
         user.setStatus(LoginStatus.LOGOUT.value());
+        long currentTimeMillis = System.currentTimeMillis();
         user.setCreateTime(currentTimeMillis);
         user.setUpdateTime(currentTimeMillis);
+        user.setRemark(StringUtils.EMPTY);
         return user;
     }
 
@@ -111,7 +136,8 @@ public class UserServiceImpl implements UserService {
     private boolean save(User user) {
         int save = userMapper.save(user);
         if (save > 0) {
-            cache.put(user.getUsername(), user);
+            uidCache.put(user.getId(), user);
+            mobileCache.put(user.getMobile(), user);
             return true;
         }
         return false;
@@ -119,15 +145,31 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 获取用户
-     * @param username
+     * @param mobile
      * @return
      */
-    private User get(String username) {
-        User user = cache.getIfPresent(username);
+    private User get(String mobile) {
+        User user = mobileCache.getIfPresent(mobile);
         if (user == null) {
-            user = userMapper.findByName(username);
+            user = userMapper.findByMobile(mobile);
             if (user != null) {
-                cache.put(username, user);
+                mobileCache.put(mobile, user);
+            }
+        }
+        return user;
+    }
+
+    /**
+     * 获取用户
+     * @param uid
+     * @return
+     */
+    private User get(Long uid) {
+        User user = uidCache.getIfPresent(uid);
+        if (user == null) {
+            user = userMapper.findByUid(uid);
+            if (user != null) {
+                uidCache.put(uid, user);
             }
         }
         return user;
@@ -142,7 +184,8 @@ public class UserServiceImpl implements UserService {
         user.setUpdateTime(System.currentTimeMillis());
         int update = userMapper.update(user);
         if (update > 0) {
-            cache.put(user.getUsername(), user);
+            uidCache.put(user.getId(), user);
+            mobileCache.put(user.getMobile(), user);
             return true;
         }
         return false;

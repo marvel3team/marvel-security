@@ -20,31 +20,31 @@ public interface UserMapper {
      * @Date 下午12:24 2019/2/19
      * @Author zj
      **/
-    @Insert("INSERT INTO t_user(uid, username, password, status, type, create_time, update_time) VALUES(#{user.uid}, #{user.username}, " +
-            "#{user.password}, #{user.status}, #{user.type}, #{user.createTime}, #{user.updateTime})")
+    @Insert("INSERT INTO t_user(id, username, password, mobile, status, type, create_time, update_time, remark) VALUES(#{user.id}, #{user.username}, " +
+            "#{user.password}, #{user.mobile}, #{user.status}, #{user.type}, #{user.createTime}, #{user.updateTime}, #{user.remark})")
     int save(@Param("user") User user);
-
-    /**
-     * Description: 根据用户名查询用户信息
-     *
-     * @param username 用户名
-     * @return com.marvel.scarecrows.po.User
-     * @Date 上午11:05 2019/2/19
-     * @Author zj
-     **/
-    @Select("SELECT uid, username, password, status, type, create_time, update_time FROM t_user WHERE username = #{username}")
-    User findByName(@Param("username") String username);
 
     /**
      * Description: 根据用户Id查询用户信息
      *
-     * @param uid 用户名
+     * @param id 用户ID
      * @return com.marvel.scarecrows.po.User
      * @Date 上午11:05 2019/2/19
      * @Author zj
      **/
-    @Select("SELECT uid, username, password, status, type, create_time, update_time FROM t_user WHERE uid = #{uid}")
-    User findByUid(@Param("uid") Long uid);
+    @Select("SELECT id, username, password, mobile, status, type, create_time, update_time, remark FROM t_user WHERE id = #{id}")
+    User findByUid(@Param("id") Long id);
+
+    /**
+     * Description: 根据手机号查询用户信息
+     *
+     * @param mobile 用户名
+     * @return com.marvel.scarecrows.po.User
+     * @Date 上午11:05 2019/2/19
+     * @Author zj
+     **/
+    @Select("SELECT id, username, password, mobile, status, type, create_time, update_time, remark FROM t_user WHERE mobile = #{mobile}")
+    User findByMobile(@Param("mobile") String mobile);
 
     /**
      * Description: 更新用户状态，密码
@@ -54,6 +54,6 @@ public interface UserMapper {
      * @Date 下午10:24 2019/3/27
      * @Author zhongjie
      **/
-    @Update("UPDATE t_user SET password = #{user.password}, status = #{user.status}, update_time = #{user.updateTime} WHERE uid = #{user.uid}")
+    @Update("UPDATE t_user SET password = #{user.password}, status = #{user.status}, update_time = #{user.updateTime} WHERE id = #{user.id}")
     int update(@Param("user") User user);
 }

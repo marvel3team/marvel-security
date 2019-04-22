@@ -14,28 +14,27 @@ public interface VerifyCodeService {
     /**
      * Description: 获取验证码
      *
-     * @param requestContext
-     * @param phoneNo
+     * @param uid
      * @return com.marvel.web.vo.VerifyCode
      * @Date 19:10 2019-04-22
      * @Author zhongjie
      **/
-    VerifyCode getVerify(RequestContext requestContext, String phoneNo);
+    VerifyCode getVerify(Long uid);
 
     /**
      * Description: 获取发送到手机号的验证码
      *
      * @Param
-     * @param phoneNo
+     * @param uid
      * @return java.lang.String
      * @Date 20:00 2019-04-22
      * @Author zhongjie
     **/
-    String getCode(String phoneNo);
+    String getCode(Long uid);
 
     /**
      * 清空验证码
-     * @param phoneNo
+     * @param uid
      */
-    void clearCode(String phoneNo);
+    void clearCode(Long uid);
 }
