@@ -100,7 +100,7 @@ CREATE TABLE `t_company_base_info` (
   `office_peoples` int(11) NOT NULL DEFAULT '0' COMMENT '办公室及后勤人数',
   `work_days_yearly` int(11) NOT NULL DEFAULT '0' COMMENT '年工作天数',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='公司基础数据表';
 
 -- ----------------------------
 -- Table structure for t_company_device
@@ -198,9 +198,9 @@ CREATE TABLE `t_company_standard` (
   `registed_capital` bigint(20) NOT NULL DEFAULT '0' COMMENT '注册资本（分）',
   `legal_person` varchar(255) NOT NULL DEFAULT '' COMMENT '法人名称',
   `legal_person_mobile` varchar(20) NOT NULL DEFAULT '' COMMENT '法人联系方式',
-  `bussiness_type_code` int(11) NOT NULL DEFAULT '-1' COMMENT '经营类型代码（类型是字符串？）',
+  `bussiness_type_code` varchar (20) NOT NULL DEFAULT '-1' COMMENT '经营类型代码（类型是字符串？）',
   `email` varchar(100) NOT NULL DEFAULT '' COMMENT '电子邮箱',
-  `business_license_id` int(11) NOT NULL DEFAULT '-1' COMMENT '营业执照id（营业执照编号是否用字符串？）',
+  `business_license_id` varchar (100) NOT NULL DEFAULT '-1' COMMENT '营业执照id（营业执照编号是否用字符串？）',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='企业基本信息表';
 
@@ -256,7 +256,7 @@ CREATE TABLE `t_expert_info` (
   `work_life` int(11) NOT NULL DEFAULT '0' COMMENT '工作年限',
   `positional_title` varchar(255) NOT NULL DEFAULT '' COMMENT '职称',
   `is_syndic` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否评审员 1是',
-  `level` tinyint(3) NOT NULL DEFAULT '0' DEFAULT NULL COMMENT '等级',
+  `level` tinyint(3) NOT NULL DEFAULT '0' COMMENT '等级',
   `evaluate_range` varchar(255) NOT NULL DEFAULT '' COMMENT '评审范围',
   `collage` varchar(100) NOT NULL DEFAULT '' COMMENT '专业',
   `home_address` varchar(255) NOT NULL DEFAULT '' COMMENT '居住地址',

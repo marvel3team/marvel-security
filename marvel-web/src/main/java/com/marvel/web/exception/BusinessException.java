@@ -65,4 +65,14 @@ public class BusinessException {
      */
     public static CommonException VERIFY_CODE_ERROR = new CommonException(300011, "验证码错误");
 
+    /**
+     * 查询失败
+     */
+    public static CommonException QUERY_DB_ERROR = new CommonException(300012, "查询失败");
+
+    /**
+     * 查询失败
+     */
+    public static CommonException COMPANY_NOT_EXISTS = new CommonException(300013, "企业不存在");
+
 }
