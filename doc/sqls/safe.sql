@@ -64,7 +64,7 @@ DROP TABLE IF EXISTS `t_company_appraise_info`;
 CREATE TABLE `t_company_appraise_info` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `company_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '公司id',
-  `appraise_method` unsigned tinyint(3) NOT NULL COMMENT '鉴定方式 1 年检 2 三年检 3 半年检 4 月检',
+  `appraise_method`  tinyint(3) unsigned NOT NULL COMMENT '鉴定方式 1 年检 2 三年检 3 半年检 4 月检',
   `last_appraise_time` bigint(20) NOT NULL DEFAULT '-1' COMMENT '上次鉴定日期',
   `last_plan_execute_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '上次计划执行id',
   PRIMARY KEY (`id`)
@@ -85,7 +85,7 @@ CREATE TABLE `t_company_base_info` (
   `raw_stock_dosage` int(11) NOT NULL DEFAULT '0' COMMENT '原材料年用量',
   `accessories_dosage` int(11) NOT NULL DEFAULT '0' COMMENT '辅料年用量',
   `yearly_capacity` int(11) NOT NULL DEFAULT '0' COMMENT '年产量',
-  `output_unit` unsigned tinyint(3) NOT NULL DEFAULT '1' COMMENT '产量单位 1吨 ....',
+  `output_unit`  tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '产量单位 1吨 ....',
   `is_special_equipment` tinyint(1) NOT NULL DEFAULT '1' COMMENT '有无特种设备 1有',
   `is_distribution_room` tinyint(1) NOT NULL DEFAULT '1' COMMENT '有无配电室 1有',
   `is_transformer` tinyint(1) NOT NULL DEFAULT '1' COMMENT '有无变压器 1有',
@@ -95,7 +95,7 @@ CREATE TABLE `t_company_base_info` (
   `is_declare_online` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否网上申报 1是',
   `is_safe_proof` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否有安全部员证 1是',
   `safe_proof_archive_no` varchar(255) NOT NULL DEFAULT '' COMMENT '安全部员证存档编号',
-  `work_system` unsigned tinyint(3) NOT NULL DEFAULT '1' COMMENT '工作制度（1 一班倒 2 两班倒 3 三班倒）',
+  `work_system` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '工作制度（1 一班倒 2 两班倒 3 三班倒）',
   `production_department_peoples` int(11) NOT NULL DEFAULT '0' COMMENT '生产车间人数',
   `office_peoples` int(11) NOT NULL DEFAULT '0' COMMENT '办公室及后勤人数',
   `work_days_yearly` int(11) NOT NULL DEFAULT '0' COMMENT '年工作天数',
@@ -129,7 +129,7 @@ CREATE TABLE `t_company_device` (
 DROP TABLE IF EXISTS `t_company_industry`;
 CREATE TABLE `t_company_industry` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `type` unsigned tinyint(3) NOT NULL DEFAULT '1' COMMENT '行业分类type，枚举类型',
+  `type` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '行业分类type，枚举类型',
   `content` varchar(512) NOT NULL DEFAULT '' COMMENT '行业信息',
   `service_cycle` int(11) NOT NULL DEFAULT '0' COMMENT '服务周期',
   `cost` bigint(20) NOT NULL DEFAULT '0' COMMENT '费用（精确到分）',
@@ -146,7 +146,7 @@ CREATE TABLE `t_company_manager` (
   `name` varchar(100) NOT NULL DEFAULT '' COMMENT '管理人员姓名，是否有ID关联？？',
   `mobile` varchar(11) NOT NULL DEFAULT '' COMMENT '手机号',
   `id_card_no` varchar(40) NOT NULL DEFAULT '' COMMENT '身份证号',
-  `work_role` unsigned tinyint(3) NOT NULL DEFAULT '1' COMMENT '职务类型\n1 法人\n2 总经理\n3 安全负责人\n4 安全管理\n5 综合办主任\n6 车间主任\n7 其他',
+  `work_role` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '职务类型\n1 法人\n2 总经理\n3 安全负责人\n4 安全管理\n5 综合办主任\n6 车间主任\n7 其他',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='企业管理人员表';
 
@@ -162,7 +162,7 @@ CREATE TABLE `t_company_special` (
   `mobile` varchar(11) NOT NULL DEFAULT '' COMMENT '手机号',
   `id_card_no` varchar(40) NOT NULL DEFAULT '' COMMENT '身份证号',
   `company_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '所属公司id',
-  `work_type` unsigned tinyint(3) NOT NULL DEFAULT '1' COMMENT '工种\n1 电工\n2 金属焊接工\n3 司炉工\n4 压力操作工\n5 机动车驾驶人员\n6 爆破作业工\n7 矿井瓦斯检验工\n8 建筑登高架设工\n9 机动船舶驾驶工\n。。。',
+  `work_type` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '工种\n1 电工\n2 金属焊接工\n3 司炉工\n4 压力操作工\n5 机动车驾驶人员\n6 爆破作业工\n7 矿井瓦斯检验工\n8 建筑登高架设工\n9 机动船舶驾驶工\n。。。',
   `certificate_no` varchar(256) NOT NULL DEFAULT '' COMMENT '证书号码',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='企业特种人员信息表';
@@ -210,7 +210,7 @@ CREATE TABLE `t_company_standard` (
 DROP TABLE IF EXISTS `t_company_user`;
 CREATE TABLE `t_company_user` (
   `id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '员工id',
-  `department_type` unsigned tinyint(3) NOT NULL DEFAULT '1' COMMENT '部门类型（都有哪些...）',
+  `department_type` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '部门类型（都有哪些...）',
   `task_area_id` int(11) NOT NULL DEFAULT '-1' COMMENT '任务区域id',
   `company_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '公司id',
   `mobile` varchar(11) NOT NULL DEFAULT '-1' COMMENT '手机号',
@@ -256,7 +256,7 @@ CREATE TABLE `t_expert_info` (
   `work_life` int(11) NOT NULL DEFAULT '0' COMMENT '工作年限',
   `positional_title` varchar(255) NOT NULL DEFAULT '' COMMENT '职称',
   `is_syndic` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否评审员 1是',
-  `level` tinyint(3) NOT NULL DEFAULT '0' DEFAULT NULL COMMENT '等级',
+  `level` tinyint(3) NOT NULL DEFAULT '0' COMMENT '等级',
   `evaluate_range` varchar(255) NOT NULL DEFAULT '' COMMENT '评审范围',
   `collage` varchar(100) NOT NULL DEFAULT '' COMMENT '专业',
   `home_address` varchar(255) NOT NULL DEFAULT '' COMMENT '居住地址',
@@ -293,7 +293,7 @@ DROP TABLE IF EXISTS `t_expert_time`;
 CREATE TABLE `t_expert_time` (
   `time_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '时间id',
   `expert_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '专家id',
-  `expert_type` unsigned tinyint(3) NOT NULL DEFAULT '1' COMMENT '专家类型 1 空闲专家 2 待定专家',
+  `expert_type`  tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '专家类型 1 空闲专家 2 待定专家',
   PRIMARY KEY (`time_id`,`expert_id`,`expert_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='专家时间映射表';
 
@@ -304,7 +304,7 @@ DROP TABLE IF EXISTS `t_fire_equipment`;
 CREATE TABLE `t_fire_equipment` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `company_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '企业id',
-  `equipment_type` unsigned tinyint(3) NOT NULL DEFAULT '1' COMMENT '器材种类',
+  `equipment_type` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '器材种类',
   `placement` varchar(255) NOT NULL DEFAULT '' COMMENT '摆放位置',
   `number` int(11) NOT NULL DEFAULT '0' COMMENT '数量',
   `buy_time` bigint(20) NOT NULL DEFAULT '-1' COMMENT '购买时间',
@@ -369,7 +369,7 @@ CREATE TABLE `t_plan` (
   `non_conformance_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '不符合项id',
   `rectification_result_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '整改结果id',
   `finish_time` bigint(20) NOT NULL DEFAULT '-1' COMMENT '完成时间',
-  `status` unsigned tinyint(3) NOT NULL DEFAULT '10' COMMENT '10：科局发起 20：企业工作人员认领任务 30： 专家确认时间 40.准备执行 50. 执行中 60. 开具不符合项 70. 整改完毕  80：科局取消 90：未确定时间计划取消 100：执行前异常取消 ',
+  `status` tinyint(3) unsigned NOT NULL DEFAULT '10' COMMENT '10：科局发起 20：企业工作人员认领任务 30： 专家确认时间 40.准备执行 50. 执行中 60. 开具不符合项 70. 整改完毕  80：科局取消 90：未确定时间计划取消 100：执行前异常取消 ',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='计划表';
 
@@ -438,8 +438,8 @@ CREATE TABLE `t_respond_plan` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `plan_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '计划id',
   `plan_time` bigint(20) NOT NULL DEFAULT '-1' COMMENT '计划时间',
-  `type` unsigned tinyint(3) NOT NULL DEFAULT '1' COMMENT '方式：1 远程 2 现场',
-  `status` unsigned tinyint(3) NOT NULL DEFAULT '1' COMMENT '状态 1 未完成 2 已经完成 3 超时取消',
+  `type` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '方式：1 远程 2 现场',
+  `status` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '状态 1 未完成 2 已经完成 3 超时取消',
   `remark` varchar(512) NOT NULL DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='响应计划表';
@@ -450,7 +450,7 @@ CREATE TABLE `t_respond_plan` (
 DROP TABLE IF EXISTS `t_service_info`;
 CREATE TABLE `t_service_info` (
   `id` bigint(20) NOT NULL COMMENT '服务内容ID',
-  `service_type` unsigned tinyint(3) NOT NULL DEFAULT '1' COMMENT '服务类型\n1 安全隐患排查\n2 安全生产培训\n3 双控培训\n4 职业健康培训\n5 应急救援培训\n6 应急救援\n7 事故调查',
+  `service_type` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '服务类型\n1 安全隐患排查\n2 安全生产培训\n3 双控培训\n4 职业健康培训\n5 应急救援培训\n6 应急救援\n7 事故调查',
   `service_name` varchar(255) NOT NULL DEFAULT '' COMMENT '对应的服务类型名称',
   `service_cycle` int(11) NOT NULL DEFAULT '0' COMMENT '服务周期',
   PRIMARY KEY (`id`)
@@ -489,9 +489,9 @@ CREATE TABLE `t_user_login` (
   `id` bigint(20) NOT NULL COMMENT '用户id',
   `mobile` varchar(11) NOT NULL DEFAULT '' COMMENT '手机号',
   `password` varchar(50) NOT NULL DEFAULT '' COMMENT '密码',
-  `type` unsigned tinyint(3) NOT NULL DEFAULT '1' COMMENT '类型\n1 专家\n2 员工\n3 科局\n',
+  `type` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '类型\n1 专家\n2 员工\n3 科局\n',
   `login_time` bigint(20) NOT NULL DEFAULT '-1' COMMENT '登陆时间',
-  `status` unsigned tinyint(3) NOT NULL DEFAULT '1' COMMENT '状态 1 正常 2 无效',
+  `status` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '状态 1 正常 2 无效',
   `update_time` bigint(20) NOT NULL DEFAULT '-1' COMMENT '更新时间',
   `remark` varchar(512) NOT NULL DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`id`)
@@ -504,7 +504,7 @@ DROP TABLE IF EXISTS `t_vehicle_info`;
 CREATE TABLE `t_vehicle_info` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `company_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '企业id',
-  `type` unsigned tinyint(3) NOT NULL DEFAULT '1' COMMENT '类型 1 客车 2货车',
+  `type` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '类型 1 客车 2货车',
   `factory` varchar(255) NOT NULL DEFAULT '' COMMENT '生产厂家',
   `car_numer` varchar(50) NOT NULL DEFAULT '' COMMENT '车牌号',
   `frame_number` varchar(50) NOT NULL DEFAULT '' COMMENT '车架号',
@@ -540,7 +540,7 @@ CREATE TABLE `t_problem_info` (
   `rule_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '项目细则id',
   `problem_content` varchar(255) NOT NULL DEFAULT '-1' COMMENT '问题',
   `corrective_action` varchar(255) NOT NULL DEFAULT '' COMMENT '整改措施',
-  `status` unsigned tinyint(3) NOT NULL DEFAULT '1' COMMENT '整改状态 1 待整改 2 已整改 3 整改不合格 4 整改完成',
+  `status` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '整改状态 1 待整改 2 已整改 3 整改不合格 4 整改完成',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='现场问题表';
 
