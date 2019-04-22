@@ -3,12 +3,10 @@ package com.marvel.web.controller;
 
 import com.marvel.common.models.PageBean;
 import com.marvel.framework.annotation.MarvelCheck;
-import com.marvel.framework.context.RequestContext;
 import com.marvel.web.exception.BusinessException;
 import com.marvel.web.service.CompanyService;
 import com.marvel.web.vo.CompanyDetailVo;
 import com.marvel.web.vo.CompanyListVo;
-import com.marvel.web.vo.VerifyCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +51,16 @@ public class CompanyController {
         return pageBean;
     }
 
+
+    /**
+     * @Title getCompanyInfo
+     * @Description 根据企业id查询企业信息 
+     * @param id
+     * @return com.marvel.web.vo.CompanyDetailVo
+     * @throws
+     * @author andy
+     * @date 2019/4/22 下午11:49
+     */
     @MarvelCheck
     @RequestMapping(value = "/get_company_info.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody

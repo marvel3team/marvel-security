@@ -71,8 +71,13 @@ public class BusinessException {
     public static CommonException QUERY_DB_ERROR = new CommonException(300012, "查询失败");
 
     /**
-     * 查询失败
+     * 企业不存在
      */
     public static CommonException COMPANY_NOT_EXISTS = new CommonException(300013, "企业不存在");
+
+    /**
+     * 专家不存在
+     */
+    public static CommonException EXPERT_NOT_EXISTS = new CommonException(300014, "专家不存在");
 
 }

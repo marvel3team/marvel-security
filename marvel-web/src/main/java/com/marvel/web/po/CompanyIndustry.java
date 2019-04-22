@@ -1,11 +1,14 @@
 package com.marvel.web.po;
 
+import lombok.Data;
+
 /**
  * @Classname CompanyIndustry
  * @Description 企业行业信息
  * @Date 2019/4/21 下午6:06
  * @Author zhongjie
  */
+@Data
 public class CompanyIndustry {
     /**
      * 行业ID

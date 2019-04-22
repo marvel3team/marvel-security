@@ -27,7 +27,7 @@ public interface CompanyStandardMapper {
     * @date: 2019/4/22 下午10:45
     */
     @Select("SELECT count(1) FROM t_company_standard")
-    int getCompanyCount();
+    long getCompanyCount();
 
     /**
      * 分页查询列表
@@ -45,4 +45,20 @@ public interface CompanyStandardMapper {
      */
     @Select("select * from t_company_standard where id =#{id}")
     CompanyStandard getCompanyById(@Param("id") Long id);
+
+
+    /**
+     * 批量查询
+     * @param companyIds
+     * @return
+     */
+    @Select({
+        "<script>",
+                "select * from t_company_standard where id in",
+                "<foreach collection='list' item='id' open='(' separator=',' close=')'>",
+                "#{id}",
+                "</foreach>",
+                "</script>"
+    })
+    List<CompanyStandard> getCompanyByIds(@Param("list") List<Long> companyIds);
 }
