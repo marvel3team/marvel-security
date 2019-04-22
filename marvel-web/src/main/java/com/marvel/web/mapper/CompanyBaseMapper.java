@@ -1,6 +1,9 @@
 package com.marvel.web.mapper;
 
+import com.marvel.web.po.CompanyBase;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * @Classname CompanyBaseMapper
@@ -11,4 +14,12 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface CompanyBaseMapper {
+
+    /**
+     * 根据id查询企业信息
+     * @param id
+     * @return
+     */
+    @Select("select * from t_company_base_info where id = #{id}")
+    CompanyBase getCompanBaseById(@Param("id") Long id);
 }
