@@ -68,7 +68,6 @@ public class MarvelWebApplicationTests {
         params.put("username", "jack");
         params.put("password", 123456);
         String response = apiHttpClient.doPost(url, params);
-        System.out.println(response);
         Assert.assertNotNull(response);
     }
 
