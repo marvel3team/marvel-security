@@ -538,12 +538,26 @@ CREATE TABLE `t_problem_project_rule` (
 DROP TABLE IF EXISTS `t_problem_info`;
 CREATE TABLE `t_problem_info` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `plan_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '计划ID',
   `rule_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '项目细则id',
+  `expert_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '专家id',
+  `project_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '项目id',
+  `project_name` varchar(100) NOT NULL DEFAULT '' COMMENT '项目细则名称',
   `problem_content` varchar(255) NOT NULL DEFAULT '-1' COMMENT '问题',
   `corrective_action` varchar(255) NOT NULL DEFAULT '' COMMENT '整改措施',
+  `term` int(11) NOT NULL DEFAULT '0' COMMENT '期限（天）',
   `status` tinyint(3) NOT NULL DEFAULT '1' COMMENT '整改状态 1 待整改 2 已整改 3 整改不合格 4 整改完成',
+  `update_time` bigint(20) NOT NULL DEFAULT '-1' COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='现场问题表';
+
+DROP TABLE IF EXISTS `t_problem_pic`;
+CREATE TABLE `t_problem_pic` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `problem_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '问题id',
+  `url` varchar(512) NOT NULL DEFAULT '-1' COMMENT '图片地址',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='问题图片表';
 
 
 SET FOREIGN_KEY_CHECKS = 1;
