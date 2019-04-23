@@ -61,7 +61,7 @@ public class ExpertController {
     @MarvelCheck
     @RequestMapping(value = "/get_expert_info.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public ExpertInfoVo getExpertInfo(@RequestParam(name = "id",required = false,defaultValue = "1") Long id){
+    public ExpertInfoVo getExpertInfo(@RequestParam(name = "id",required = false,defaultValue = "-1") Long id){
         if (null == id || id < 0){
             LOGGER.error("ExpertController-->getExpertInfo-->parameter invalid,id:{}",id);
             throw BusinessException.INVALID_PARAMS;

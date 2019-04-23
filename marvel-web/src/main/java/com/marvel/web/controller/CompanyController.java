@@ -7,6 +7,7 @@ import com.marvel.web.exception.BusinessException;
 import com.marvel.web.service.CompanyService;
 import com.marvel.web.vo.CompanyDetailVo;
 import com.marvel.web.vo.CompanyListVo;
+import com.marvel.web.vo.PlanDetailVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,12 +65,35 @@ public class CompanyController {
     @MarvelCheck
     @RequestMapping(value = "/get_company_info.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public CompanyDetailVo getCompanyInfo(@RequestParam(name = "id",required = false,defaultValue = "1") Long id){
+    public CompanyDetailVo getCompanyInfo(@RequestParam(name = "id",required = false,defaultValue = "-1") Long id){
         if (null == id || id < 0){
             LOGGER.error("CompanyController-->getCompanyInfo-->parameter invalid,id:{}",id);
             throw BusinessException.INVALID_PARAMS;
         }
         return companyService.getCompanyInfo(id);
+    }
+
+
+    /**
+     * @Title getPlanList
+     * @Description 根据企业id查询公司下所有计划
+     * @param id
+     * @return com.marvel.web.vo.CompanyDetailVo
+     * @throws
+     * @author andy
+     * @date 2019/4/22 下午11:49
+     */
+    @MarvelCheck
+    @RequestMapping(value = "/get_plan_list.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public PageBean<PlanDetailVo> getPlanList(@RequestParam(name = "cursor",required = false,defaultValue = "1") Integer cursor,
+                                              @RequestParam(name = "count",required = false,defaultValue = "20")Integer count,
+                                              @RequestParam(name = "id",required = false,defaultValue = "-1") Long id){
+        if (null == id || id < 0){
+            LOGGER.error("CompanyController-->getPlanList-->parameter invalid,id:{}",id);
+            throw BusinessException.INVALID_PARAMS;
+        }
+        return companyService.getPlanList(cursor,count,id);
     }
 
 
