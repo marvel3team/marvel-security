@@ -80,4 +80,19 @@ public class BusinessException {
      */
     public static CommonException EXPERT_NOT_EXISTS = new CommonException(300014, "专家不存在");
 
+    /**
+     * 创建计划失败
+     */
+    public static CommonException CREATE_PLAN_ERROR = new CommonException(300015, "创建计划失败");
+
+    /**
+     * 更新失败
+     */
+    public static CommonException UPDATE_PLAN_ERROR = new CommonException(300016, "更新失败");
+
+    /**
+     * 计划不存在
+     */
+    public static CommonException PLAN_NOT_EXISTS = new CommonException(300017, "计划不存在");
+
 }
