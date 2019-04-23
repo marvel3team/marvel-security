@@ -153,7 +153,7 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             user = userMapper.findByMobile(mobile);
             if (user != null) {
-                mobileCache.put(mobile, user);
+                updateUserCache(user);
             }
         }
         return user;
@@ -169,7 +169,7 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             user = userMapper.findByUid(uid);
             if (user != null) {
-                uidCache.put(uid, user);
+                updateUserCache(user);
             }
         }
         return user;
@@ -184,10 +184,19 @@ public class UserServiceImpl implements UserService {
         user.setUpdateTime(System.currentTimeMillis());
         int update = userMapper.update(user);
         if (update > 0) {
-            uidCache.put(user.getId(), user);
-            mobileCache.put(user.getMobile(), user);
-            return true;
+            return updateUserCache(user);
         }
         return false;
+    }
+
+    /**
+     * 更新缓存
+     * @param user
+     * @return
+     */
+    private boolean updateUserCache(User user) {
+        uidCache.put(user.getId(), user);
+        mobileCache.put(user.getMobile(), user);
+        return true;
     }
 }
