@@ -1,7 +1,9 @@
 package com.marvel.web.service.impl;
 
+import com.google.common.collect.Lists;
 import com.marvel.common.models.PageBean;
 import com.marvel.common.utils.PaginationUtils;
+import com.marvel.framework.context.RequestContext;
 import com.marvel.web.exception.BusinessException;
 import com.marvel.web.mapper.*;
 import com.marvel.web.po.*;
@@ -12,6 +14,7 @@ import com.marvel.web.vo.PlanDetailVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -45,6 +48,8 @@ public class CompanyServiceImpl implements CompanyService {
     private RespondPlanMapper respondPlanMapper;
     @Resource
     private BureauMapper bureauMapper;
+    @Resource
+    private ServiceMapper serviceMapper;
 
     @Override
     public PageBean<CompanyListVo> getCompanyList(Integer cursor, Integer count) {
@@ -171,6 +176,25 @@ public class CompanyServiceImpl implements CompanyService {
         }
         long nextCursor = PaginationUtils.nextCursor(cursor, count, total);
         return assemblePlanDetailPage(nextCursor,resultList);
+    }
+
+    @Override
+    public PageBean<ServiceInfo> getServiceList(RequestContext requestContext, Long cursor, Integer count) {
+        PageBean<ServiceInfo> result = new PageBean<>();
+        result.setCount(count);
+        List<ServiceInfo> list = serviceMapper.findByPage(cursor, count);
+        if (CollectionUtils.isEmpty(list)) {
+            result.setNextCursor(-1L);
+            result.setList(Lists.newArrayList());
+            return result;
+        }
+        if (list.size() < count) {
+            result.setNextCursor(-1L);
+        } else {
+            result.setNextCursor(list.get(list.size() - 1).getId());
+        }
+        result.setList(list);
+        return result;
     }
 
 

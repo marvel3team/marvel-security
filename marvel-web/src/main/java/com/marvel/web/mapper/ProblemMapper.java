@@ -2,7 +2,6 @@ package com.marvel.web.mapper;
 
 import com.marvel.web.po.Problem;
 import org.apache.ibatis.annotations.*;
-import org.apache.ibatis.jdbc.SQL;
 
 import java.util.List;
 

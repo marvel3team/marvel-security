@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * @Classname RectifyProblemReq
- * @Description TODO
+ * @Description 整改问题
  * @Date 2019/4/23 下午9:47
  * @Author zhongjie
  */

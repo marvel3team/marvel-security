@@ -3,7 +3,10 @@ package com.marvel.web.controller;
 
 import com.marvel.common.models.PageBean;
 import com.marvel.framework.annotation.MarvelCheck;
+import com.marvel.framework.context.RequestContext;
+import com.marvel.web.constants.Constants;
 import com.marvel.web.exception.BusinessException;
+import com.marvel.web.po.ServiceInfo;
 import com.marvel.web.service.CompanyService;
 import com.marvel.web.vo.CompanyDetailVo;
 import com.marvel.web.vo.CompanyListVo;
@@ -96,5 +99,25 @@ public class CompanyController {
         return companyService.getPlanList(cursor,count,id);
     }
 
+    /**
+     * Description: 服务内容列表
+     *
+     * @param cursor
+     * @param count
+     * @return
+     * @Date 下午10:27 2019/4/24
+     * @Author zhongjie
+     **/
+    @MarvelCheck(auth = true)
+    @RequestMapping(value = "/get_service_content_list.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public PageBean<ServiceInfo> getServiceList(@RequestParam(name = "cursor", required = false, defaultValue = "-1") Long cursor,
+                                                @RequestParam(name = "count", required = false, defaultValue = "10") Integer count){
+        if (count == null) {
+            count = Constants.DEFAULT_COUNT;
+        }
+        PageBean<ServiceInfo> result = companyService.getServiceList(RequestContext.getRequestContext(), cursor, count);
+        return result;
+    }
 
 }
