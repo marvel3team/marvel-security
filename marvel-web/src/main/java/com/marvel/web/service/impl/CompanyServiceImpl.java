@@ -9,6 +9,7 @@ import com.marvel.web.mapper.*;
 import com.marvel.web.po.*;
 import com.marvel.web.service.CompanyService;
 import com.marvel.web.vo.CompanyDetailVo;
+import com.marvel.web.vo.CompanyInfoReqVo;
 import com.marvel.web.vo.CompanyListVo;
 import com.marvel.web.vo.PlanDetailVo;
 import org.slf4j.Logger;
@@ -167,6 +168,7 @@ public class CompanyServiceImpl implements CompanyService {
                 planDetailVo.setFinishTime(respondPlan.getPlanTime());
                 planDetailVo.setRespodType(respondPlan.getType());
             }
+            planDetailVo.setBureauId(plan.getBureauId());
             planDetailVo.setPlanStatus(plan.getStatus());
             planDetailVo.setSuperversionLevel(plan.getSuperversionLevel());
             planDetailVo.setTimeSlat(plan.getTimeSlot());
@@ -195,6 +197,27 @@ public class CompanyServiceImpl implements CompanyService {
         }
         result.setList(list);
         return result;
+    }
+
+    @Override
+    public String updateCompanyInfo(CompanyInfoReqVo companyInfoReqVo) {
+        CompanyStandard companyStandard = companyStandardMapper.getCompanyById(companyInfoReqVo.getId());
+        if (null == companyStandard){
+            throw BusinessException.COMPANY_NOT_EXISTS;
+        }
+        companyStandard.setAreaId(companyInfoReqVo.getAreaId());
+        companyStandard.setBussinessTypeCode(companyInfoReqVo.getBusinessCode());
+        companyStandard.setBusinessLicenseId(companyInfoReqVo.getBusinessLicenseNo());
+        companyStandard.setRegistedCapital(new BigDecimal(companyInfoReqVo.getRegistedCapital()).multiply(new BigDecimal(100)).longValue());
+        companyStandard.setLegalPerson(companyInfoReqVo.getLegalPreson());
+        companyStandard.setLegalPersonMobile(companyInfoReqVo.getMobile());
+        companyStandard.setEmail(companyInfoReqVo.getEmail());
+        companyStandard.setIndustryId(companyInfoReqVo.getIndustryId());
+        int update  = companyStandardMapper.updateCompanyStandard(companyStandard);
+        if (update < 1){
+            throw BusinessException.UPDATE_ERROR;
+        }
+        return "{}";
     }
 
 

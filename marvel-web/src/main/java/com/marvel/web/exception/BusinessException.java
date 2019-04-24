@@ -110,6 +110,11 @@ public class BusinessException {
      */
     public static CommonException DATA_NOT_EXISTS = new CommonException(300020, "数据不存在");
 
+    /**
+     * 科局员工不存在
+     */
+    public static CommonException BUREAU_NOT_EXISTS = new CommonException(300021, "科局员工不存在");
+
 
 
 }

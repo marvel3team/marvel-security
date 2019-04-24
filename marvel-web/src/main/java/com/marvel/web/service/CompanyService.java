@@ -5,6 +5,7 @@ import com.marvel.common.models.PageBean;
 import com.marvel.framework.context.RequestContext;
 import com.marvel.web.po.ServiceInfo;
 import com.marvel.web.vo.CompanyDetailVo;
+import com.marvel.web.vo.CompanyInfoReqVo;
 import com.marvel.web.vo.CompanyListVo;
 import com.marvel.web.vo.PlanDetailVo;
 
@@ -66,4 +67,11 @@ public interface CompanyService {
      * @Author zhongjie
      **/
     PageBean<ServiceInfo> getServiceList(RequestContext requestContext, Long cursor, Integer count);
+
+    /**
+     * 更新企业信息
+     * @param companyInfoReqVo
+     * @return
+     */
+    String updateCompanyInfo(CompanyInfoReqVo companyInfoReqVo);
 }

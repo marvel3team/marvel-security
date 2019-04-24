@@ -2,6 +2,7 @@ package com.marvel.web.service;
 
 import com.marvel.common.models.PageBean;
 import com.marvel.web.vo.ExpertInfoVo;
+import com.marvel.web.vo.PlanDetailVo;
 
 /**
  * @Classname ExpertService
@@ -27,4 +28,13 @@ public interface ExpertService {
      * @return
      */
     ExpertInfoVo getExpertInfo(Long id);
+
+    /**
+     * 分页查询专家下的计划
+     * @param id
+     * @param cursor
+     * @param count
+     * @return
+     */
+    PageBean<PlanDetailVo> getExpertPlanList(Long id, Integer cursor, Integer count);
 }
