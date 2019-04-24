@@ -95,4 +95,21 @@ public class BusinessException {
      */
     public static CommonException PLAN_NOT_EXISTS = new CommonException(300017, "计划不存在");
 
+    /**
+     * 新增失败
+     */
+    public static CommonException SAVE_ERROR = new CommonException(300018, "新增失败");
+
+    /**
+     * 更新失败
+     */
+    public static CommonException UPDATE_ERROR = new CommonException(300019, "更新失败");
+
+    /**
+     * 数据不存在
+     */
+    public static CommonException DATA_NOT_EXISTS = new CommonException(300020, "数据不存在");
+
+
+
 }

@@ -48,7 +48,7 @@ public class Problem implements Serializable {
     /**
      * 问题描述
      */
-    private String problemName;
+    private String problemContent;
     /**
      * 整改措施
      */

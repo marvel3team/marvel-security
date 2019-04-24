@@ -20,7 +20,7 @@ public class ProblemConvert {
         problem.setRuleId(req.getRuleId());
         problem.setRuleName(req.getRuleName());
         problem.setId(req.getProblemId());
-        problem.setProblemName(req.getProblemName());
+        problem.setProblemContent(req.getProblemName());
         problem.setCorrectiveAction(req.getCorrectiveAction());
         problem.setPics(req.getProblemPics());
         problem.setTerm(req.getTerm());

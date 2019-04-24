@@ -6,12 +6,9 @@ import com.marvel.common.uuid.SnowflakeIdGenerator;
 import com.marvel.web.po.User;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -19,10 +16,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@ComponentScan(basePackages = {"com.marvel.common", "com.marvel.framework", "com.marvel.web"})
-public class MarvelWebApplicationTests {
+public class MarvelWebApplicationTests extends BaseTestUtils{
 
     @Resource
     private RedisTemplate redisTemplate;
@@ -30,6 +24,8 @@ public class MarvelWebApplicationTests {
     private SnowflakeIdGenerator snowflakeIdGenerator;
     @Autowired
     private ApiHttpClient apiHttpClient;
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
 
     @Test
     public void redisTemplateForObject() {
@@ -49,9 +45,22 @@ public class MarvelWebApplicationTests {
 
     @Test
     public void redisTemplateForGetHash() {
+        long currentTimeMillis = System.currentTimeMillis();
         Assert.assertTrue(Objects.nonNull(redisTemplate));
         Map entries = redisTemplate.opsForHash().entries("code:13761231122");
         System.out.println(JSON.toJSONString(entries));
+        System.out.println(System.currentTimeMillis()-currentTimeMillis);
+    }
+
+    @Test
+    public void redisTemplateForIncrement() {
+        Assert.assertTrue(Objects.nonNull(redisTemplate));
+        Long test1 = stringRedisTemplate.opsForValue().increment("test1");
+        System.out.println(test1);
+        Assert.assertTrue(test1 > 0);
+        Long test11 = Long.parseLong(stringRedisTemplate.opsForValue().get("test1"));
+        System.out.println(test11);
+        Assert.assertTrue(test11.equals(test1));
     }
 
     @Test

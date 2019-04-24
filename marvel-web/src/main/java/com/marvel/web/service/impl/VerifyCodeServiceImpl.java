@@ -1,7 +1,6 @@
 package com.marvel.web.service.impl;
 
 import com.marvel.common.http.template.ApiHttpClient;
-import com.marvel.framework.context.RequestContext;
 import com.marvel.web.constants.RedisKeys;
 import com.marvel.web.exception.BusinessException;
 import com.marvel.web.service.VerifyCodeService;

@@ -1,7 +1,9 @@
 package com.marvel.web.controller;
 
+import com.marvel.common.models.PageBean;
 import com.marvel.framework.annotation.MarvelCheck;
 import com.marvel.framework.context.RequestContext;
+import com.marvel.web.constants.Constants;
 import com.marvel.web.controller.req.RectifyProblemReq;
 import com.marvel.web.converts.ProblemConvert;
 import com.marvel.web.exception.BusinessException;
@@ -41,10 +43,12 @@ public class ProblemController {
     @RequestMapping(value = "/update_rectify_problem.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String updateRectifyProblem(RectifyProblemReq rectifyProblemReq){
-        checkParams(rectifyProblemReq);
+        if (Objects.isNull(rectifyProblemReq) || rectifyProblemReq.getProblemId() == null) {
+            throw BusinessException.INVALID_PARAMS;
+        }
         boolean result = problemService.update(RequestContext.getRequestContext(), ProblemConvert.convert(rectifyProblemReq));
         if (!result) {
-            //
+            throw BusinessException.UPDATE_ERROR;
         }
         return StringUtils.EMPTY;
     }
@@ -52,10 +56,14 @@ public class ProblemController {
     @MarvelCheck(auth = true)
     @RequestMapping(value = "/get_problem_list.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String getRectifyProblemList(@RequestParam(name = "cursor") Long cursor,
-                                        @RequestParam(name = "count") Integer count,
-                                        @RequestParam(name = "Integer") Integer status){
-        return StringUtils.EMPTY;
+    public PageBean<Problem> getRectifyProblemList(@RequestParam(name = "cursor", required = false, defaultValue = "-1") Long cursor,
+                                          @RequestParam(name = "count", required = false, defaultValue = "10") Integer count,
+                                          @RequestParam(name = "Integer") Integer status){
+        if (count == null) {
+            count = Constants.DEFAULT_COUNT;
+        }
+        PageBean<Problem> result = problemService.getByPage(RequestContext.getRequestContext(), status, cursor, count);
+        return result;
     }
 
 

@@ -1,4 +1,4 @@
-package com.marvel.common.redis;
+package com.marvel.common.redis.serializer;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.serializer.support.DeserializingConverter;

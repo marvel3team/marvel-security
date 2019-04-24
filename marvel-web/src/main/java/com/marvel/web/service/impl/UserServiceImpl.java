@@ -16,9 +16,12 @@ import com.marvel.web.service.VerifyCodeService;
 import com.marvel.web.vo.LoginUserVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -28,7 +31,7 @@ import java.util.concurrent.TimeUnit;
  * @Author zj
  */
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, CommandLineRunner {
 
     /**
      * guava缓存
@@ -198,5 +201,21 @@ public class UserServiceImpl implements UserService {
         uidCache.put(user.getId(), user);
         mobileCache.put(user.getMobile(), user);
         return true;
+    }
+
+    /**
+     * 程序启动后，缓存用户数据
+     * @param args
+     * @throws Exception
+     */
+    @Override
+    public void run(String... args) throws Exception {
+        List<User> hotUsers = userMapper.getHotUsers();
+        if (!CollectionUtils.isEmpty(hotUsers)) {
+            hotUsers.parallelStream().forEach(user -> {
+                uidCache.put(user.getId(), user);
+                mobileCache.put(user.getMobile(), user);
+            });
+        }
     }
 }

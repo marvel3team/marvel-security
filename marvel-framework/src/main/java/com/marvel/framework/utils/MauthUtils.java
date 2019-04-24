@@ -84,7 +84,6 @@ public class MauthUtils {
         try {
             String decryptedString = ENCRYPTER.decryptAsString(mauth);
             String[] timeAndUid = decryptedString.split(CONNECT);
-            System.out.println(decryptedString);
             long time = NumberUtils.toLong(timeAndUid[0], 0);
             long now = System.currentTimeMillis();
             if (now > time) {
