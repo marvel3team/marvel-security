@@ -1,13 +1,16 @@
 package com.marvel.web.controller;
 
 
+import com.alibaba.fastjson.JSON;
 import com.marvel.common.models.PageBean;
 import com.marvel.framework.annotation.MarvelCheck;
 import com.marvel.web.exception.BusinessException;
 import com.marvel.web.service.CompanyService;
 import com.marvel.web.vo.CompanyDetailVo;
+import com.marvel.web.vo.CompanyInfoReqVo;
 import com.marvel.web.vo.CompanyListVo;
 import com.marvel.web.vo.PlanDetailVo;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,6 +97,50 @@ public class CompanyController {
             throw BusinessException.INVALID_PARAMS;
         }
         return companyService.getPlanList(cursor,count,id);
+    }
+
+
+    /**
+     * @Title updateCompanyInfo
+     * @Description 修改公司信息
+     * @param companyInfoReqVo
+     * @return java.lang.String
+     * @throws
+     * @author andy
+     * @date 2019/4/22 下午11:49
+     */
+    @MarvelCheck
+    @RequestMapping(value = "/update_company_info.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public String updateCompanyInfo(@RequestBody CompanyInfoReqVo companyInfoReqVo){
+        if (!checkParameter(companyInfoReqVo)){
+            LOGGER.error("CompanyController-->updateCompanyInfo-->parameter invalid parameter,reqBody:{}", JSON.toJSON(companyInfoReqVo));
+            throw BusinessException.INVALID_PARAMS;
+        }
+        return companyService.updateCompanyInfo(companyInfoReqVo);
+    }
+
+
+    /**
+     * 参数校验
+     * @param companyInfoReqVo
+     * @return
+     */
+    private boolean checkParameter(CompanyInfoReqVo companyInfoReqVo) {
+        if (companyInfoReqVo.getId() == null || companyInfoReqVo.getId() < 0){
+            return false;
+        }
+        if (companyInfoReqVo.getAreaId() == null){
+            return false;
+        }
+        if (StringUtils.isBlank(companyInfoReqVo.getRegistedCapital()) || StringUtils.isBlank(companyInfoReqVo.getLegalPreson())){
+            return false;
+        }
+        if (StringUtils.isBlank(companyInfoReqVo.getMobile()) || StringUtils.isBlank(companyInfoReqVo.getBusinessCode()) || StringUtils.isBlank(companyInfoReqVo.getEmail())){
+            return false;
+        }
+
+        return true;
     }
 
 

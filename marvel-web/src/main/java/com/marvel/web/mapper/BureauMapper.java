@@ -21,7 +21,7 @@ public interface BureauMapper {
 
     @Select({
             "<script>",
-            "select * from t_bureau_info where id in",
+            "select id,ares_id,company_id,name,mobile,remark from t_bureau_info where id in",
             "<foreach collection='list' item='id' open='(' separator=',' close=')'>",
             "#{id}",
             "</foreach>",
