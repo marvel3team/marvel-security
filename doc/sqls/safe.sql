@@ -183,6 +183,7 @@ CREATE TABLE `t_company_staff` (
   `profession_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '工种id（枚举？可确定的？）',
   `is_special_personnel` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否特种作业人员 1是',
   `special_personnel_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '特种作业人员id',
+  `remark` varchar(512) NOT NULL DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='公司员工信息表';
 

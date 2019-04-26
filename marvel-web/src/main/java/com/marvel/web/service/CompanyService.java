@@ -2,7 +2,10 @@ package com.marvel.web.service;
 
 
 import com.marvel.common.models.PageBean;
+import com.marvel.framework.context.RequestContext;
+import com.marvel.web.po.ServiceInfo;
 import com.marvel.web.vo.CompanyDetailVo;
+import com.marvel.web.vo.CompanyInfoReqVo;
 import com.marvel.web.vo.CompanyListVo;
 import com.marvel.web.vo.PlanDetailVo;
 
@@ -51,4 +54,24 @@ public interface CompanyService {
      * @date 2019/4/23 下午11:13
      */
     PageBean<PlanDetailVo> getPlanList(Integer cursor, Integer count, Long id);
+
+    /**
+     * Description: 服务列表
+     *
+     * @Param
+     * @param requestContext
+     * @param cursor
+     * @param count
+     * @return
+     * @Date 下午10:30 2019/4/24
+     * @Author zhongjie
+     **/
+    PageBean<ServiceInfo> getServiceList(RequestContext requestContext, Long cursor, Integer count);
+
+    /**
+     * 更新企业信息
+     * @param companyInfoReqVo
+     * @return
+     */
+    String updateCompanyInfo(CompanyInfoReqVo companyInfoReqVo);
 }

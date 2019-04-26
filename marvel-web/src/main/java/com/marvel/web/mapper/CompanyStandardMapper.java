@@ -4,6 +4,7 @@ import com.marvel.web.po.CompanyStandard;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -61,4 +62,18 @@ public interface CompanyStandardMapper {
                 "</script>"
     })
     List<CompanyStandard> getCompanyByIds(@Param("list") List<Long> companyIds);
+
+
+    @Update("update t_company_standard" +
+            "set name = #{param.name}," +
+            "area_id = #{param.areaId}," +
+            "industry_id=#{param.industryId}," +
+            "registed_capital=#{param.registedCapital}," +
+            "legal_person = #{param.legalPerson}," +
+            "legal_person_mobile =#{param.legalPersonMobile}," +
+            "bussiness_type_code=#{param.bussinessTypeCode}," +
+            "business_license_id=#{param.businessLicenseId}," +
+            "email=#{param.email}" +
+            "where id=#{param.id}")
+    int updateCompanyStandard(@Param("param") CompanyStandard companyStandard);
 }

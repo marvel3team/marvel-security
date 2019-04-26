@@ -1,17 +1,21 @@
 package com.marvel.web.service.impl;
 
+import com.google.common.collect.Lists;
 import com.marvel.common.models.PageBean;
 import com.marvel.common.utils.PaginationUtils;
+import com.marvel.framework.context.RequestContext;
 import com.marvel.web.exception.BusinessException;
 import com.marvel.web.mapper.*;
 import com.marvel.web.po.*;
 import com.marvel.web.service.CompanyService;
 import com.marvel.web.vo.CompanyDetailVo;
+import com.marvel.web.vo.CompanyInfoReqVo;
 import com.marvel.web.vo.CompanyListVo;
 import com.marvel.web.vo.PlanDetailVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -45,6 +49,8 @@ public class CompanyServiceImpl implements CompanyService {
     private RespondPlanMapper respondPlanMapper;
     @Resource
     private BureauMapper bureauMapper;
+    @Resource
+    private ServiceMapper serviceMapper;
 
     @Override
     public PageBean<CompanyListVo> getCompanyList(Integer cursor, Integer count) {
@@ -162,6 +168,7 @@ public class CompanyServiceImpl implements CompanyService {
                 planDetailVo.setFinishTime(respondPlan.getPlanTime());
                 planDetailVo.setRespodType(respondPlan.getType());
             }
+            planDetailVo.setBureauId(plan.getBureauId());
             planDetailVo.setPlanStatus(plan.getStatus());
             planDetailVo.setSuperversionLevel(plan.getSuperversionLevel());
             planDetailVo.setTimeSlat(plan.getTimeSlot());
@@ -171,6 +178,46 @@ public class CompanyServiceImpl implements CompanyService {
         }
         long nextCursor = PaginationUtils.nextCursor(cursor, count, total);
         return assemblePlanDetailPage(nextCursor,resultList);
+    }
+
+    @Override
+    public PageBean<ServiceInfo> getServiceList(RequestContext requestContext, Long cursor, Integer count) {
+        PageBean<ServiceInfo> result = new PageBean<>();
+        result.setCount(count);
+        List<ServiceInfo> list = serviceMapper.findByPage(cursor, count);
+        if (CollectionUtils.isEmpty(list)) {
+            result.setNextCursor(-1L);
+            result.setList(Lists.newArrayList());
+            return result;
+        }
+        if (list.size() < count) {
+            result.setNextCursor(-1L);
+        } else {
+            result.setNextCursor(list.get(list.size() - 1).getId());
+        }
+        result.setList(list);
+        return result;
+    }
+
+    @Override
+    public String updateCompanyInfo(CompanyInfoReqVo companyInfoReqVo) {
+        CompanyStandard companyStandard = companyStandardMapper.getCompanyById(companyInfoReqVo.getId());
+        if (null == companyStandard){
+            throw BusinessException.COMPANY_NOT_EXISTS;
+        }
+        companyStandard.setAreaId(companyInfoReqVo.getAreaId());
+        companyStandard.setBussinessTypeCode(companyInfoReqVo.getBusinessCode());
+        companyStandard.setBusinessLicenseId(companyInfoReqVo.getBusinessLicenseNo());
+        companyStandard.setRegistedCapital(new BigDecimal(companyInfoReqVo.getRegistedCapital()).multiply(new BigDecimal(100)).longValue());
+        companyStandard.setLegalPerson(companyInfoReqVo.getLegalPreson());
+        companyStandard.setLegalPersonMobile(companyInfoReqVo.getMobile());
+        companyStandard.setEmail(companyInfoReqVo.getEmail());
+        companyStandard.setIndustryId(companyInfoReqVo.getIndustryId());
+        int update  = companyStandardMapper.updateCompanyStandard(companyStandard);
+        if (update < 1){
+            throw BusinessException.UPDATE_ERROR;
+        }
+        return "{}";
     }
 
 

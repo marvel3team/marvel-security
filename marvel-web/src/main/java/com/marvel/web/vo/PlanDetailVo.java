@@ -21,6 +21,12 @@ public class PlanDetailVo {
      */
     private Long id;
 
+
+    /**
+     * 科局员工id
+     */
+    private Long bureauId;
+
     /**
      * 科局员工名称
      */

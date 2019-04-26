@@ -5,6 +5,7 @@ import com.marvel.framework.annotation.MarvelCheck;
 import com.marvel.web.exception.BusinessException;
 import com.marvel.web.service.ExpertService;
 import com.marvel.web.vo.ExpertInfoVo;
+import com.marvel.web.vo.PlanDetailVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class ExpertController {
 
     /**
      * @Title getCompanyList
-     * @Description 分页查询企业信息
+     * @Description 分页查询专家信息
      * @param cursor
      * @param count
      * @return com.marvel.common.models.PageBean<com.marvel.web.vo.CompanyListVo>
@@ -51,7 +52,7 @@ public class ExpertController {
 
     /**
      * @Title getCompanyInfo
-     * @Description 根据企业id查询企业信息 
+     * @Description 根据专家id查询专家信息 
      * @param id
      * @return com.marvel.web.vo.CompanyDetailVo
      * @throws
@@ -67,6 +68,29 @@ public class ExpertController {
             throw BusinessException.INVALID_PARAMS;
         }
         return expertService.getExpertInfo(id);
+    }
+
+
+    /**
+     * @Title getExpertPlanList
+     * @Description 根据专家id查询专家下所有的计划信息 
+     * @param id
+     * @return com.marvel.web.vo.CompanyDetailVo
+     * @throws
+     * @author andy
+     * @date 2019/4/22 下午11:49
+     */
+    @MarvelCheck
+    @RequestMapping(value = "/get_expert_plan_list.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public PageBean<PlanDetailVo> getExpertPlanList(@RequestParam(name = "cursor",required = false,defaultValue = "1") Integer cursor,
+                                                    @RequestParam(name = "count",required = false,defaultValue = "20")Integer count,
+                                                    @RequestParam(name = "id",required = false,defaultValue = "-1") Long id){
+        if (null == id || id < 0){
+            LOGGER.error("ExpertController-->getExpertPlanList-->parameter invalid,id:{}",id);
+            throw BusinessException.INVALID_PARAMS;
+        }
+        return expertService.getExpertPlanList(id,cursor,count);
     }
 
 }

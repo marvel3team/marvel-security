@@ -3,17 +3,20 @@ package com.marvel.web.service.impl;
 import com.marvel.common.models.PageBean;
 import com.marvel.common.utils.PaginationUtils;
 import com.marvel.web.exception.BusinessException;
-import com.marvel.web.mapper.CompanyIndustryMapper;
-import com.marvel.web.mapper.CompanyStandardMapper;
-import com.marvel.web.mapper.ExpertInfoMapper;
+import com.marvel.web.mapper.*;
+import com.marvel.web.po.Bureau;
 import com.marvel.web.po.CompanyIndustry;
 import com.marvel.web.po.CompanyStandard;
 import com.marvel.web.po.ExpertInfo;
 import com.marvel.web.service.ExpertService;
 import com.marvel.web.vo.ExpertInfoVo;
+import com.marvel.web.vo.PlanDetailVo;
+import org.apache.commons.collections4.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -40,6 +43,10 @@ public class ExpertServiceImpl implements ExpertService {
     private CompanyIndustryMapper companyIndustryMapper;
     @Resource
     private CompanyStandardMapper companyStandardMapper;
+    @Resource
+    private ExpertPlanMapper expertPlanMapper;
+    @Resource
+    private BureauMapper bureauMapper;
 
 
     @Override
@@ -50,35 +57,39 @@ public class ExpertServiceImpl implements ExpertService {
                 return assemblePageBean(-1, new ArrayList<>());
             }
             List<ExpertInfo> expertInfos = expertInfoMapper.getExpertListByPage(count * (cursor - 1), count);
-            if (null == expertInfos || expertInfos.size() ==0 ){
+            if (null == expertInfos || expertInfos.size() == 0) {
                 return assemblePageBean(-1, new ArrayList<>());
             }
             //查询公司id
-            List<Long> companyIds = expertInfos.stream().map(temp->{return temp.getCompanyId();}).collect(Collectors.toList());
+            List<Long> companyIds = expertInfos.stream().map(temp -> {
+                return temp.getCompanyId();
+            }).collect(Collectors.toList());
             //根据公司id查询公司的行业
             List<CompanyStandard> companyStandards = companyStandardMapper.getCompanyByIds(companyIds);
 
-            Map<Long,CompanyIndustry> industryMap = new HashMap<>();
+            Map<Long, CompanyIndustry> industryMap = new HashMap<>();
 
-            if (null != companyStandards && companyStandards.size()>0){
+            if (null != companyStandards && companyStandards.size() > 0) {
                 //根据行业id，查询行业信息
-                List<Long> industryIds = companyStandards.stream().map(temp->{return temp.getIndustryId();}).collect(Collectors.toList());
+                List<Long> industryIds = companyStandards.stream().map(temp -> {
+                    return temp.getIndustryId();
+                }).collect(Collectors.toList());
                 List<CompanyIndustry> industryList = companyIndustryMapper.getIndustryByIds(industryIds);
-                Map<Long,CompanyIndustry> industryIdMap = new HashMap<>();
-                if (null != industryList && industryList.size()>0){
-                    industryIdMap = industryList.stream().collect(Collectors.toMap(CompanyIndustry::getId,temp->temp,(e1,e2)->e1));
+                Map<Long, CompanyIndustry> industryIdMap = new HashMap<>();
+                if (null != industryList && industryList.size() > 0) {
+                    industryIdMap = industryList.stream().collect(Collectors.toMap(CompanyIndustry::getId, temp -> temp, (e1, e2) -> e1));
                 }
-                for (CompanyStandard companyStandard : companyStandards){
-                    CompanyIndustry companyIndustry = industryIdMap.getOrDefault(companyStandard.getIndustryId(),null);
-                    if (null != companyIndustry){
-                        industryMap.put(companyStandard.getId(),companyIndustry);
+                for (CompanyStandard companyStandard : companyStandards) {
+                    CompanyIndustry companyIndustry = industryIdMap.getOrDefault(companyStandard.getIndustryId(), null);
+                    if (null != companyIndustry) {
+                        industryMap.put(companyStandard.getId(), companyIndustry);
                     }
                 }
             }
             List<ExpertInfoVo> resultList = new ArrayList<>();
-            for (ExpertInfo expertInfo : expertInfos){
+            for (ExpertInfo expertInfo : expertInfos) {
 
-                CompanyIndustry companyIndustry = industryMap.getOrDefault(expertInfo.getCompanyId(),null);
+                CompanyIndustry companyIndustry = industryMap.getOrDefault(expertInfo.getCompanyId(), null);
                 ExpertInfoVo expertInfoVo = new ExpertInfoVo();
                 expertInfoVo.setId(expertInfo.getId());
                 expertInfoVo.setName(expertInfo.getName());
@@ -96,17 +107,17 @@ public class ExpertServiceImpl implements ExpertService {
                 expertInfoVo.setRemark(expertInfo.getRemark());
                 //TODO 需要组装地址
                 expertInfoVo.setSignUrl(expertInfo.getSignUrl());
-                expertInfoVo.setIndustry(null == companyIndustry ?"":companyIndustry.getContent());
+                expertInfoVo.setIndustry(null == companyIndustry ? "" : companyIndustry.getContent());
                 //TODO
                 expertInfoVo.setArea("");
                 resultList.add(expertInfoVo);
             }
-            long nextCursor = PaginationUtils.nextCursor(cursor,count,total);
-            return assemblePageBean(nextCursor,resultList);
-        }catch (Exception e){
-            LOGGER.error("ExpertService-->getExpertList-->exception,cursor:{},count:{}",cursor,count,e);
+            long nextCursor = PaginationUtils.nextCursor(cursor, count, total);
+            return assemblePageBean(nextCursor, resultList);
+        } catch (Exception e) {
+            LOGGER.error("ExpertService-->getExpertList-->exception,cursor:{},count:{}", cursor, count, e);
         }
-        return assemblePageBean(-1,new ArrayList<>());
+        return assemblePageBean(-1, new ArrayList<>());
     }
 
     @Override
@@ -146,6 +157,37 @@ public class ExpertServiceImpl implements ExpertService {
         return expertInfoVo;
     }
 
+    @Override
+    public PageBean<PlanDetailVo> getExpertPlanList(Long id, Integer cursor, Integer count) {
+        long total = expertPlanMapper.getExpertPlanCount(id);
+        if (total == 0) {
+            return assembleExpertPlanPage(-1, new ArrayList<>());
+        }
+        List<PlanDetailVo> planDetailVos = expertPlanMapper.getExpertPlanList(id, count * (count - 1), count);
+        if (CollectionUtils.isEmpty(planDetailVos)){
+            return assembleExpertPlanPage(-1, new ArrayList<>());
+        }
+        List<Long> bureauIds = planDetailVos.stream().map(temp->{return temp.getBureauId();}).collect(Collectors.toList());
+
+        List<Bureau> bureauList = bureauMapper.getBureauByIds(bureauIds);
+        Map<Long,Bureau> bureauMap = new HashMap<>();
+        if (!CollectionUtils.isEmpty(bureauList)){
+            bureauMap = bureauList.stream().collect(Collectors.toMap(Bureau::getId,temp->temp,(e1,e2)->e1));
+        }
+        List<PlanDetailVo> result = new ArrayList<>();
+        for (PlanDetailVo planDetailVo:planDetailVos){
+            Bureau bureau = MapUtils.getObject(bureauMap,planDetailVo.getBureauId(),null);
+            if (null == bureau){
+                planDetailVo.setBureauName("");
+            }else {
+                planDetailVo.setBureauName(bureau.getName());
+            }
+            result.add(planDetailVo);
+        }
+        long nexeCursor = PaginationUtils.nextCursor(cursor,count,total);
+        return assembleExpertPlanPage(nexeCursor,result);
+    }
+
 
     /**
      * 组装返回数据
@@ -160,4 +202,20 @@ public class ExpertServiceImpl implements ExpertService {
         pageBean.setList(listVos);
         return pageBean;
     }
+
+
+    /**
+     * 组装分页数据
+     *
+     * @param nextCursor
+     * @param listVos
+     * @return
+     */
+    private PageBean<PlanDetailVo> assembleExpertPlanPage(long nextCursor, List<PlanDetailVo> listVos) {
+        PageBean<PlanDetailVo> pageBean = new PageBean<>();
+        pageBean.setNextCursor(nextCursor);
+        pageBean.setList(listVos);
+        return pageBean;
+    }
+
 }
