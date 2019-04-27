@@ -292,9 +292,11 @@ CREATE TABLE `t_expert_respond_plan` (
 -- ----------------------------
 DROP TABLE IF EXISTS `t_expert_time`;
 CREATE TABLE `t_expert_time` (
-  `time_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '时间id',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `expert_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '专家id',
   `expert_type` tinyint(3) NOT NULL DEFAULT '1' COMMENT '专家类型 1 空闲专家 2 待定专家',
+  `start_time` bigint(20) NOT NULL DEFAULT '-1' COMMENT '购买时间',
+  `end_time` bigint(20) NOT NULL DEFAULT '-1' COMMENT '购买时间',
   PRIMARY KEY (`time_id`,`expert_id`,`expert_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='专家时间映射表';
 

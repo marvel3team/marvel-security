@@ -43,4 +43,11 @@ public class PageBean<T> implements Serializable {
      */
     private List<T> list;
 
+    /**
+     * 构造函数
+     * @param list
+     */
+    public PageBean (List<T> list) {
+        this.list = list;
+    }
 }

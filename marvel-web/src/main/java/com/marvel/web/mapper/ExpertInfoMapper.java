@@ -4,6 +4,7 @@ import com.marvel.web.po.ExpertInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -42,4 +43,15 @@ public interface ExpertInfoMapper {
      */
     @Select("select * from t_expert_info order by id desc limit #{page},#{count}")
     List<ExpertInfo> getExpertListByPage(@Param("page") int page,@Param("count") int count);
+
+    /**
+     * 更新
+     * @param expert
+     * @return
+     */
+    @Update("UPDATE t_expert_info set name = #{expert.name}, id_card_no = #{expert.idCardNo}, company_id = #{expert.companyId}, work_company = #{expert.workCompany}, " +
+            "work_address = #{expert.workAddress}, work_life = #{expert.workLife}, positional_title = #{expert.positionalTitle}, is_syndic = #{expert.isSyndic}, level = #{expert.level}, " +
+            "evaluate_range = #{expert.evaluateRange}, collage = #{expert.collage}, home_address = #{expert.homeAddress}, mobile = #{expert.mobile}, remark = #{expert.remark}, " +
+            "sign_url = #{expert.signUrl} WHERE id = #{expert.id}")
+    int update(@Param("expert") ExpertInfo expert);
 }

@@ -20,7 +20,7 @@ public interface ProblemPicMapper {
             "(#{e.problemId},#{e.url})" +
             "</foreach>" +
             "</script>")
-    int batchInsert(List<ProblemPic> pics);
+    int batchInsert(@Param("list") List<ProblemPic> pics);
 
     @Delete("DELETE FROM t_problem_pic where problem_id=#{problemId}")
     int deleteByProblemId(@Param("problemId") Long problemId);

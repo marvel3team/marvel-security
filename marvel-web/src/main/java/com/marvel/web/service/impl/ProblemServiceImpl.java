@@ -65,8 +65,8 @@ public class ProblemServiceImpl implements ProblemService {
         replaceProblem(problem, originProblem);
         if (!CollectionUtils.isEmpty(problem.getPics())) {
             problemPicMapper.deleteByProblemId(problemId);
-            problemPicMapper.batchInsert(getList(problem));
         }
+        problemPicMapper.batchInsert(getList(problem));
         int update = problemMapper.update(problem);
         return update > 0;
     }

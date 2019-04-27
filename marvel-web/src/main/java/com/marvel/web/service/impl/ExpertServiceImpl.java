@@ -1,17 +1,18 @@
 package com.marvel.web.service.impl;
 
+import com.google.common.collect.Lists;
 import com.marvel.common.models.PageBean;
 import com.marvel.common.utils.PaginationUtils;
+import com.marvel.framework.context.RequestContext;
+import com.marvel.web.controller.req.WorkTimeReq;
 import com.marvel.web.exception.BusinessException;
 import com.marvel.web.mapper.*;
-import com.marvel.web.po.Bureau;
-import com.marvel.web.po.CompanyIndustry;
-import com.marvel.web.po.CompanyStandard;
-import com.marvel.web.po.ExpertInfo;
+import com.marvel.web.po.*;
 import com.marvel.web.service.ExpertService;
 import com.marvel.web.vo.ExpertInfoVo;
 import com.marvel.web.vo.PlanDetailVo;
 import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.repository.support.PageableExecutionUtils;
@@ -19,10 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -47,6 +45,8 @@ public class ExpertServiceImpl implements ExpertService {
     private ExpertPlanMapper expertPlanMapper;
     @Resource
     private BureauMapper bureauMapper;
+    @Resource
+    private ExpertTimeMapper expertTimeMapper;
 
 
     @Override
@@ -186,6 +186,133 @@ public class ExpertServiceImpl implements ExpertService {
         }
         long nexeCursor = PaginationUtils.nextCursor(cursor,count,total);
         return assembleExpertPlanPage(nexeCursor,result);
+    }
+
+    @Override
+    public boolean update(RequestContext requestContext, ExpertInfo expert) {
+        Long id = expert.getId();
+        ExpertInfo originExpert = expertInfoMapper.getExpertInfoById(id);
+        if (Objects.isNull(originExpert)) {
+            throw BusinessException.DATA_NOT_EXISTS;
+        }
+        replaceExpert(expert, originExpert);
+        int update = expertInfoMapper.update(expert);
+        return update > 0;
+    }
+
+    @Override
+    public boolean updateExpertTime(RequestContext requestContext, Long id, List<WorkTimeReq> workTimes) {
+        ExpertInfo expertInfo = expertInfoMapper.getExpertInfoById(id);
+        if (Objects.isNull(expertInfo)) {
+            throw BusinessException.EXPERT_NOT_EXISTS;
+        }
+        List<ExpertTime> expertTimes = expertTimeMapper.findByExpertId(id);
+        if (!CollectionUtils.isEmpty(expertTimes)) {
+            expertTimeMapper.deleteByExpertId(id);
+        }
+        List<ExpertTime> list = assembleExpertTimes(expertInfo, workTimes);
+        int update = expertTimeMapper.batchInsert(list);
+        return update > 0;
+    }
+
+    @Override
+    public List<ExpertTime> getExpertTimes(RequestContext requestContext, Long id) {
+        if (Objects.isNull(id) || id <= 0) {
+            return Lists.newArrayList();
+        }
+        ExpertInfo expertInfo = expertInfoMapper.getExpertInfoById(id);
+        if (Objects.isNull(expertInfo)) {
+            return Lists.newArrayList();
+        }
+        List<ExpertTime> list = expertTimeMapper.findByExpertId(id);
+        if (CollectionUtils.isEmpty(list)) {
+            return Lists.newArrayList();
+        }
+
+        return list;
+    }
+
+    @Override
+    public boolean createExpertTime(RequestContext requestContext, Long id, List<WorkTimeReq> workTimes) {
+        ExpertInfo expertInfo = expertInfoMapper.getExpertInfoById(id);
+        if (Objects.isNull(expertInfo)) {
+            throw BusinessException.EXPERT_NOT_EXISTS;
+        }
+        List<ExpertTime> list = assembleExpertTimes(expertInfo, workTimes);
+        int result = expertTimeMapper.batchInsert(list);
+        return result > 0;
+    }
+
+    /**
+     * 组装数据
+     * @param expertInfo
+     * @param workTimes
+     * @return
+     */
+    private List<ExpertTime> assembleExpertTimes(ExpertInfo expertInfo, List<WorkTimeReq> workTimes) {
+        List<ExpertTime> list = Lists.newArrayList();
+        workTimes.stream().forEach(workTimeReq -> {
+            ExpertTime expertTime = new ExpertTime();
+            expertTime.setExpertId(expertInfo.getId());
+            expertTime.setExpertType(1);
+            expertTime.setStartTime(workTimeReq.getStartTime());
+            expertTime.setEndTime(workTimeReq.getEndTime());
+            list.add(expertTime);
+        });
+        return list;
+    }
+
+    /**
+     * 更新最新内容
+     * @param expert
+     * @param originExpert
+     */
+    private void replaceExpert(ExpertInfo expert, ExpertInfo originExpert) {
+        if (StringUtils.isBlank(expert.getName())) {
+            expert.setName(originExpert.getName());
+        }
+        if (StringUtils.isBlank(expert.getIdCardNo())) {
+            expert.setIdCardNo(originExpert.getIdCardNo());
+        }
+        if (expert.getCompanyId() == null || expert.getCompanyId() <= 0) {
+            expert.setCompanyId(originExpert.getCompanyId());
+        }
+        if (StringUtils.isBlank(expert.getWorkCompany())) {
+            expert.setWorkCompany(originExpert.getWorkCompany());
+        }
+        if (StringUtils.isBlank(expert.getWorkAddress())) {
+            expert.setWorkAddress(originExpert.getWorkAddress());
+        }
+        if (expert.getWorkLife() == null || expert.getWorkLife() <= 0) {
+            expert.setWorkLife(originExpert.getWorkLife());
+        }
+        if (StringUtils.isBlank(expert.getPositionalTitle())) {
+            expert.setPositionalTitle(originExpert.getPositionalTitle());
+        }
+        if (expert.getIsSyndic() == null || expert.getIsSyndic() <= 0) {
+            expert.setIsSyndic(originExpert.getIsSyndic());
+        }
+        if (expert.getLevel() == null || expert.getLevel() <= 0) {
+            expert.setLevel(originExpert.getLevel());
+        }
+        if (StringUtils.isBlank(expert.getEvaluateRange())) {
+            expert.setEvaluateRange(originExpert.getEvaluateRange());
+        }
+        if (StringUtils.isBlank(expert.getCollage())) {
+            expert.setCollage(originExpert.getCollage());
+        }
+        if (StringUtils.isBlank(expert.getHomeAddress())) {
+            expert.setHomeAddress(originExpert.getHomeAddress());
+        }
+        if (StringUtils.isBlank(expert.getMobile())) {
+            expert.setMobile(originExpert.getMobile());
+        }
+        if (StringUtils.isBlank(expert.getRemark())) {
+            expert.setRemark(originExpert.getRemark());
+        }
+        if (StringUtils.isBlank(expert.getSignUrl())) {
+            expert.setSignUrl(originExpert.getSignUrl());
+        }
     }
 
 
