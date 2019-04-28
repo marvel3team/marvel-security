@@ -1,7 +1,6 @@
 package com.marvel.web.mapper;
 
 import com.marvel.web.po.CompanyStandard;
-import com.marvel.web.po.Problem;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
 
@@ -60,7 +59,7 @@ public interface CompanyStandardMapper {
      */
     @Select("select id, name, area_id, type, industry_id, registed_capital, legal_person, legal_person_mobile, bussiness_type_code, email, business_license_id from t_company_standard where id =#{id}")
     @Results(id="defaultResultMap", value={
-            @Result(column="id", property="id", jdbcType= JdbcType.BIGINT, javaType = Long.class,id=true),
+            @Result(column="id", property="id", jdbcType= JdbcType.BIGINT, javaType = Long.class),
             @Result(column="name", property="name", jdbcType=JdbcType.VARCHAR, javaType = String.class),
             @Result(column="area_id ", property="areaId", jdbcType=JdbcType.INTEGER, javaType = Integer.class),
             @Result(column="type ", property="type", jdbcType=JdbcType.INTEGER, javaType = Integer.class),
