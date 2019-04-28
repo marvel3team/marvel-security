@@ -28,7 +28,7 @@ public interface CompanyService {
      * @author: andy
      * @date: 2019/4/22 下午10:42
      */
-    PageBean<CompanyListVo> getCompanyList(Integer cursor, Integer count);
+    PageBean<CompanyListVo> getCompanyList(Long cursor, Integer count);
 
 
     /**

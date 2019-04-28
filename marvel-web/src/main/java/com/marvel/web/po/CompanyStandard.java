@@ -33,6 +33,12 @@ public class CompanyStandard implements Serializable {
      */
     private Integer areaId;
 
+
+    /**
+     * 企业类型 1 被检查公司  2 检查公司 3 科局公司 4 专家公司
+     */
+    private Integer type;
+
     /**
      * 行业id
      */

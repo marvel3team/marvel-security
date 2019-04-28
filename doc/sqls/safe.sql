@@ -195,6 +195,7 @@ CREATE TABLE `t_company_standard` (
   `id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '公司id',
   `name` varchar(255) NOT NULL COMMENT '公司名称',
   `area_id` int(11) NOT NULL DEFAULT '-1' COMMENT '地区id',
+  `type` int(11) NOT NULL DEFAULT '-1' COMMENT '企业类型 1 被检查公司  2 检查公司 3 科局公司 4 专家公司',
   `industry_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '行业id',
   `registed_capital` bigint(20) NOT NULL DEFAULT '0' COMMENT '注册资本（分）',
   `legal_person` varchar(255) NOT NULL DEFAULT '' COMMENT '法人名称',
@@ -267,25 +268,6 @@ CREATE TABLE `t_expert_info` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='专家信息表';
 
--- ----------------------------
--- Table structure for t_expert_plan
--- ----------------------------
-DROP TABLE IF EXISTS `t_expert_plan`;
-CREATE TABLE `t_expert_plan` (
-  `plan_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '计划id',
-  `expert_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '专家id',
-  PRIMARY KEY (`plan_id`,`expert_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='专家计划映射表';
-
--- ----------------------------
--- Table structure for t_expert_respond_plan
--- ----------------------------
-DROP TABLE IF EXISTS `t_expert_respond_plan`;
-CREATE TABLE `t_expert_respond_plan` (
-  `plan_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '计划id',
-  `expert_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '专家id',
-  PRIMARY KEY (`plan_id`,`expert_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='专家响应计划映射表';
 
 -- ----------------------------
 -- Table structure for t_expert_time
@@ -297,7 +279,7 @@ CREATE TABLE `t_expert_time` (
   `expert_type` tinyint(3) NOT NULL DEFAULT '1' COMMENT '专家类型 1 空闲专家 2 待定专家',
   `start_time` bigint(20) NOT NULL DEFAULT '-1' COMMENT '购买时间',
   `end_time` bigint(20) NOT NULL DEFAULT '-1' COMMENT '购买时间',
-  PRIMARY KEY (`time_id`,`expert_id`,`expert_type`)
+  PRIMARY KEY (`id`,`expert_id`,`expert_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='专家时间映射表';
 
 -- ----------------------------
@@ -440,7 +422,7 @@ DROP TABLE IF EXISTS `t_respond_plan`;
 CREATE TABLE `t_respond_plan` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `plan_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '计划id',
-  `plan_time` bigint(20) NOT NULL DEFAULT '-1' COMMENT '计划时间',
+  `expert_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '专家id',
   `type` tinyint(3) NOT NULL DEFAULT '1' COMMENT '方式：1 远程 2 现场',
   `status` tinyint(3) NOT NULL DEFAULT '1' COMMENT '状态 1 未完成 2 已经完成 3 超时取消',
   `remark` varchar(512) NOT NULL DEFAULT '' COMMENT '备注',

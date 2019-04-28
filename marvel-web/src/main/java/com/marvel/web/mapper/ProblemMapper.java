@@ -41,10 +41,5 @@ public interface ProblemMapper {
             sql.append(" order by id desc limit " + count);
             return sql.toString();
         }
-
-        public static void main(String[] args) {
-            String s = buildFindByPage(1, 1L, 10);
-            System.out.println(s);
-        }
     }
 }

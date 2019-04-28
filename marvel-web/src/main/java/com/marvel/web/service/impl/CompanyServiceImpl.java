@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.marvel.common.models.PageBean;
 import com.marvel.common.utils.PaginationUtils;
 import com.marvel.framework.context.RequestContext;
+import com.marvel.web.enums.UserType;
 import com.marvel.web.exception.BusinessException;
 import com.marvel.web.mapper.*;
 import com.marvel.web.po.*;
@@ -44,7 +45,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Resource
     private PlanMapper planMapper;
     @Resource
-    private ExpertPlanMapper expertPlanMapper;
+    private UserMapper userMapper;
     @Resource
     private RespondPlanMapper respondPlanMapper;
     @Resource
@@ -53,18 +54,27 @@ public class CompanyServiceImpl implements CompanyService {
     private ServiceMapper serviceMapper;
 
     @Override
-    public PageBean<CompanyListVo> getCompanyList(Integer cursor, Integer count) {
+    public PageBean<CompanyListVo> getCompanyList(Long cursor, Integer count) {
         try {
-            long total = companyStandardMapper.getCompanyCount();
+            Long userId = RequestContext.getRequestContext().getUid();
+            //根据id查询类型
+            User user = userMapper.findByUid(userId);
+            if (null == user){
+                throw BusinessException.USER_NO_EXISTS;
+            }
+
+            long total = companyStandardMapper.getCompanyCount(UserType.valueOf(user.getType()).value());
             if (total == 0) {
                 return assemblePageBean(-1, new ArrayList<>());
             }
-            List<CompanyStandard> standardList = companyStandardMapper.getCompanyListPage(count * (cursor - 1), count);
-            if (null == standardList || standardList.size() == 0) {
+            List<CompanyStandard> standardList = companyStandardMapper.getCompanyListPage(UserType.valueOf(user.getType()).value(),cursor, count);
+            if (CollectionUtils.isEmpty(standardList)) {
                 return assemblePageBean(-1, new ArrayList<>());
             }
-            long nextCursor = PaginationUtils.nextCursor(cursor, count, total);
-            return assemblePageBean(nextCursor, standardList);
+            if (standardList.size() < count) {
+                return assemblePageBean(-1, standardList);
+            }
+            return assemblePageBean(standardList.get(standardList.size()-1).getId(), standardList);
         } catch (Exception e) {
             LOGGER.error("CompanyService-->getCompanyList-->exception,cursor:{},count:{}", cursor, count, e);
             throw BusinessException.QUERY_DB_ERROR;

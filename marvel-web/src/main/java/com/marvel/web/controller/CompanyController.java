@@ -52,8 +52,8 @@ public class CompanyController {
     @MarvelCheck
     @RequestMapping(value = "/get_company_list.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public PageBean<CompanyListVo> getCompanyList(@RequestParam(name = "cursor",required = false,defaultValue = "1") Integer cursor,
-                                                  @RequestParam(name = "count",required = false,defaultValue = "20")Integer count){
+    public PageBean<CompanyListVo> getCompanyList(@RequestParam(name = "cursor",required = false,defaultValue = "-1") Long cursor,
+                                                  @RequestParam(name = "count",required = false,defaultValue = "10")Integer count){
         PageBean<CompanyListVo> pageBean = companyService.getCompanyList(cursor,count);
         return pageBean;
     }
