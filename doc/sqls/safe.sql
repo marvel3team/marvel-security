@@ -13,6 +13,8 @@
 
  Date: 19/04/2019 00:44:49
 */
+create database security;
+use security;
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
