@@ -3,6 +3,7 @@ package com.marvel.web.mapper;
 import com.marvel.web.po.CompanyStandard;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.jdbc.SQL;
 
 import java.util.List;
 import java.util.Map;
@@ -156,37 +157,39 @@ public interface CompanyStandardMapper {
          * @return
          */
         public static String update(final CompanyStandard companyStandard) {
-            StringBuilder sql = new StringBuilder("update t_company_standard set ");
-            if (companyStandard.getAreaId() != null) {
-                sql.append("area_id = ").append(companyStandard.getAreaId()).append(",");
-            }
-            if (companyStandard.getIndustryId() != null) {
-                sql.append("industry_id = ").append(companyStandard.getIndustryId()).append(",");
-            }
-            if (StringUtils.isNotBlank(companyStandard.getName())) {
-                sql.append("name = '").append(companyStandard.getName()).append("',");
-            }
-            if (companyStandard.getRegistedCapital() != null) {
-                sql.append("registed_capital = ").append(companyStandard.getRegistedCapital()).append(",");
-            }
-            if (StringUtils.isNotBlank(companyStandard.getLegalPerson())) {
-                sql.append("legal_person = '").append(companyStandard.getLegalPerson()).append("',");
-            }
-            if (StringUtils.isNotBlank(companyStandard.getLegalPersonMobile())) {
-                sql.append("legal_person_mobile = '").append(companyStandard.getLegalPersonMobile()).append("',");
-            }
-            if (StringUtils.isNotBlank(companyStandard.getBusinessTypeCode())) {
-                sql.append("business_type_code = '").append(companyStandard.getBusinessTypeCode()).append("',");
-            }
-            if (StringUtils.isNotBlank(companyStandard.getBusinessLicenseId())) {
-                sql.append("business_license_id = '").append(companyStandard.getBusinessLicenseId()).append("',");
-            }
-            if (StringUtils.isNotBlank(companyStandard.getEmail())) {
-                sql.append("email = '").append(companyStandard.getEmail()).append("',");
-            }
-            sql.deleteCharAt(sql.length() - 1);
-            sql.append(" where id = ").append(companyStandard.getId());
-            return sql.toString();
+            return new SQL(){
+                {
+                    UPDATE("t_company_standard");
+                    if (companyStandard.getAreaId() != null) {
+                        SET("area_id = " + companyStandard.getAreaId());
+                    }
+                    if (companyStandard.getIndustryId() != null) {
+                        SET("industry_id = " + companyStandard.getIndustryId());
+                    }
+                    if (StringUtils.isNotBlank(companyStandard.getName())) {
+                        SET("name = '" + companyStandard.getName() + "'");
+                    }
+                    if (companyStandard.getRegistedCapital() != null) {
+                        SET("registed_capital = " + companyStandard.getRegistedCapital());
+                    }
+                    if (StringUtils.isNotBlank(companyStandard.getLegalPerson())) {
+                        SET("legal_person = '" + companyStandard.getLegalPerson() + "'");
+                    }
+                    if (StringUtils.isNotBlank(companyStandard.getLegalPersonMobile())) {
+                        SET("legal_person_mobile = '" + companyStandard.getLegalPersonMobile() + "'");
+                    }
+                    if (StringUtils.isNotBlank(companyStandard.getBusinessTypeCode())) {
+                        SET("business_type_code = '" + companyStandard.getBusinessTypeCode() + "'");
+                    }
+                    if (StringUtils.isNotBlank(companyStandard.getBusinessLicenseId())) {
+                        SET("business_license_id = '" + companyStandard.getBusinessLicenseId() + "'");
+                    }
+                    if (StringUtils.isNotBlank(companyStandard.getEmail())) {
+                        SET("email = '" + companyStandard.getEmail() + "'");
+                    }
+                    WHERE("id = " + companyStandard.getId());
+                }
+            }.toString();
         }
     }
 }
