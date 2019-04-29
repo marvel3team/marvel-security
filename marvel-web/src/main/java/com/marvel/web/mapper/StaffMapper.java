@@ -34,4 +34,10 @@ public interface StaffMapper {
             "is_special_personnel = #{staff.isSpecialPersonnel}, special_personnel_id = #{staff.specialPersonnelId} WHERE id = #{staff.id}")
     int update(@Param("staff") Staff staff);
 
+    @Insert("INSERT INTO t_company_staff(id, company_id, name, mobile, id_card_no, department_id, workshop_id, team_id, profession_id, is_special_personnel, special_personnel_id, remark) VALUES(" +
+            "#{staff.id}, #{staff.companyId}, #{staff.name}, #{staff.mobile}, #{staff.idCardNo}, #{staff.departmentId}," +
+            "#{staff.workshopId}, #{staff.teamId}, #{staff.professionId}, #{staff.isSpecialPersonnel}, #{staff.specialPersonnelId}," +
+            "#{staff.remark})")
+    int insert(@Param("staff") Staff staff);
+
 }

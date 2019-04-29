@@ -18,6 +18,33 @@ import java.util.Map;
 public interface CompanyStandardMapper {
 
     /**
+     * 根据id查询信息
+     *
+     * @param id
+     * @return
+     */
+    @SelectProvider(type = CompanySqlBuilder.class, method = "selectById")
+    @Results(id = "standardMap", value = {
+            @Result(property = "id", column = "id"),
+            @Result(property = "name", column = "name"),
+            @Result(property = "areaId", column = "area_id"),
+            @Result(property = "type", column = "type"),
+            @Result(property = "industryId", column = "industry_id"),
+            @Result(property = "registedCapital", column = "registed_capital"),
+            @Result(property = "legalPerson", column = "legal_person"),
+            @Result(property = "legalPersonMobile", column = "legal_person_mobile"),
+            @Result(property = "businessTypeCode", column = "business_type_code"),
+            @Result(property = "email", column = "email"),
+            @Result(property = "businessLicenseId", column = "business_license_id")
+    })
+    CompanyStandard getCompanyById(Long id);
+
+    @Insert("INSERT INTO t_company_standard(id, name, area_id, type, industry_id, registed_capital, legal_person, legal_person_mobile, business_type_code, email, business_license_id) VALUES(" +
+            "#{standard.id}, #{standard.name}, #{standard.areaId}, #{standard.type}, #{standard.industryId}, #{standard.registedCapital}, #{standard.legalPerson}, #{standard.legalPersonMobile}, #{standard.businessTypeCode}" +
+            ", #{standard.email}, #{standard.businessLicenseId})")
+    int save(@Param("standard") CompanyStandard companyStandard);
+
+    /**
      * @Title:
      * @Description: 查询所有的企业总条数
      * @param:
@@ -38,18 +65,8 @@ public interface CompanyStandardMapper {
      * @return
      */
     @SelectProvider(type = CompanySqlBuilder.class, method = "findByPage")
+    @ResultMap(value = "standardMap")
     List<CompanyStandard> getCompanyListPage(Integer type, Long cursor, Integer count);
-
-
-    /**
-     * 根据id查询信息
-     *
-     * @param id
-     * @return
-     */
-    @SelectProvider(type = CompanySqlBuilder.class, method = "selectById")
-    CompanyStandard getCompanyById(@Param("id") Long id);
-
 
     /**
      * 批量查询
@@ -58,6 +75,7 @@ public interface CompanyStandardMapper {
      * @return
      */
     @SelectProvider(type = CompanySqlBuilder.class, method = "selectByIds")
+    @ResultMap(value = "standardMap")
     List<CompanyStandard> getCompanyByIds(@Param("list") List<Long> companyIds);
 
 
@@ -82,7 +100,7 @@ public interface CompanyStandardMapper {
          * @return
          */
         public static String findByPage(final Integer type, final Long cursor, final Integer count) {
-            StringBuilder sql = new StringBuilder("SELECT id, name, area_id as areaId, type, industry_id as industryId, registed_capital as registedCapital, legal_person as legalPerson, legal_person_mobile as legalPersonMobile, business_type_code as businessTypeCode, email, business_license_id as businessLicenseId FROM t_company_standard where 1=1");
+            StringBuilder sql = new StringBuilder("SELECT id, name, area_id, type, industry_id, registed_capital, legal_person, legal_person_mobile, business_type_code, email, business_license_id FROM t_company_standard where 1=1");
             if (type != null && type > 0) {
                 sql.append(" and type = " + type);
             }
@@ -100,7 +118,7 @@ public interface CompanyStandardMapper {
          */
         public static String selectByIds(Map map) {
             List<Long> companyIds = (List<Long>) map.get("list");
-            StringBuilder sql = new StringBuilder("SELECT id, name, area_id as areaId, type, industry_id as industryId, registed_capital as registedCapital, legal_person as legalPerson, legal_person_mobile as legalPersonMobile, business_type_code as businessTypeCode, email, business_license_id as businessLicenseId FROM t_company_standard where ");
+            StringBuilder sql = new StringBuilder("SELECT id, name, area_id, type, industry_id, registed_capital, legal_person, legal_person_mobile, business_type_code, email, business_license_id FROM t_company_standard where ");
             sql.append(" id in ").append("(");
             for (Long id : companyIds) {
                 sql.append(id).append(",");
@@ -118,7 +136,7 @@ public interface CompanyStandardMapper {
          */
         public static String selectById(final Long id) {
             StringBuilder sql = new StringBuilder();
-            sql.append("select id, name, area_id as areaId, type, industry_id as industryId, registed_capital as registedCapital, legal_person as legalPerson, legal_person_mobile as legalPersonMobile, business_type_code as businessTypeCode, email, business_license_id as businessLicenseId");
+            sql.append("SELECT id, name, area_id, type, industry_id, registed_capital, legal_person, legal_person_mobile, business_type_code, email, business_license_id");
             sql.append(" from  t_company_standard where ");
             sql.append("id = ").append(id);
             return sql.toString();
