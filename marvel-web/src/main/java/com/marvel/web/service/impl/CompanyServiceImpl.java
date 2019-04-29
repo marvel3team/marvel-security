@@ -13,6 +13,7 @@ import com.marvel.web.vo.CompanyDetailVo;
 import com.marvel.web.vo.CompanyInfoReqVo;
 import com.marvel.web.vo.CompanyListVo;
 import com.marvel.web.vo.PlanDetailVo;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -59,7 +60,7 @@ public class CompanyServiceImpl implements CompanyService {
             Long userId = RequestContext.getRequestContext().getUid();
             //根据id查询类型
             User user = userMapper.findByUid(userId);
-            if (null == user){
+            if (null == user) {
                 throw BusinessException.USER_NO_EXISTS;
             }
 
@@ -67,14 +68,14 @@ public class CompanyServiceImpl implements CompanyService {
             if (total == 0) {
                 return assemblePageBean(-1, new ArrayList<>());
             }
-            List<CompanyStandard> standardList = companyStandardMapper.getCompanyListPage(UserType.valueOf(user.getType()).value(),cursor, count);
+            List<CompanyStandard> standardList = companyStandardMapper.getCompanyListPage(UserType.valueOf(user.getType()).value(), cursor, count);
             if (CollectionUtils.isEmpty(standardList)) {
                 return assemblePageBean(-1, new ArrayList<>());
             }
             if (standardList.size() < count) {
                 return assemblePageBean(-1, standardList);
             }
-            return assemblePageBean(standardList.get(standardList.size()-1).getId(), standardList);
+            return assemblePageBean(standardList.get(standardList.size() - 1).getId(), standardList);
         } catch (Exception e) {
             LOGGER.error("CompanyService-->getCompanyList-->exception,cursor:{},count:{}", cursor, count, e);
             throw BusinessException.QUERY_DB_ERROR;
@@ -96,7 +97,7 @@ public class CompanyServiceImpl implements CompanyService {
             companyDetailVo.setRegistedCapital(new BigDecimal(companyStandard.getRegistedCapital()).divide(new BigDecimal(100)).toPlainString());
             companyDetailVo.setLegalPerson(companyStandard.getLegalPerson());
             companyDetailVo.setMobile(companyStandard.getLegalPersonMobile());
-            companyDetailVo.setBusinessCode(companyStandard.getBussinessTypeCode());
+            companyDetailVo.setBusinessCode(companyStandard.getBusinessTypeCode());
             companyDetailVo.setEmail(companyStandard.getEmail());
             companyDetailVo.setBusinessLicenseId(companyStandard.getBusinessLicenseId());
             CompanyBase companyBase = companyBaseMapper.getCompanBaseById(id);
@@ -173,7 +174,7 @@ public class CompanyServiceImpl implements CompanyService {
             PlanDetailVo planDetailVo = new PlanDetailVo();
             planDetailVo.setId(plan.getId());
             planDetailVo.setBureauName(null == bureau ? "" : bureau.getName());
-            if (null != respondPlan){
+            if (null != respondPlan) {
                 planDetailVo.setFinishStatus(respondPlan.getStatus());
                 planDetailVo.setFinishTime(respondPlan.getPlanTime());
                 planDetailVo.setRespodType(respondPlan.getType());
@@ -187,7 +188,7 @@ public class CompanyServiceImpl implements CompanyService {
 
         }
         long nextCursor = PaginationUtils.nextCursor(cursor, count, total);
-        return assemblePlanDetailPage(nextCursor,resultList);
+        return assemblePlanDetailPage(nextCursor, resultList);
     }
 
     @Override
@@ -212,19 +213,20 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public String updateCompanyInfo(CompanyInfoReqVo companyInfoReqVo) {
         CompanyStandard companyStandard = companyStandardMapper.getCompanyById(companyInfoReqVo.getId());
-        if (null == companyStandard){
+        if (null == companyStandard) {
             throw BusinessException.COMPANY_NOT_EXISTS;
         }
-        companyStandard.setAreaId(companyInfoReqVo.getAreaId());
-        companyStandard.setBussinessTypeCode(companyInfoReqVo.getBusinessCode());
+        companyStandard.setAreaId(companyInfoReqVo.getAreaId() == null ? companyStandard.getAreaId() : companyInfoReqVo.getAreaId());
+        companyStandard.setBusinessLicenseId(companyInfoReqVo.getBusinessCode());
         companyStandard.setBusinessLicenseId(companyInfoReqVo.getBusinessLicenseNo());
-        companyStandard.setRegistedCapital(new BigDecimal(companyInfoReqVo.getRegistedCapital()).multiply(new BigDecimal(100)).longValue());
+        companyStandard.setRegistedCapital(StringUtils.isBlank(companyInfoReqVo.getRegistedCapital()) ? null : new BigDecimal(companyInfoReqVo.getRegistedCapital()).multiply(new BigDecimal(100)).longValue());
         companyStandard.setLegalPerson(companyInfoReqVo.getLegalPreson());
         companyStandard.setLegalPersonMobile(companyInfoReqVo.getMobile());
         companyStandard.setEmail(companyInfoReqVo.getEmail());
+        companyStandard.setName(companyInfoReqVo.getName());
         companyStandard.setIndustryId(companyInfoReqVo.getIndustryId());
-        int update  = companyStandardMapper.updateCompanyStandard(companyStandard);
-        if (update < 1){
+        int update = companyStandardMapper.updateCompanyStandard(companyStandard);
+        if (update < 1) {
             throw BusinessException.UPDATE_ERROR;
         }
         return "{}";
@@ -244,7 +246,7 @@ public class CompanyServiceImpl implements CompanyService {
         List<CompanyListVo> listVos = listVoList.stream().map(temp -> {
             CompanyListVo companyListVo = new CompanyListVo();
             companyListVo.setAreaId(temp.getAreaId());
-            companyListVo.setBusinessCode(temp.getBussinessTypeCode());
+            companyListVo.setBusinessCode(temp.getBusinessTypeCode());
             companyListVo.setBusinessLicenseId(temp.getBusinessLicenseId());
             companyListVo.setEmail(temp.getEmail());
             companyListVo.setMobile(temp.getLegalPersonMobile());

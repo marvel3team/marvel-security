@@ -200,7 +200,7 @@ CREATE TABLE `t_company_standard` (
   `registed_capital` bigint(20) NOT NULL DEFAULT '0' COMMENT '注册资本（分）',
   `legal_person` varchar(255) NOT NULL DEFAULT '' COMMENT '法人名称',
   `legal_person_mobile` varchar(20) NOT NULL DEFAULT '' COMMENT '法人联系方式',
-  `bussiness_type_code` varchar (20) NOT NULL DEFAULT '-1' COMMENT '经营类型代码（类型是字符串？）',
+  `business_type_code` varchar (20) NOT NULL DEFAULT '-1' COMMENT '经营类型代码（类型是字符串？）',
   `email` varchar(100) NOT NULL DEFAULT '' COMMENT '电子邮箱',
   `business_license_id` varchar (100) NOT NULL DEFAULT '-1' COMMENT '营业执照id（营业执照编号是否用字符串？）',
   PRIMARY KEY (`id`)

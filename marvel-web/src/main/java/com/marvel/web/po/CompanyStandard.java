@@ -62,7 +62,7 @@ public class CompanyStandard implements Serializable {
     /**
      * 经营类型
      */
-    private String bussinessTypeCode;
+    private String businessTypeCode;
 
     /**
      * 邮箱

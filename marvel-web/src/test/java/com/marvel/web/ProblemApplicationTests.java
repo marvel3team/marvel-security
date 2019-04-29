@@ -1,6 +1,5 @@
 package com.marvel.web;
 
-import com.alibaba.fastjson.JSON;
 import com.marvel.common.uuid.SnowflakeIdGenerator;
 import com.marvel.web.mapper.ProblemMapper;
 import com.marvel.web.po.Problem;
