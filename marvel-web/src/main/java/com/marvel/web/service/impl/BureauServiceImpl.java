@@ -29,7 +29,7 @@ public class BureauServiceImpl implements BureauService {
         if (null == bureau){
             throw BusinessException.BUREAU_NOT_EXISTS;
         }
-        bureau.setAresId(bureauInfoReqVo.getAreaId());
+        bureau.setAreaId(bureauInfoReqVo.getAreaId());
         bureau.setName(bureauInfoReqVo.getName());
         bureau.setMobile(bureauInfoReqVo.getMobile());
         bureau.setRemark(bureauInfoReqVo.getRemark());
