@@ -50,13 +50,13 @@ public class ExpertServiceImpl implements ExpertService {
 
 
     @Override
-    public PageBean<ExpertInfoVo> getExpertList(Integer cursor, Integer count) {
+    public PageBean<ExpertInfoVo> getExpertList(Long cursor, Integer count) {
         try {
             long total = expertInfoMapper.getExpertCount();
             if (total == 0) {
                 return assemblePageBean(-1, new ArrayList<>());
             }
-            List<ExpertInfo> expertInfos = expertInfoMapper.getExpertListByPage(count * (cursor - 1), count);
+            List<ExpertInfo> expertInfos = expertInfoMapper.getExpertListByPage(cursor, count);
             if (null == expertInfos || expertInfos.size() == 0) {
                 return assemblePageBean(-1, new ArrayList<>());
             }
@@ -112,8 +112,13 @@ public class ExpertServiceImpl implements ExpertService {
                 expertInfoVo.setArea("");
                 resultList.add(expertInfoVo);
             }
-            long nextCursor = PaginationUtils.nextCursor(cursor, count, total);
-            return assemblePageBean(nextCursor, resultList);
+            if (CollectionUtils.isEmpty(resultList)) {
+                return assemblePageBean(-1, new ArrayList<>());
+            }
+            if (resultList.size() < count) {
+                return assemblePageBean(-1, resultList);
+            }
+            return assemblePageBean(resultList.get(resultList.size()-1).getId(), resultList);
         } catch (Exception e) {
             LOGGER.error("ExpertService-->getExpertList-->exception,cursor:{},count:{}", cursor, count, e);
         }
@@ -158,12 +163,12 @@ public class ExpertServiceImpl implements ExpertService {
     }
 
     @Override
-    public PageBean<PlanDetailVo> getExpertPlanList(Long id, Integer cursor, Integer count) {
+    public PageBean<PlanDetailVo> getExpertPlanList(Long id, Long cursor, Integer count) {
         long total = expertPlanMapper.getExpertPlanCount(id);
         if (total == 0) {
             return assembleExpertPlanPage(-1, new ArrayList<>());
         }
-        List<PlanDetailVo> planDetailVos = expertPlanMapper.getExpertPlanList(id, count * (count - 1), count);
+        List<PlanDetailVo> planDetailVos = expertPlanMapper.getExpertPlanList(id, count,count);
         if (CollectionUtils.isEmpty(planDetailVos)){
             return assembleExpertPlanPage(-1, new ArrayList<>());
         }
@@ -184,8 +189,13 @@ public class ExpertServiceImpl implements ExpertService {
             }
             result.add(planDetailVo);
         }
-        long nexeCursor = PaginationUtils.nextCursor(cursor,count,total);
-        return assembleExpertPlanPage(nexeCursor,result);
+        if (CollectionUtils.isEmpty(result)) {
+            return assembleExpertPlanPage(-1, new ArrayList<>());
+        }
+        if (result.size() < count) {
+            return assembleExpertPlanPage(-1, result);
+        }
+        return assembleExpertPlanPage(result.get(result.size()-1).getId(),result);
     }
 
     @Override

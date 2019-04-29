@@ -39,7 +39,7 @@ public class PlanController {
      * @author andy
      * @date 2019/4/22 下午11:15
      */
-    @MarvelCheck
+    @MarvelCheck(auth = true)
     @RequestMapping(value = "/create_remote_info.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String createRemoteInfo(@RequestBody RemoteInfoReqVo remoteInfo){
@@ -64,7 +64,7 @@ public class PlanController {
      * @author andy
      * @date 2019/4/23 下午10:54
      */
-    @MarvelCheck
+    @MarvelCheck(auth = true)
     @RequestMapping(value = "/update_remote_info.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String updateRemoteInfo(@RequestBody RemoteInfoReqVo remoteInfo){

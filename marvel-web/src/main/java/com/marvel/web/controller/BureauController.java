@@ -33,7 +33,7 @@ public class BureauController {
      * @param bureauInfoReqVo
      * @return
      */
-    @MarvelCheck
+    @MarvelCheck(auth = true)
     @RequestMapping(value = "/update_bureau_info.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String updateBureauInfo(@RequestBody BureauInfoReqVo bureauInfoReqVo){

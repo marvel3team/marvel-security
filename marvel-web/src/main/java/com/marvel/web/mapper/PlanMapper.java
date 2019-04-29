@@ -31,6 +31,17 @@ public interface PlanMapper {
      * @return
      */
     @Select("select * from t_plan where id = #{id}")
+    @Results(id = "planMap",value = {
+            @Result(property = "id",column = "id"),
+            @Result(property = "companyId",column = "company_id"),
+            @Result(property = "bureauId",column = "bureau_id"),
+            @Result(property = "planTime",column = "plan_time"),
+            @Result(property = "timeSlot",column = "time_slot"),
+            @Result(property = "staffId",column = "staff_id"),
+            @Result(property = "planSubject",column = "plan_subject"),
+            @Result(property = "superversionLevel",column = "superversion_level"),
+            @Result(property = "status",column = "status")
+    })
     Plan selectById(@Param("id") Long id);
 
 
@@ -61,5 +72,6 @@ public interface PlanMapper {
      * @return
      */
     @Select("select * from t_plan where company_id=#{companyId} order by id desc limit #{page},#{count}")
+    @ResultMap("planMap")
     List<Plan> getCompanyPlanList(@Param("companyId") Long id, @Param("page") Integer page, @Param("count") Integer count);
 }

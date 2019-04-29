@@ -49,7 +49,7 @@ public class CompanyController {
      * @author andy
      * @date 2019/4/22 下午11:15
      */
-    @MarvelCheck
+    @MarvelCheck(auth = true)
     @RequestMapping(value = "/get_company_list.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public PageBean<CompanyListVo> getCompanyList(@RequestParam(name = "cursor",required = false,defaultValue = "-1") Long cursor,
@@ -68,7 +68,7 @@ public class CompanyController {
      * @author andy
      * @date 2019/4/22 下午11:49
      */
-    @MarvelCheck
+    @MarvelCheck(auth = true)
     @RequestMapping(value = "/get_company_info.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public CompanyDetailVo getCompanyInfo(@RequestParam(name = "id",required = false,defaultValue = "-1") Long id){
@@ -89,7 +89,7 @@ public class CompanyController {
      * @author andy
      * @date 2019/4/22 下午11:49
      */
-    @MarvelCheck
+    @MarvelCheck(auth = true)
     @RequestMapping(value = "/get_plan_list.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public PageBean<PlanDetailVo> getPlanList(@RequestParam(name = "cursor",required = false,defaultValue = "-1") Integer cursor,
@@ -132,7 +132,7 @@ public class CompanyController {
      * @author andy
      * @date 2019/4/22 下午11:49
      */
-    @MarvelCheck
+    @MarvelCheck(auth = true)
     @RequestMapping(value = "/update_company_info.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String updateCompanyInfo(@RequestBody CompanyInfoReqVo companyInfoReqVo){

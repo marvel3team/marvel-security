@@ -39,5 +39,6 @@ public interface ExpertPlanMapper {
             "left join t_expert_info e on e.id = ep.expert_id" +
             "left join t_respond_plan rp on rp.plan_id = ep.plan_id" +
             "where ep.expert_id = #{planId} order by ep.plan_id desc limit #{page},#{count}")
+
     List<PlanDetailVo> getExpertPlanList(@Param("planId") Long id, @Param("page") Integer page, @Param("count") Integer count);
 }

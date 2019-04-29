@@ -19,10 +19,18 @@ public interface BureauMapper {
 
 
     @SelectProvider(type = BureauSqlBuilder.class,method = "selectByIds")
+    @ResultMap("bureauMap")
     List<Bureau> getBureauByIds(@Param("list") List<Long> bureauIds);
 
 
     @SelectProvider(type = BureauSqlBuilder.class,method = "selectById")
+    @Results(id = "bureauMap",value = {
+            @Result(property = "id",column = "area_id"),
+            @Result(property = "companyId",column = "company_id"),
+            @Result(property = "name",column = "name"),
+            @Result(property = "mobile",column = "mobile"),
+            @Result(property = "remark",column = "remark")
+    })
     Bureau getBureauById( Long id);
 
     @UpdateProvider(type = BureauSqlBuilder.class,method = "update")
@@ -38,7 +46,7 @@ public interface BureauMapper {
          */
         public static String selectByIds(Map map) {
             List<Long> ids = (List<Long>) map.get("list");
-            StringBuilder sql = new StringBuilder("select id,area_id as areaId,company_id as companyId,name,mobile,remark");
+            StringBuilder sql = new StringBuilder("select id,area_id ,company_id ,mobile,remark");
             sql.append(" from t_bureau_info where");
             sql.append(" id in ").append("(");
             for (Long id : ids) {
@@ -50,7 +58,7 @@ public interface BureauMapper {
         }
 
         public static String selectById(final Long id){
-            StringBuilder sql = new StringBuilder("select id,area_id as areaId,company_id as companyId,name,mobile,remark ");
+            StringBuilder sql = new StringBuilder("select id,area_id,company_id,name,mobile,remark ");
             sql.append(" from t_bureau_info ");
             sql.append("where id = ").append(id);
             return sql.toString();

@@ -53,11 +53,11 @@ public class ExpertController {
      * @author andy
      * @date 2019/4/22 下午11:15
      */
-    @MarvelCheck
+    @MarvelCheck(auth = true)
     @RequestMapping(value = "/get_expert_list.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public PageBean<ExpertInfoVo> getExpertList(@RequestParam(name = "cursor",required = false,defaultValue = "1") Integer cursor,
-                                                @RequestParam(name = "count",required = false,defaultValue = "20")Integer count){
+    public PageBean<ExpertInfoVo> getExpertList(@RequestParam(name = "cursor",required = false,defaultValue = "-1") Long cursor,
+                                                @RequestParam(name = "count",required = false,defaultValue = "10")Integer count){
         PageBean<ExpertInfoVo> pageBean = expertService.getExpertList(cursor,count);
         return pageBean;
     }
@@ -72,7 +72,7 @@ public class ExpertController {
      * @author andy
      * @date 2019/4/22 下午11:49
      */
-    @MarvelCheck
+    @MarvelCheck(auth = true)
     @RequestMapping(value = "/get_expert_info.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public ExpertInfoVo getExpertInfo(@RequestParam(name = "id",required = false,defaultValue = "-1") Long id){
@@ -93,10 +93,10 @@ public class ExpertController {
      * @author andy
      * @date 2019/4/22 下午11:49
      */
-    @MarvelCheck
+    @MarvelCheck(auth = true)
     @RequestMapping(value = "/get_expert_plan_list.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public PageBean<PlanDetailVo> getExpertPlanList(@RequestParam(name = "cursor",required = false,defaultValue = "1") Integer cursor,
+    public PageBean<PlanDetailVo> getExpertPlanList(@RequestParam(name = "cursor",required = false,defaultValue = "-1") Long cursor,
                                                     @RequestParam(name = "count",required = false,defaultValue = "20")Integer count,
                                                     @RequestParam(name = "id",required = false,defaultValue = "-1") Long id){
         if (null == id || id < 0){

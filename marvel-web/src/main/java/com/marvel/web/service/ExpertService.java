@@ -26,7 +26,7 @@ public interface ExpertService {
      * @param count
      * @return
      */
-    PageBean<ExpertInfoVo> getExpertList(Integer cursor, Integer count);
+    PageBean<ExpertInfoVo> getExpertList(Long cursor, Integer count);
 
     /**
      * 查询专家信息
@@ -42,7 +42,7 @@ public interface ExpertService {
      * @param count
      * @return
      */
-    PageBean<PlanDetailVo> getExpertPlanList(Long id, Integer cursor, Integer count);
+    PageBean<PlanDetailVo> getExpertPlanList(Long id, Long cursor, Integer count);
 
     /**
      * Description: 更新专家信息

@@ -31,6 +31,7 @@ public class BureauApplicationTests extends BaseTestUtils{
         Assert.assertEquals("{}",result);
     }
 
+
     private BureauInfoReqVo assembleBureauInfo(){
         BureauInfoReqVo reqVo = new BureauInfoReqVo();
         reqVo.setId(1l);
