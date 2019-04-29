@@ -62,16 +62,16 @@ public interface BureauMapper {
                 sql.append("area_id = ").append(bureau.getAreaId()).append(",");
             }
             if (bureau.getCompanyId() != null){
-                sql.append("company_id").append(bureau.getCompanyId()).append(",");
+                sql.append("company_id = ").append(bureau.getCompanyId()).append(",");
             }
             if (StringUtils.isNotBlank(bureau.getName())){
-                sql.append("name").append(bureau.getName()).append(",");
+                sql.append("name = '").append(bureau.getName()).append("',");
             }
             if (StringUtils.isNotBlank(bureau.getMobile())){
-                sql.append("mobile").append(bureau.getMobile()).append(",");
+                sql.append("mobile = '").append(bureau.getMobile()).append("',");
             }
             if (StringUtils.isNotBlank(bureau.getRemark())){
-                sql.append("remark").append(bureau.getRemark()).append(",");
+                sql.append("remark = '").append(bureau.getRemark()).append("',");
             }
             sql.deleteCharAt(sql.length() -1);
             sql.append(" where id = ").append(bureau.getId());
