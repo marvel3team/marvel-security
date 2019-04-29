@@ -71,4 +71,16 @@ public class StandardApplicationTests extends BaseTestUtils {
         Assert.assertNotNull(list);
     }
 
+    @Test
+    public void updateTest(){
+        Long id = 11111L;
+        CompanyStandard company = companyStandardMapper.getCompanyById(id);
+        company.setName("新名称");
+        company.setBusinessLicenseId("H33333333");
+        int update = companyStandardMapper.updateCompanyStandard(company);
+        Assert.assertTrue(update > 0);
+        CompanyStandard newCompany = companyStandardMapper.getCompanyById(id);
+        Assert.assertTrue(company.getName().equals(newCompany.getName()));
+    }
+
 }
