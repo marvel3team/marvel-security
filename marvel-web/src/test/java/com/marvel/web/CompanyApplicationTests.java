@@ -3,12 +3,10 @@ package com.marvel.web;
 import com.marvel.common.models.PageBean;
 import com.marvel.web.mapper.CompanyStandardMapper;
 import com.marvel.web.po.CompanyStandard;
-import com.marvel.web.po.Problem;
 import com.marvel.web.service.CompanyService;
 import com.marvel.web.vo.CompanyDetailVo;
 import com.marvel.web.vo.CompanyInfoReqVo;
 import com.marvel.web.vo.CompanyListVo;
-import org.apache.ibatis.annotations.ResultMap;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -28,6 +28,11 @@ public class BureauController {
     @Autowired
     private BureauService bureauService;
 
+    /**
+     * 修改科局人员信息
+     * @param bureauInfoReqVo
+     * @return
+     */
     @MarvelCheck
     @RequestMapping(value = "/update_bureau_info.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody

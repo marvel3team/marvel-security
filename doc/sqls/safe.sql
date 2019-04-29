@@ -49,7 +49,7 @@ CREATE TABLE `t_bolier_info` (
 DROP TABLE IF EXISTS `t_bureau_info`;
 CREATE TABLE `t_bureau_info` (
   `id` bigint(20) NOT NULL COMMENT '科局人员id',
-  `ares_id` int(11) NOT NULL DEFAULT '0' COMMENT '地区id',
+  `area_id` int(11) NOT NULL DEFAULT '0' COMMENT '地区id',
   `company_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '所属公司id',
   `name` varchar(100) NOT NULL DEFAULT '' COMMENT '姓名',
   `mobile` varchar(11) NOT NULL DEFAULT '' COMMENT '手机号',

@@ -23,7 +23,7 @@ public class Bureau implements Serializable {
     /**
      * 地区id
      */
-    private Integer aresId;
+    private Integer areaId;
 
     /**
      * 公司id
