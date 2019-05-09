@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -74,6 +75,7 @@ public class ApiHttpClient {
      */
     public String doGet(String url, MediaType contentType, Map<String, String> headers, Map params) {
         HttpEntity<String> entity = new HttpEntity<String>(buildHttpHeaders(contentType, headers));
+        System.out.println(buildUrl(url, params));
         return doCall(entity, HttpMethod.GET, buildUrl(url, params));
     }
 
@@ -144,6 +146,9 @@ public class ApiHttpClient {
      * @return
      */
     private String buildUrl(String url, Map<String, Object> params) {
+        if (CollectionUtils.isEmpty(params)) {
+            return url;
+        }
         List<String> queryStrings = new ArrayList<>();
         for (Map.Entry<String, Object> entry : params.entrySet()) {
             Object value = entry.getValue();
