@@ -15,11 +15,12 @@ public interface VerifyCodeService {
      * Description: 获取验证码
      *
      * @param uid
+     * @param mobile
      * @return com.marvel.web.vo.VerifyCode
      * @Date 19:10 2019-04-22
      * @Author zhongjie
      **/
-    VerifyCode getVerify(Long uid);
+    VerifyCode getVerify(Long uid, String mobile);
 
     /**
      * Description: 获取发送到手机号的验证码

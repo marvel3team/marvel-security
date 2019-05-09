@@ -1,8 +1,9 @@
 package com.marvel.web.service.impl;
 
-import com.marvel.common.http.template.ApiHttpClient;
+import com.marvel.common.utils.RandomUtils;
 import com.marvel.web.constants.RedisKeys;
 import com.marvel.web.exception.BusinessException;
+import com.marvel.web.service.SmsService;
 import com.marvel.web.service.VerifyCodeService;
 import com.marvel.web.vo.VerifyCode;
 import org.apache.commons.lang3.StringUtils;
@@ -35,22 +36,23 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
     @Autowired
-    private ApiHttpClient apiHttpClient;
+    private SmsService smsService;
 
     @Override
-    public VerifyCode getVerify(Long uid) {
+    public VerifyCode getVerify(Long uid, String mobile) {
         String key = RedisKeys.getKey(RedisKeys.VERIFY_CODE, String.valueOf(uid));
         Map<String, Long> entries = redisTemplate.opsForHash().entries(key);
         //验证码不存在，如第一次请求或者验证码过期后再次请求
         if (CollectionUtils.isEmpty(entries) || CollectionUtils.isEmpty(entries.keySet())
                 || CollectionUtils.isEmpty(entries.values())) {
-            return new VerifyCode(sendCode(key, uid), expireTime);
+            return new VerifyCode(sendCode(key, mobile), expireTime);
         }
         //如果验证码存在，就是说验证码未过期，如果距离上一次验证码发送超过90s，则进行一次验证码发送
         Long createTime = entries.values().iterator().next();
         if (System.currentTimeMillis() - createTime > intervalTime) {
-            return new VerifyCode(sendCode(key, uid), expireTime);
+            return new VerifyCode(sendCode(key, mobile), expireTime);
         }
         throw BusinessException.LAST_VERIFY_CODE_EFFECTIVE;
     }
@@ -62,7 +64,7 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
         if (!CollectionUtils.isEmpty(entries) && !CollectionUtils.isEmpty(entries.keySet())) {
             return entries.keySet().iterator().next();
         }
-        return null;
+        return StringUtils.EMPTY;
     }
 
     @Override
@@ -74,27 +76,19 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
     /**
      * 获取验证码
      * @param key
-     * @param uid
+     * @param mobile
      * @return
      */
-    private String sendCode(String key, Long uid) {
+    private String sendCode(String key, String mobile) {
         //发送验证码
-        String code = sendCode(uid);
-        if (StringUtils.isBlank(code)) {
+        int code = RandomUtils.random4Bit();
+        boolean success = smsService.sendCode(mobile, code);
+        if (!success) {
             throw BusinessException.VERIFY_CODE_SEND_FAIL;
         }
         //保存验证码，并设置验证码的有效期
         redisTemplate.opsForHash().put(key, code, System.currentTimeMillis());
         redisTemplate.expire(key, expireTime, TimeUnit.SECONDS);
-        return code;
-    }
-
-    /**
-     * 往指定手机号发送
-     * @param uid
-     * @return
-     */
-    public String sendCode(Long uid) {
-        return "6666";
+        return String.valueOf(code);
     }
 }
