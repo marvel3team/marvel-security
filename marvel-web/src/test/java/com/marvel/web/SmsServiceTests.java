@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @Classname SmsServiceTests
- * @Description TODO
+ * @Description 短信接口测试类
  * @Date 2019/5/9 下午11:14
  * @Author zhongjie
  */
@@ -17,6 +17,6 @@ public class SmsServiceTests extends BaseTestUtils {
 
     @Test
     public void smsTest() {
-        smsService.sendCode("18519507691", 6666);
+        smsService.sendCode("185****7691", 8888);
     }
 }

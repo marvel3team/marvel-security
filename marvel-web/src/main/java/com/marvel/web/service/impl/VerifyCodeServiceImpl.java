@@ -79,7 +79,7 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
      * @param mobile
      * @return
      */
-    private String sendCode(String key, String mobile) {
+    private boolean sendCode(String key, String mobile) {
         //发送验证码
         int code = RandomUtils.random4Bit();
         boolean success = smsService.sendCode(mobile, code);
@@ -89,6 +89,6 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
         //保存验证码，并设置验证码的有效期
         redisTemplate.opsForHash().put(key, code, System.currentTimeMillis());
         redisTemplate.expire(key, expireTime, TimeUnit.SECONDS);
-        return String.valueOf(code);
+        return true;
     }
 }

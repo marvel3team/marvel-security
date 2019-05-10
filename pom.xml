@@ -30,7 +30,11 @@
 		<guava.version>23.0</guava.version>
 		<poi.version>1.4.2</poi.version>
 		<mysql.version>8.0.15</mysql.version>
+		<jedis.version>2.9.0</jedis.version>
+		<commons-pool2.version>2.5.0</commons-pool2.version>
 		<httpclient.version>4.5.6</httpclient.version>
+		<commons-collections4.version>4.3</commons-collections4.version>
+		<aliyun-java-sdk-core.version>4.1.1</aliyun-java-sdk-core.version>
 		<maven-jar-plugin.version>2.6</maven-jar-plugin.version>
 	</properties>
 
@@ -158,12 +162,22 @@
 			<dependency>
 				<groupId>redis.clients</groupId>
 				<artifactId>jedis</artifactId>
-				<version>2.9.0</version>
+				<version>${jedis.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-pool2</artifactId>
-				<version>2.5.0</version>
+				<version>${commons-pool2.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-collections4</artifactId>
+				<version>${commons-collections4.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.aliyun</groupId>
+				<artifactId>aliyun-java-sdk-core</artifactId>
+				<version>${aliyun-java-sdk-core.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

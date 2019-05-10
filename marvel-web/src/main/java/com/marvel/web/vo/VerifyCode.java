@@ -17,7 +17,7 @@ public class VerifyCode {
     /**
      * 验证码
      */
-    private String code;
+    private boolean success;
     /**
      * 有效期
      */

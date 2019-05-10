@@ -34,9 +34,9 @@ public class UserController {
     @MarvelCheck(auth = true)
     @RequestMapping(value = "/send_verify.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public VerifyCode getVerify(@RequestParam(name = "mobile") String mobile){
+    public VerifyCode getVerify(){
         User user = userService.getUser(RequestContext.getRequestContext().getUid());
-        VerifyCode code = verifyCodeService.getVerify(user.getId(), mobile);
+        VerifyCode code = verifyCodeService.getVerify(user.getId(), user.getMobile());
         return code;
     }
 
