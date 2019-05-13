@@ -87,7 +87,7 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
             throw BusinessException.VERIFY_CODE_SEND_FAIL;
         }
         //保存验证码，并设置验证码的有效期
-        redisTemplate.opsForHash().put(key, code, System.currentTimeMillis());
+        redisTemplate.opsForHash().put(key, String.valueOf(code), System.currentTimeMillis());
         redisTemplate.expire(key, expireTime, TimeUnit.SECONDS);
         return true;
     }

@@ -37,7 +37,7 @@ public class WebMvcConfigurer extends WebMvcConfigurationSupport {
                 .allowedOrigins("*")
                 .allowCredentials(true)
                 .allowedHeaders("*")
-                .allowedMethods("GET", "POST")
+                .allowedMethods("GET", "POST", "DELETE", "INPUT")
                 .maxAge(3600);
         super.addCorsMappings(registry);
     }
