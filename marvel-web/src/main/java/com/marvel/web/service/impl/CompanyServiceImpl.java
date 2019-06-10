@@ -192,10 +192,10 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public PageBean<ServiceInfo> getServiceList(RequestContext requestContext, Long cursor, Integer count) {
+    public PageBean<ServiceInfo> getServiceList(RequestContext requestContext, String serviceName, Long cursor, Integer count) {
         PageBean<ServiceInfo> result = new PageBean<>();
         result.setCount(count);
-        List<ServiceInfo> list = serviceMapper.findByPage(cursor, count);
+        List<ServiceInfo> list = serviceMapper.findByPage(serviceName, cursor, count);
         if (CollectionUtils.isEmpty(list)) {
             result.setNextCursor(-1L);
             result.setList(Lists.newArrayList());

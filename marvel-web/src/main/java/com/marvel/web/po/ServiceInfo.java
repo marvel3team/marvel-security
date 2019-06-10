@@ -35,4 +35,9 @@ public class ServiceInfo implements Serializable {
      */
     private Integer serviceCycle;
 
+    /**
+     * 业务描述
+     */
+    private String serviceDesc;
+
 }

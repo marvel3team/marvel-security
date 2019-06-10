@@ -114,12 +114,13 @@ public class CompanyController {
     @MarvelCheck(auth = true)
     @RequestMapping(value = "/get_service_content_list.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public PageBean<ServiceInfo> getServiceList(@RequestParam(name = "cursor", required = false, defaultValue = "-1") Long cursor,
+    public PageBean<ServiceInfo> getServiceList(@RequestParam(name = "serviceName", required = false, defaultValue = "") String serviceName,
+                                                @RequestParam(name = "cursor", required = false, defaultValue = "-1") Long cursor,
                                                 @RequestParam(name = "count", required = false, defaultValue = "10") Integer count){
         if (count == null) {
             count = Constants.DEFAULT_COUNT;
         }
-        PageBean<ServiceInfo> result = companyService.getServiceList(RequestContext.getRequestContext(), cursor, count);
+        PageBean<ServiceInfo> result = companyService.getServiceList(RequestContext.getRequestContext(), serviceName ,cursor, count);
         return result;
     }
 

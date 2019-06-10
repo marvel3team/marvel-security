@@ -66,7 +66,7 @@ public interface CompanyService {
      * @Date 下午10:30 2019/4/24
      * @Author zhongjie
      **/
-    PageBean<ServiceInfo> getServiceList(RequestContext requestContext, Long cursor, Integer count);
+    PageBean<ServiceInfo> getServiceList(RequestContext requestContext, String serviceName, Long cursor, Integer count);
 
     /**
      * 更新企业信息

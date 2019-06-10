@@ -37,7 +37,7 @@ public class ServiceMapperTests extends BaseTestUtils{
     @Test
     public void getListTest(){
         Assert.assertNotNull(serviceMapper);
-        List<ServiceInfo> list = serviceMapper.findByPage(null, 10);
+        List<ServiceInfo> list = serviceMapper.findByPage(null,null, 10);
         Assert.assertNotNull(list);
     }
 }
