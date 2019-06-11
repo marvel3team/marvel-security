@@ -27,6 +27,15 @@ public interface ServiceMapper {
     })
     List<ServiceInfo> findByPage(String serviceName, Long cursor, Integer count);
 
+    @Delete("DELETE FROM t_service_info WHERE id = #{id}")
+    int deleteById(@Param("id") Long id);
+
+    @Select("SELECT id, service_type, service_name, service_cycle, service_desc FROM t_service_info WHERE id = #{id}")
+    ServiceInfo queryById(@Param("id") Long id);
+
+    @Update("UPDATE t_service_info SET service_name = #{serviceInfo.serviceName}, service_desc = #{serviceInfo.serviceDesc} WHERE id = #{serviceInfo.id}")
+    int update(@Param("serviceInfo") ServiceInfo serviceInfo);
+
     class SqlBuilder {
         public static String buildFindByPage(final String serviceName, final Long cursor, final Integer count) {
             StringBuilder sql = new StringBuilder("SELECT id, service_type, service_name, service_cycle, service_desc FROM t_service_info where 1=1");

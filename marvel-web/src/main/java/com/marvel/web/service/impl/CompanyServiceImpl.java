@@ -3,6 +3,7 @@ package com.marvel.web.service.impl;
 import com.google.common.collect.Lists;
 import com.marvel.common.models.PageBean;
 import com.marvel.common.utils.PaginationUtils;
+import com.marvel.common.uuid.SnowflakeIdGenerator;
 import com.marvel.framework.context.RequestContext;
 import com.marvel.web.enums.UserType;
 import com.marvel.web.exception.BusinessException;
@@ -16,15 +17,13 @@ import com.marvel.web.vo.PlanDetailVo;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -53,6 +52,8 @@ public class CompanyServiceImpl implements CompanyService {
     private BureauMapper bureauMapper;
     @Resource
     private ServiceMapper serviceMapper;
+    @Autowired
+    private SnowflakeIdGenerator snowflakeIdGenerator;
 
     @Override
     public PageBean<CompanyListVo> getCompanyList(Long cursor, Integer count) {
@@ -230,6 +231,54 @@ public class CompanyServiceImpl implements CompanyService {
             throw BusinessException.UPDATE_ERROR;
         }
         return "{}";
+    }
+
+    @Override
+    public void addService(String serviceName, String serviceDesc) {
+        ServiceInfo serviceInfo = assembleServiceInfo(serviceName, serviceDesc);
+        serviceMapper.save(serviceInfo);
+    }
+
+    @Override
+    public boolean deleteService(Long serviceId) {
+        return serviceMapper.deleteById(serviceId) > 0;
+    }
+
+    @Override
+    public boolean addService(Long serviceId, String serviceName, String serviceDesc) {
+        ServiceInfo serviceInfo = getService(serviceId);
+        if (Objects.nonNull(serviceName)) {
+            serviceInfo.setServiceName(serviceName);
+        }
+        if (Objects.nonNull(serviceDesc)) {
+            serviceInfo.setServiceDesc(serviceDesc);
+        }
+        return serviceMapper.update(serviceInfo) > 0;
+    }
+
+    @Override
+    public ServiceInfo getService(Long serviceId) {
+        ServiceInfo serviceInfo = serviceMapper.queryById(serviceId);
+        if (Objects.isNull(serviceInfo)) {
+            throw BusinessException.SERVICE_NOT_EXISTS;
+        }
+        return serviceInfo;
+    }
+
+    /**
+     * 组装服务内容
+     * @param serviceName
+     * @param serviceDesc
+     * @return
+     */
+    private ServiceInfo assembleServiceInfo(String serviceName, String serviceDesc) {
+        ServiceInfo serviceInfo = new ServiceInfo();
+        serviceInfo.setId(snowflakeIdGenerator.generateId());
+        serviceInfo.setServiceName(serviceName);
+        serviceInfo.setServiceDesc(serviceDesc);
+        serviceInfo.setServiceType(0);
+        serviceInfo.setServiceCycle(0);
+        return serviceInfo;
     }
 
 

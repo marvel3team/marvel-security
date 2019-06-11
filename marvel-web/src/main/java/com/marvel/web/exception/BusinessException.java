@@ -115,6 +115,16 @@ public class BusinessException {
      */
     public static CommonException BUREAU_NOT_EXISTS = new CommonException(300021, "科局员工不存在");
 
+    /**
+     * 删除失败
+     */
+    public static CommonException DELETE_ERROR = new CommonException(300022, "删除失败");
+
+    /**
+     * 服务不存在
+     */
+    public static CommonException SERVICE_NOT_EXISTS = new CommonException(300023, "业务不存在");
+
 
 
 }

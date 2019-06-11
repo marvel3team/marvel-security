@@ -102,6 +102,95 @@ public class CompanyController {
         return companyService.getPlanList(cursor,count,id);
     }
 
+    /***
+     * Description: //新增服务内容
+     *
+     * @param serviceName
+     * @param serviceDesc
+     * @return
+     * @Date 下午9:51 2019/6/11
+     * @Author zhongjie
+     **/
+    @MarvelCheck(auth = true)
+    @RequestMapping(value = "/add_service_content.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public String addService(@RequestParam(name = "serviceName", required = false, defaultValue = "") String serviceName,
+                                                @RequestParam(name = "serviceDesc", required = false, defaultValue = "") String serviceDesc){
+        if (StringUtils.isBlank(serviceName) || StringUtils.isBlank(serviceDesc)) {
+            throw BusinessException.INVALID_PARAMS;
+        }
+        companyService.addService(serviceName, serviceDesc);
+        return StringUtils.EMPTY;
+    }
+
+    /***
+     * Description: //删除服务
+     *
+     * @param serviceId 服务ID
+     * @return
+     * @Date 下午10:14 2019/6/11
+     * @Author zhongjie
+     **/
+    @MarvelCheck(auth = true)
+    @RequestMapping(value = "/delete_service_content.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public String deleteService(@RequestParam(name = "serviceId", required = false, defaultValue = "") Long serviceId){
+        if (serviceId == null || serviceId <= 0) {
+            throw BusinessException.INVALID_PARAMS;
+        }
+        boolean result = companyService.deleteService(serviceId);
+        if (!result) {
+            throw BusinessException.DELETE_ERROR;
+        }
+        return StringUtils.EMPTY;
+    }
+
+    /***
+     * Description: //编辑服务内容
+     *
+     * @param serviceId
+     * @param serviceName
+     * @param serviceDesc
+     * @return
+     * @Date 下午10:20 2019/6/11
+     * @Author zhongjie
+     **/
+    @MarvelCheck(auth = true)
+    @RequestMapping(value = "/update_service_content.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public String editService(@RequestParam(name = "serviceId", required = false, defaultValue = "") Long serviceId,
+                              @RequestParam(name = "serviceName", required = false, defaultValue = "") String serviceName,
+                              @RequestParam(name = "serviceDesc", required = false, defaultValue = "") String serviceDesc){
+        if (serviceId == null || serviceId <= 0) {
+            throw BusinessException.INVALID_PARAMS;
+        }
+        boolean result = companyService.addService(serviceId, serviceName, serviceDesc);
+        if (!result) {
+            throw BusinessException.SAVE_ERROR;
+        }
+        return StringUtils.EMPTY;
+    }
+
+    /***
+     * Description: //查询单条服务内容
+     *
+     * @Param
+     * @param serviceId
+     * @return
+     * @Date 下午10:24 2019/6/11
+     * @Author zhongjie
+     **/
+    @MarvelCheck(auth = true)
+    @RequestMapping(value = "/query_service_content.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ServiceInfo getService(@RequestParam(name = "serviceId", required = false, defaultValue = "") Long serviceId){
+        if (serviceId == null || serviceId <= 0) {
+            throw BusinessException.INVALID_PARAMS;
+        }
+        ServiceInfo serviceInfo = companyService.getService(serviceId);
+        return serviceInfo;
+    }
+
     /**
      * Description: 服务内容列表
      *

@@ -439,6 +439,7 @@ CREATE TABLE `t_service_info` (
   `id` bigint(20) NOT NULL COMMENT '服务内容ID',
   `service_type` tinyint(3) NOT NULL DEFAULT '1' COMMENT '服务类型\n1 安全隐患排查\n2 安全生产培训\n3 双控培训\n4 职业健康培训\n5 应急救援培训\n6 应急救援\n7 事故调查',
   `service_name` varchar(255) NOT NULL DEFAULT '' COMMENT '对应的服务类型名称',
+  `service_desc` varchar(2048) NOT NULL DEFAULT '' COMMENT '服务描述',
   `service_cycle` int(11) NOT NULL DEFAULT '0' COMMENT '服务周期',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='服务内容表';

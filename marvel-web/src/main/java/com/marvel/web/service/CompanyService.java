@@ -74,4 +74,34 @@ public interface CompanyService {
      * @return
      */
     String updateCompanyInfo(CompanyInfoReqVo companyInfoReqVo);
+
+    /**
+     * 服务内容新增
+     * @param serviceName
+     * @param serviceDesc
+     */
+    void addService(String serviceName, String serviceDesc);
+
+    /**
+     * 删除服务内容
+     * @param serviceId
+     * @return
+     */
+    boolean deleteService(Long serviceId);
+
+    /**
+     * 新增服务内容
+     * @param serviceId
+     * @param serviceName
+     * @param serviceDesc
+     * @return
+     */
+    boolean addService(Long serviceId, String serviceName, String serviceDesc);
+
+    /**
+     * 获取服务
+     * @param serviceId
+     * @return
+     */
+    ServiceInfo getService(Long serviceId);
 }
