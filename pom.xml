@@ -179,6 +179,11 @@
 				<artifactId>aliyun-java-sdk-core</artifactId>
 				<version>${aliyun-java-sdk-core.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>com.qiniu</groupId>
+				<artifactId>qiniu-java-sdk</artifactId>
+				<version>7.2.22</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
