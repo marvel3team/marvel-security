@@ -101,6 +101,13 @@ CREATE TABLE `t_company_base_info` (
   `production_department_peoples` int(11) NOT NULL DEFAULT '0' COMMENT '生产车间人数',
   `office_peoples` int(11) NOT NULL DEFAULT '0' COMMENT '办公室及后勤人数',
   `work_days_yearly` int(11) NOT NULL DEFAULT '0' COMMENT '年工作天数',
+  `industry_type` varchar(30) NOT NULL DEFAULT '' COMMENT '行业类型',
+  `safety_level` int(11) NOT NULL DEFAULT '-1' COMMENT '安全等级',
+  `certificate_date` bigint(20) NOT NULL DEFAULT '-1' COMMENT '安全证书发放日期',
+  `major_risk_sources` varchar(100) NOT NULL DEFAULT '' COMMENT '重大风险源',
+  `higher_risk_sources` varchar(100) NOT NULL DEFAULT '' COMMENT '较大风险源',
+  `general_risk_sources` varchar(100) NOT NULL DEFAULT '' COMMENT '一般风险源',
+  `low_risk_sources` varchar(100) NOT NULL DEFAULT '' COMMENT '低级风险源',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='公司基础数据表';
 
@@ -267,6 +274,12 @@ CREATE TABLE `t_expert_info` (
   `mobile` varchar(11) NOT NULL DEFAULT '' COMMENT '手机号',
   `remark` varchar(512) NOT NULL DEFAULT '' COMMENT '备注',
   `sign_url` varchar(512) NOT NULL DEFAULT '' COMMENT '本人签名图片地址',
+  `sex` tinyint(1) NOT NULL DEFAULT '1' COMMENT '性别 1 男 2 女',
+  `nation` varchar(30) NOT NULL DEFAULT '' COMMENT '民族',
+  `highest_degree` varchar(50) NOT NULL DEFAULT '' COMMENT '最高学历',
+  `job_resume` varchar(512) NOT NULL DEFAULT '' COMMENT '工作履历',
+  `categories` varchar(50) NOT NULL DEFAULT '' COMMENT '专业类别',
+  `honor` varchar(255) NOT NULL DEFAULT '' COMMENT '荣誉',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='专家信息表';
 
@@ -357,6 +370,17 @@ CREATE TABLE `t_plan` (
   `rectification_result_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '整改结果id',
   `finish_time` bigint(20) NOT NULL DEFAULT '-1' COMMENT '完成时间',
   `status` tinyint(3) NOT NULL DEFAULT '10' COMMENT '10：科局发起 20：企业工作人员认领任务 30： 专家确认时间 40.准备执行 50. 执行中 60. 开具不符合项 70. 整改完毕  80：科局取消 90：未确定时间计划取消 100：执行前异常取消 ',
+  `name` varchar(100) NOT NULL DEFAULT '' COMMENT '业务名称',
+  `type_name` varchar(30) NOT NULL DEFAULT '' COMMENT '业务类型名称',
+  `province` varchar(100) NOT NULL DEFAULT '' COMMENT '省',
+  `city` varchar(100) NOT NULL DEFAULT '' COMMENT '市',
+  `other_city` varchar(100) NOT NULL DEFAULT '' COMMENT '其他城市',
+  `service_content` varchar(100) NOT NULL DEFAULT '' COMMENT '服务内容',
+  `domain` varchar(100) NOT NULL DEFAULT '' COMMENT '领域',
+  `domain_details` varchar(100) NOT NULL DEFAULT '' COMMENT '具体领域',
+  `domain_mince` varchar(100) NOT NULL DEFAULT '' COMMENT '领域细分',
+  `service_type` varchar(100) NOT NULL DEFAULT '' COMMENT '服务方式',
+  `investigation_company` varchar(100) NOT NULL DEFAULT '' COMMENT '排查企业',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='计划表';
 

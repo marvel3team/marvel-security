@@ -1,6 +1,5 @@
 package com.marvel.web.service;
 
-import com.marvel.framework.context.RequestContext;
 import com.marvel.web.vo.VerifyCode;
 
 /**

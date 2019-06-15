@@ -50,6 +50,13 @@ public class ProblemPicApplicationTests extends BaseTestUtils{
         System.out.println(JSON.toJSONString(pics));
     }
 
+    @Test
+    public void findById() {
+        long id = 1l;
+        ProblemPic pic = problemPicMapper.findById(id);
+        System.out.println(JSON.toJSONString(pic));
+    }
+
     private List<ProblemPic> mockList(int size) {
         List<ProblemPic> pics = new ArrayList<>();
         for (int i = 0; i < size; i++) {

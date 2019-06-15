@@ -34,7 +34,7 @@ public class ProblemApplicationTests extends BaseTestUtils{
     @Test
     public void findByIdTest(){
         Assert.assertNotNull(problemMapper);
-        long id = 570635707547123712l;
+        long id = 572184271712681984l;
         Problem problem = problemMapper.findById(id);
         Assert.assertNotNull(problem);
     }
