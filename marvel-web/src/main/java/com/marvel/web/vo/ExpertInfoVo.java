@@ -96,4 +96,36 @@ public class ExpertInfoVo {
      * 行业
      */
     private String industry;
+
+    /**
+     * 性别
+     */
+    private String sex;
+
+    /**
+     * 民族
+     */
+    private String nation;
+
+    /**
+     * 最高学历
+     */
+    private String highestDegree;
+
+    /**
+     * 工作履历
+     */
+    private String jobResume;
+
+    /**
+     * 专业类别
+     */
+    private String categories;
+
+    /**
+     * 荣誉
+     */
+    private String honor;
+
+
 }

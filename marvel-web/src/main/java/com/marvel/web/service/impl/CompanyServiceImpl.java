@@ -5,6 +5,8 @@ import com.marvel.common.models.PageBean;
 import com.marvel.common.utils.PaginationUtils;
 import com.marvel.common.uuid.SnowflakeIdGenerator;
 import com.marvel.framework.context.RequestContext;
+import com.marvel.web.enums.IndustryType;
+import com.marvel.web.enums.SafetyLevel;
 import com.marvel.web.enums.UserType;
 import com.marvel.web.exception.BusinessException;
 import com.marvel.web.mapper.*;
@@ -128,6 +130,14 @@ public class CompanyServiceImpl implements CompanyService {
             companyDetailVo.setProductionDepartmentPeoples(companyBase.getProductionDepartmentPeoples());
             companyDetailVo.setOfficePeoples(companyBase.getOfficePeoples());
             companyDetailVo.setWorkDaysYearly(companyBase.getYearlyWorkDays());
+            companyDetailVo.setIndustryType(IndustryType.valueOf(companyBase.getIndustryType()) == null ? "" : IndustryType.valueOf(companyBase.getIndustryType()).desc());
+            companyDetailVo.setSafetyLevel(SafetyLevel.valueOf(companyBase.getSafetyLevel()) == null ? "" : SafetyLevel.valueOf(companyBase.getSafetyLevel()).desc());
+            companyDetailVo.setCertificateStartTime(companyBase.getCertificateStartTime());
+            companyDetailVo.setCertificateEndTime(companyBase.getCertificateEndTime());
+            companyDetailVo.setMajorRiskSources(companyBase.getMajorRiskSources());
+            companyDetailVo.setHigherRiskSources(companyBase.getHigherRiskSources());
+            companyDetailVo.setGeneralRiskSources(companyBase.getGeneralRiskSources());
+            companyDetailVo.setLowRiskSources(companyBase.getLowRiskSources());
 
             return companyDetailVo;
         } catch (Exception e) {
@@ -267,6 +277,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     /**
      * 组装服务内容
+     *
      * @param serviceName
      * @param serviceDesc
      * @return

@@ -153,4 +153,37 @@ public class CompanyDetailVo {
      * 年工作天数
      */
     private Integer workDaysYearly;
+    /**
+     * 行业类型
+     */
+    private String industryType;
+
+    /**
+     * 安全等级
+     */
+    private String safetyLevel;
+    /**
+     * 安全证书到期日期
+     */
+    private Long certificateStartTime;
+    /**
+     * 安全证书到期日期
+     */
+    private Long certificateEndTime;
+    /**
+     * 重大风险源
+     */
+    private String majorRiskSources;
+    /**
+     * 较大风险源
+     */
+    private String higherRiskSources;
+    /**
+     * 一般风险源
+     */
+    private String generalRiskSources;
+    /**
+     * 低级风险源
+     */
+    private String lowRiskSources;
 }

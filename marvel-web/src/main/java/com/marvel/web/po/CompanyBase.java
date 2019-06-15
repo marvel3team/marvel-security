@@ -112,4 +112,37 @@ public class CompanyBase implements Serializable {
      * 年工作天数
      */
     private Integer yearlyWorkDays;
+    /**
+     * 行业类型
+     */
+    private Integer industryType;
+
+    /**
+     * 安全等级
+     */
+    private Integer safetyLevel;
+    /**
+     * 安全证书到期日期
+     */
+    private Long certificateStartTime;
+    /**
+     * 安全证书到期日期
+     */
+    private Long certificateEndTime;
+    /**
+     * 重大风险源
+     */
+    private String majorRiskSources;
+    /**
+     * 较大风险源
+     */
+    private String higherRiskSources;
+    /**
+     * 一般风险源
+     */
+    private String generalRiskSources;
+    /**
+     * 低级风险源
+     */
+    private String lowRiskSources;
 }

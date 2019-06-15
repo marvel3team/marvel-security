@@ -22,7 +22,7 @@ public interface CompanyIndustryMapper {
      * @param industryId
      * @return
      */
-    @Select("select * from t_company_industry where id = #{id}")
+    @Select("select id,type,content,service_cycle as serviceCycle, cost from t_company_industry where id = #{id}")
     CompanyIndustry getIndustryById(@Param("id") Long industryId);
 
 
@@ -34,7 +34,7 @@ public interface CompanyIndustryMapper {
      */
     @Select({
             "<script>",
-            "select * from t_company_industry where id in",
+            "select id,type,content,service_cycle as serviceCycle, cost from t_company_industry where id in",
             "<foreach collection='list' item='id' open='(' separator=',' close=')'>",
             "#{id}",
             "</foreach>",
