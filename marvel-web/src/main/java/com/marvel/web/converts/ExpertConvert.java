@@ -33,6 +33,12 @@ public class ExpertConvert {
         expertInfo.setMobile(expertInfoReq.getMobile());
         expertInfo.setRemark(expertInfoReq.getRemark());
         expertInfo.setSignUrl(expertInfoReq.getSignUrl());
+        expertInfo.setSex(expertInfoReq.getSex());
+        expertInfo.setNation(expertInfoReq.getNation());
+        expertInfo.setHighestDegree(expertInfoReq.getHighestDegree());
+        expertInfo.setJobResume(expertInfoReq.getJobResume());
+        expertInfo.setCategories(expertInfoReq.getCategories());
+        expertInfo.setHonor(expertInfoReq.getHonor());
         return expertInfo;
     }
 }

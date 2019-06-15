@@ -3,6 +3,7 @@ package com.marvel.web.service.impl;
 import com.google.common.collect.Lists;
 import com.marvel.common.models.PageBean;
 import com.marvel.common.utils.PaginationUtils;
+import com.marvel.common.uuid.SnowflakeIdGenerator;
 import com.marvel.framework.context.RequestContext;
 import com.marvel.web.controller.req.WorkTimeReq;
 import com.marvel.web.enums.Sex;
@@ -48,6 +49,8 @@ public class ExpertServiceImpl implements ExpertService {
     private BureauMapper bureauMapper;
     @Resource
     private ExpertTimeMapper expertTimeMapper;
+    @Resource
+    private SnowflakeIdGenerator snowflakeIdGenerator;
 
 
     @Override
@@ -268,6 +271,32 @@ public class ExpertServiceImpl implements ExpertService {
         return result > 0;
     }
 
+    @Override
+    public boolean save(RequestContext requestContext, ExpertInfo convert) {
+        Long id = snowflakeIdGenerator.generateId();
+        if (null == id){
+            throw BusinessException.SAVE_ERROR;
+        }
+        int insert = expertInfoMapper.insertExpertInfo(convert);
+        if (insert > 0){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean delExpertInfo(RequestContext requestContext, Long id) {
+        ExpertInfo expertInfo = expertInfoMapper.getExpertInfoById(id);
+        if (Objects.isNull(expertInfo)) {
+            throw BusinessException.EXPERT_NOT_EXISTS;
+        }
+        int result = expertInfoMapper.delExpertInfo(id);
+        if (result > 0 ){
+            return true;
+        }
+        return false;
+    }
+
     /**
      * 组装数据
      *
@@ -339,6 +368,24 @@ public class ExpertServiceImpl implements ExpertService {
         }
         if (StringUtils.isBlank(expert.getSignUrl())) {
             expert.setSignUrl(originExpert.getSignUrl());
+        }
+        if (expert.getSex() == null) {
+            expert.setSex(originExpert.getSex());
+        }
+        if (StringUtils.isBlank(expert.getNation())) {
+            expert.setNation(originExpert.getNation());
+        }
+        if (StringUtils.isBlank(expert.getHighestDegree())) {
+            expert.setHighestDegree(originExpert.getHighestDegree());
+        }
+        if (StringUtils.isBlank(expert.getJobResume())) {
+            expert.setJobResume(originExpert.getJobResume());
+        }
+        if (StringUtils.isBlank(expert.getCategories())) {
+            expert.setCategories(originExpert.getCategories());
+        }
+        if (StringUtils.isBlank(expert.getHonor())) {
+            expert.setHonor(originExpert.getHonor());
         }
     }
 

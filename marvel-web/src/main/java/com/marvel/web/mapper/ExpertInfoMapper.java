@@ -54,6 +54,23 @@ public interface ExpertInfoMapper {
     @UpdateProvider(type = ExpertSqlBuilder.class, method = "update")
     int update(@Param("expert") ExpertInfo expert);
 
+    /**
+     * 插入
+     * @param convert
+     * @return
+     */
+    @InsertProvider(type = ExpertSqlBuilder.class, method = "insert")
+    int insertExpertInfo(@Param("expert") ExpertInfo convert);
+
+
+    /**
+     * 删除
+     * @param id
+     * @return
+     */
+    @DeleteProvider(type = ExpertSqlBuilder.class, method = "delete")
+    int delExpertInfo(Long id);
+
 
     class ExpertSqlBuilder {
 
@@ -146,6 +163,86 @@ public interface ExpertInfoMapper {
 
             sql.deleteCharAt(sql.length() - 1);
             sql.append(" where id = ").append(expertInfo.getId());
+            return sql.toString();
+        }
+
+
+        public static String insert(ExpertInfo expertInfo) {
+            StringBuilder sql = new StringBuilder("insert into t_expert_info values（ ");
+            sql.append(expertInfo.getId()).append(",");
+            if (StringUtils.isNotBlank(expertInfo.getName())) {
+                sql.append(expertInfo.getName()).append("',");
+            }
+            if (StringUtils.isNotBlank(expertInfo.getIdCardNo())) {
+                sql.append(expertInfo.getIdCardNo()).append("',");
+            }
+            if (expertInfo.getCompanyId() != null) {
+                sql.append(expertInfo.getCompanyId()).append(",");
+            }
+            if (StringUtils.isNotBlank(expertInfo.getWorkCompany())) {
+                sql.append(expertInfo.getWorkCompany()).append("',");
+            }
+            if (StringUtils.isNotBlank(expertInfo.getWorkAddress())) {
+                sql.append(expertInfo.getWorkAddress()).append("',");
+            }
+            if (expertInfo.getWorkLife() != null) {
+                sql.append(expertInfo.getWorkLife()).append(",");
+            }
+            if (StringUtils.isNotBlank(expertInfo.getPositionalTitle())) {
+                sql.append(expertInfo.getPositionalTitle()).append("',");
+            }
+            if (expertInfo.getIsSyndic() != null) {
+                sql.append(expertInfo.getIsSyndic()).append(",");
+            }
+            if (expertInfo.getLevel() != null) {
+                sql.append(expertInfo.getLevel()).append(",");
+            }
+            if (StringUtils.isNotBlank(expertInfo.getEvaluateRange())) {
+                sql.append(expertInfo.getEvaluateRange()).append("',");
+            }
+            if (StringUtils.isNotBlank(expertInfo.getCollage())) {
+                sql.append(expertInfo.getCollage()).append("',");
+            }
+            if (StringUtils.isNotBlank(expertInfo.getHomeAddress())) {
+                sql.append(expertInfo.getHomeAddress()).append("',");
+            }
+            if (StringUtils.isNotBlank(expertInfo.getMobile())) {
+                sql.append(expertInfo.getMobile()).append("',");
+            }
+            if (StringUtils.isNotBlank(expertInfo.getRemark())) {
+                sql.append(expertInfo.getRemark()).append("',");
+            }
+            if (StringUtils.isNotBlank(expertInfo.getSignUrl())) {
+                sql.append(expertInfo.getSignUrl()).append("',");
+            }
+            if (expertInfo.getSex()==null) {
+                sql.append(expertInfo.getSex()).append("',");
+            }
+            if (StringUtils.isNotBlank(expertInfo.getNation())) {
+                sql.append(expertInfo.getNation()).append("',");
+            }
+            if (StringUtils.isNotBlank(expertInfo.getHighestDegree())) {
+                sql.append(expertInfo.getHighestDegree()).append("',");
+            }
+            if (StringUtils.isNotBlank(expertInfo.getJobResume())) {
+                sql.append(expertInfo.getJobResume()).append("',");
+            }
+            if (StringUtils.isNotBlank(expertInfo.getCategories())) {
+                sql.append(expertInfo.getCategories()).append("',");
+            }
+            if (StringUtils.isNotBlank(expertInfo.getHonor())) {
+                sql.append(expertInfo.getHonor()).append("',");
+            }
+
+            sql.deleteCharAt(sql.length() - 1);
+            sql.append(")");
+            return sql.toString();
+        }
+
+
+        public static String delete(Long id){
+            StringBuilder sql = new StringBuilder("delete from  t_expert_info where id =  ");
+            sql.append(id);
             return sql.toString();
         }
     }
