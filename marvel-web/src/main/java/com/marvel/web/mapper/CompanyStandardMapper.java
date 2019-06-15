@@ -90,6 +90,15 @@ public interface CompanyStandardMapper {
     int updateCompanyStandard(CompanyStandard companyStandard);
 
 
+    /**
+     * 删除
+     * @param id
+     * @return
+     */
+    @DeleteProvider(type = CompanySqlBuilder.class, method = "delete")
+    int deleteCompanyStandard(Long id);
+
+
     class CompanySqlBuilder {
 
         /**
@@ -190,6 +199,18 @@ public interface CompanyStandardMapper {
                     WHERE("id = " + companyStandard.getId());
                 }
             }.toString();
+        }
+
+
+        /**
+         * 删除
+         * @param id
+         * @return
+         */
+        public static String delete(final Long id){
+            StringBuilder sql = new StringBuilder();
+            sql.append("delete from t_company_standard where id = ").append(id);
+            return sql.toString();
         }
     }
 }

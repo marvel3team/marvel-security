@@ -20,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 
 /**
 * @Classname CompanyController
@@ -226,11 +228,53 @@ public class CompanyController {
     @RequestMapping(value = "/update_company_info.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String updateCompanyInfo(@RequestBody CompanyInfoReqVo companyInfoReqVo){
-        if (!checkParameter(companyInfoReqVo)){
+        if (!checkParameter(companyInfoReqVo) || companyInfoReqVo.getId() == null){
             LOGGER.error("CompanyController-->updateCompanyInfo-->parameter invalid parameter,reqBody:{}", JSON.toJSON(companyInfoReqVo));
             throw BusinessException.INVALID_PARAMS;
         }
         return companyService.updateCompanyInfo(companyInfoReqVo);
+    }
+
+
+    /**
+     * @Title updateCompanyInfo
+     * @Description 新增公司信息
+     * @param companyInfoReqVo
+     * @return java.lang.String
+     * @throws
+     * @author andy
+     * @date 2019/4/22 下午11:49
+     */
+    @MarvelCheck(auth = true)
+    @RequestMapping(value = "/save_company_info.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public Map<String,Object> saveCompanyInfo(@RequestBody CompanyInfoReqVo companyInfoReqVo){
+        if (!checkParameter(companyInfoReqVo)){
+            LOGGER.error("CompanyController-->saveCompanyInfo-->parameter invalid parameter,reqBody:{}", JSON.toJSON(companyInfoReqVo));
+            throw BusinessException.INVALID_PARAMS;
+        }
+        return companyService.saveCompanyInfo(companyInfoReqVo);
+    }
+
+
+    /**
+     * @Title updateCompanyInfo
+     * @Description 删除公司信息
+     * @param id
+     * @return java.lang.String
+     * @throws
+     * @author andy
+     * @date 2019/4/22 下午11:49
+     */
+    @MarvelCheck(auth = true)
+    @RequestMapping(value = "/del_company_info.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public String delCompanyInfo(@RequestParam(name = "id")Long id){
+        if (null == id){
+            LOGGER.error("CompanyController-->delCompanyInfo-->parameter invalid parameter,reqBody:{}", id);
+            throw BusinessException.INVALID_PARAMS;
+        }
+        return companyService.delCompanyInfo(id);
     }
 
 
@@ -240,7 +284,7 @@ public class CompanyController {
      * @return
      */
     private boolean checkParameter(CompanyInfoReqVo companyInfoReqVo) {
-        if (companyInfoReqVo.getId() == null || companyInfoReqVo.getId() < 0){
+        if (companyInfoReqVo.getId() == null){
             return false;
         }
         if (companyInfoReqVo.getAreaId() == null){

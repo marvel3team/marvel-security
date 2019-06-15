@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
@@ -222,6 +223,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public String updateCompanyInfo(CompanyInfoReqVo companyInfoReqVo) {
         CompanyStandard companyStandard = companyStandardMapper.getCompanyById(companyInfoReqVo.getId());
         if (null == companyStandard) {
@@ -236,10 +238,59 @@ public class CompanyServiceImpl implements CompanyService {
         companyStandard.setEmail(companyInfoReqVo.getEmail());
         companyStandard.setName(companyInfoReqVo.getName());
         companyStandard.setIndustryId(companyInfoReqVo.getIndustryId());
+
         int update = companyStandardMapper.updateCompanyStandard(companyStandard);
         if (update < 1) {
             throw BusinessException.UPDATE_ERROR;
         }
+        boolean canInsert = false;
+        CompanyBase companyBase = companyBaseMapper.getCompanBaseById(companyInfoReqVo.getId());
+        if (null  == companyBase){
+            canInsert = true;
+            companyBase = new CompanyBase();
+            companyBase.setId(companyInfoReqVo.getId());
+        }
+        companyBase.setProductionDay(companyInfoReqVo.getProductionDay());
+        companyBase.setTotalInvest(new BigDecimal(companyInfoReqVo.getTotalInvest()).multiply(new BigDecimal(100)).longValue());
+        companyBase.setFixedInvest(new BigDecimal(companyInfoReqVo.getFixedInvest()).multiply(new BigDecimal(100)).longValue());
+        companyBase.setLastYearIncome(new BigDecimal(companyInfoReqVo.getLastYearIncome()).multiply(new BigDecimal(100)).longValue());
+        companyBase.setFactoryArea(companyInfoReqVo.getFactoryArea());
+        companyBase.setCoveredArea(companyInfoReqVo.getCoveredArea());
+        companyBase.setRawStockDosage(companyInfoReqVo.getRawStockDosage());
+        companyBase.setAccessoriesDosage(companyInfoReqVo.getAccessoriesDosage());
+        companyBase.setYearlyCapacity(companyInfoReqVo.getYearlyCapacity());
+        companyBase.setOutputUnit(companyInfoReqVo.getOutputUnit());
+        companyBase.setIsSpecialEquipment(companyInfoReqVo.getIsSpecialEquipment());
+        companyBase.setIsDistributionRoom(companyInfoReqVo.getIsDistributionRoom());
+        companyBase.setIsTransformer(companyInfoReqVo.getIsTransformer());
+        companyBase.setStanCertificateType(companyInfoReqVo.getStanCertificateType());
+        companyBase.setStanCertificateId(companyInfoReqVo.getStanCertificateId());
+        companyBase.setIsDeclareOnline(companyInfoReqVo.getIsDeclareOnline());
+        companyBase.setIsSafeProof(companyInfoReqVo.getIsSafeProof());
+        companyBase.setSafeProofArchiveNo(companyInfoReqVo.getSafeProofArchiveNo());
+        companyBase.setWorkSystem(companyInfoReqVo.getWorkSystem());
+        companyBase.setProductionDepartmentPeoples(companyInfoReqVo.getProductionDepartmentPeoples());
+        companyBase.setOfficePeoples(companyInfoReqVo.getOfficePeoples());
+        companyBase.setYearlyWorkDays(companyInfoReqVo.getWorkDaysYearly());
+        companyBase.setIndustryType(companyInfoReqVo.getIndustryType());
+        companyBase.setSafetyLevel(companyInfoReqVo.getSafetyLevel());
+        companyBase.setCertificateStartTime(companyInfoReqVo.getCertificateStartTime());
+        companyBase.setCertificateEndTime(companyInfoReqVo.getCertificateEndTime());
+        companyBase.setMajorRiskSources(companyInfoReqVo.getMajorRiskSources());
+        companyBase.setHigherRiskSources(companyInfoReqVo.getHigherRiskSources());
+        companyBase.setGeneralRiskSources(companyInfoReqVo.getGeneralRiskSources());
+        companyBase.setLowRiskSources(companyInfoReqVo.getLowRiskSources());
+
+        int result = -1;
+        if (canInsert){
+            result = companyBaseMapper.insertCompanyBase(companyBase);
+        }else {
+            result = companyBaseMapper.updateCompanyBase(companyBase);
+        }
+        if (result < 1 ){
+            throw BusinessException.UPDATE_ERROR;
+        }
+
         return "{}";
     }
 
@@ -273,6 +324,95 @@ public class CompanyServiceImpl implements CompanyService {
             throw BusinessException.SERVICE_NOT_EXISTS;
         }
         return serviceInfo;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Map<String,Object> saveCompanyInfo(CompanyInfoReqVo companyInfoReqVo) {
+
+        Long id = snowflakeIdGenerator.generateId();
+        if (id == null){
+            throw BusinessException.SAVE_ERROR;
+        }
+        CompanyStandard companyStandard = new CompanyStandard();
+        companyStandard.setId(id);
+        companyStandard.setAreaId(companyInfoReqVo.getAreaId() == null ? companyStandard.getAreaId() : companyInfoReqVo.getAreaId());
+        companyStandard.setBusinessLicenseId(companyInfoReqVo.getBusinessCode());
+        companyStandard.setBusinessLicenseId(companyInfoReqVo.getBusinessLicenseNo());
+        companyStandard.setRegistedCapital(StringUtils.isBlank(companyInfoReqVo.getRegistedCapital()) ? null : new BigDecimal(companyInfoReqVo.getRegistedCapital()).multiply(new BigDecimal(100)).longValue());
+        companyStandard.setLegalPerson(companyInfoReqVo.getLegalPreson());
+        companyStandard.setLegalPersonMobile(companyInfoReqVo.getMobile());
+        companyStandard.setEmail(companyInfoReqVo.getEmail());
+        companyStandard.setName(companyInfoReqVo.getName());
+        companyStandard.setIndustryId(companyInfoReqVo.getIndustryId());
+
+        int insert = companyStandardMapper.save(companyStandard);
+        if (insert < 0){
+            throw BusinessException.SAVE_ERROR;
+        }
+        CompanyBase companyBase = new CompanyBase();
+        companyBase.setId(id);
+        companyBase.setProductionDay(companyInfoReqVo.getProductionDay());
+        companyBase.setTotalInvest(new BigDecimal(companyInfoReqVo.getTotalInvest()).multiply(new BigDecimal(100)).longValue());
+        companyBase.setFixedInvest(new BigDecimal(companyInfoReqVo.getFixedInvest()).multiply(new BigDecimal(100)).longValue());
+        companyBase.setLastYearIncome(new BigDecimal(companyInfoReqVo.getLastYearIncome()).multiply(new BigDecimal(100)).longValue());
+        companyBase.setFactoryArea(companyInfoReqVo.getFactoryArea());
+        companyBase.setCoveredArea(companyInfoReqVo.getCoveredArea());
+        companyBase.setRawStockDosage(companyInfoReqVo.getRawStockDosage());
+        companyBase.setAccessoriesDosage(companyInfoReqVo.getAccessoriesDosage());
+        companyBase.setYearlyCapacity(companyInfoReqVo.getYearlyCapacity());
+        companyBase.setOutputUnit(companyInfoReqVo.getOutputUnit());
+        companyBase.setIsSpecialEquipment(companyInfoReqVo.getIsSpecialEquipment());
+        companyBase.setIsDistributionRoom(companyInfoReqVo.getIsDistributionRoom());
+        companyBase.setIsTransformer(companyInfoReqVo.getIsTransformer());
+        companyBase.setStanCertificateType(companyInfoReqVo.getStanCertificateType());
+        companyBase.setStanCertificateId(companyInfoReqVo.getStanCertificateId());
+        companyBase.setIsDeclareOnline(companyInfoReqVo.getIsDeclareOnline());
+        companyBase.setIsSafeProof(companyInfoReqVo.getIsSafeProof());
+        companyBase.setSafeProofArchiveNo(companyInfoReqVo.getSafeProofArchiveNo());
+        companyBase.setWorkSystem(companyInfoReqVo.getWorkSystem());
+        companyBase.setProductionDepartmentPeoples(companyInfoReqVo.getProductionDepartmentPeoples());
+        companyBase.setOfficePeoples(companyInfoReqVo.getOfficePeoples());
+        companyBase.setYearlyWorkDays(companyInfoReqVo.getWorkDaysYearly());
+        companyBase.setIndustryType(companyInfoReqVo.getIndustryType());
+        companyBase.setSafetyLevel(companyInfoReqVo.getSafetyLevel());
+        companyBase.setCertificateStartTime(companyInfoReqVo.getCertificateStartTime());
+        companyBase.setCertificateEndTime(companyInfoReqVo.getCertificateEndTime());
+        companyBase.setMajorRiskSources(companyInfoReqVo.getMajorRiskSources());
+        companyBase.setHigherRiskSources(companyInfoReqVo.getHigherRiskSources());
+        companyBase.setGeneralRiskSources(companyInfoReqVo.getGeneralRiskSources());
+        companyBase.setLowRiskSources(companyInfoReqVo.getLowRiskSources());
+
+        int result = companyBaseMapper.insertCompanyBase(companyBase);
+        if (result < 1){
+            throw BusinessException.SAVE_ERROR;
+        }
+        Map<String,Object> resultMap = new HashMap<>();
+        resultMap.put("id",id);
+
+        return resultMap;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public String delCompanyInfo(Long id) {
+
+        CompanyStandard companyStandard = companyStandardMapper.getCompanyById(id);
+        if (null == companyStandard){
+            throw BusinessException.COMPANY_NOT_EXISTS;
+        }
+        int delete = companyStandardMapper.deleteCompanyStandard(id);
+        if (delete < 1){
+            throw BusinessException.DELETE_ERROR;
+        }
+        CompanyBase companyBase = companyBaseMapper.getCompanBaseById(id);
+        if (null != companyBase){
+            int result = companyBaseMapper.deleteCompanyBase(id);
+            if (result < 1){
+                throw BusinessException.DELETE_ERROR;
+            }
+        }
+        return "{}";
     }
 
     /**
