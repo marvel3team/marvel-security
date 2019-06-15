@@ -22,7 +22,7 @@ public class UploadController {
     /***
      * Description: //生成资源上传token
      *
-     * @return 
+     * @return
      * @Date 下午10:27 2019/6/13
      * @Author zhongjie
      **/
