@@ -46,6 +46,18 @@ public class PlanServiceImpl implements PlanService {
             plan.setTimeSlot(remoteInfo.getTimeSlat());
             plan.setPlanTime(remoteInfo.getPlanTime());
             plan.setStatus(PlanStatus.BUREAU.value());
+            plan.setName(remoteInfo.getName());
+            plan.setTypeName(remoteInfo.getTypeName());
+            plan.setProvince(remoteInfo.getProvince());
+            plan.setCity(remoteInfo.getCity());
+            plan.setOtherCity(remoteInfo.getOtherCity());
+            plan.setServiceContent(remoteInfo.getServiceContent());
+            plan.setDomain(remoteInfo.getDomain());
+            plan.setDomainDetails(remoteInfo.getDomainDetails());
+            plan.setDomainMince(remoteInfo.getDomainMince());
+            plan.setServiceType(remoteInfo.getServiceType());
+            plan.setInvestigationCompany(remoteInfo.getInvestigationCompany());
+
             int insert = planMapper.insert(plan);
             if (insert > 0 ){
                 return true;
@@ -69,6 +81,18 @@ public class PlanServiceImpl implements PlanService {
             plan.setTimeSlot(remoteInfo.getTimeSlat());
             plan.setPlanTime(remoteInfo.getPlanTime());
             plan.setStatus(remoteInfo.getStatus());
+            plan.setName(remoteInfo.getName());
+            plan.setTypeName(remoteInfo.getTypeName());
+            plan.setProvince(remoteInfo.getProvince());
+            plan.setCity(remoteInfo.getCity());
+            plan.setOtherCity(remoteInfo.getOtherCity());
+            plan.setServiceContent(remoteInfo.getServiceContent());
+            plan.setDomain(remoteInfo.getDomain());
+            plan.setDomainDetails(remoteInfo.getDomainDetails());
+            plan.setDomainMince(remoteInfo.getDomainMince());
+            plan.setServiceType(remoteInfo.getServiceType());
+            plan.setInvestigationCompany(remoteInfo.getInvestigationCompany());
+
             int update = planMapper.update(plan);
             if (update > 0 ){
                 return true;
