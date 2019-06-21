@@ -3,8 +3,10 @@ package com.marvel.web.service.impl;
 import com.google.common.collect.Lists;
 import com.marvel.common.models.PageBean;
 import com.marvel.common.utils.PaginationUtils;
+import com.marvel.common.uuid.SnowflakeIdGenerator;
 import com.marvel.framework.context.RequestContext;
 import com.marvel.web.controller.req.WorkTimeReq;
+import com.marvel.web.enums.Sex;
 import com.marvel.web.exception.BusinessException;
 import com.marvel.web.mapper.*;
 import com.marvel.web.po.*;
@@ -47,6 +49,8 @@ public class ExpertServiceImpl implements ExpertService {
     private BureauMapper bureauMapper;
     @Resource
     private ExpertTimeMapper expertTimeMapper;
+    @Resource
+    private SnowflakeIdGenerator snowflakeIdGenerator;
 
 
     @Override
@@ -107,6 +111,12 @@ public class ExpertServiceImpl implements ExpertService {
                 expertInfoVo.setRemark(expertInfo.getRemark());
                 //TODO 需要组装地址
                 expertInfoVo.setSignUrl(expertInfo.getSignUrl());
+                expertInfoVo.setSex(Sex.valueOf(expertInfo.getSex()) == null ? "未知" : Sex.valueOf(expertInfo.getSex()).desc());
+                expertInfoVo.setHonor(expertInfo.getHonor());
+                expertInfoVo.setHighestDegree(expertInfo.getHighestDegree());
+                expertInfoVo.setJobResume(expertInfo.getJobResume());
+                expertInfoVo.setNation(expertInfo.getNation());
+                expertInfoVo.setCategories(expertInfo.getCategories());
                 expertInfoVo.setIndustry(null == companyIndustry ? "" : companyIndustry.getContent());
                 //TODO
                 expertInfoVo.setArea("");
@@ -118,7 +128,7 @@ public class ExpertServiceImpl implements ExpertService {
             if (resultList.size() < count) {
                 return assemblePageBean(-1, resultList);
             }
-            return assemblePageBean(resultList.get(resultList.size()-1).getId(), resultList);
+            return assemblePageBean(resultList.get(resultList.size() - 1).getId(), resultList);
         } catch (Exception e) {
             LOGGER.error("ExpertService-->getExpertList-->exception,cursor:{},count:{}", cursor, count, e);
         }
@@ -148,6 +158,12 @@ public class ExpertServiceImpl implements ExpertService {
         expertInfoVo.setRemark(expertInfo.getRemark());
         //TODO 需要组装地址
         expertInfoVo.setSignUrl(expertInfo.getSignUrl());
+        expertInfoVo.setSex(Sex.valueOf(expertInfo.getSex()) == null ? "未知" : Sex.valueOf(expertInfo.getSex()).desc());
+        expertInfoVo.setHonor(expertInfo.getHonor());
+        expertInfoVo.setHighestDegree(expertInfo.getHighestDegree());
+        expertInfoVo.setJobResume(expertInfo.getJobResume());
+        expertInfoVo.setNation(expertInfo.getNation());
+        expertInfoVo.setCategories(expertInfo.getCategories());
         CompanyStandard companyStandard = companyStandardMapper.getCompanyById(expertInfo.getCompanyId());
         if (null == companyStandard) {
             throw BusinessException.EXPERT_NOT_EXISTS;
@@ -168,23 +184,25 @@ public class ExpertServiceImpl implements ExpertService {
         if (total == 0) {
             return assembleExpertPlanPage(-1, new ArrayList<>());
         }
-        List<PlanDetailVo> planDetailVos = expertPlanMapper.getExpertPlanList(id, count,count);
-        if (CollectionUtils.isEmpty(planDetailVos)){
+        List<PlanDetailVo> planDetailVos = expertPlanMapper.getExpertPlanList(id, count, count);
+        if (CollectionUtils.isEmpty(planDetailVos)) {
             return assembleExpertPlanPage(-1, new ArrayList<>());
         }
-        List<Long> bureauIds = planDetailVos.stream().map(temp->{return temp.getBureauId();}).collect(Collectors.toList());
+        List<Long> bureauIds = planDetailVos.stream().map(temp -> {
+            return temp.getBureauId();
+        }).collect(Collectors.toList());
 
         List<Bureau> bureauList = bureauMapper.getBureauByIds(bureauIds);
-        Map<Long,Bureau> bureauMap = new HashMap<>();
-        if (!CollectionUtils.isEmpty(bureauList)){
-            bureauMap = bureauList.stream().collect(Collectors.toMap(Bureau::getId,temp->temp,(e1,e2)->e1));
+        Map<Long, Bureau> bureauMap = new HashMap<>();
+        if (!CollectionUtils.isEmpty(bureauList)) {
+            bureauMap = bureauList.stream().collect(Collectors.toMap(Bureau::getId, temp -> temp, (e1, e2) -> e1));
         }
         List<PlanDetailVo> result = new ArrayList<>();
-        for (PlanDetailVo planDetailVo:planDetailVos){
-            Bureau bureau = MapUtils.getObject(bureauMap,planDetailVo.getBureauId(),null);
-            if (null == bureau){
+        for (PlanDetailVo planDetailVo : planDetailVos) {
+            Bureau bureau = MapUtils.getObject(bureauMap, planDetailVo.getBureauId(), null);
+            if (null == bureau) {
                 planDetailVo.setBureauName("");
-            }else {
+            } else {
                 planDetailVo.setBureauName(bureau.getName());
             }
             result.add(planDetailVo);
@@ -195,7 +213,7 @@ public class ExpertServiceImpl implements ExpertService {
         if (result.size() < count) {
             return assembleExpertPlanPage(-1, result);
         }
-        return assembleExpertPlanPage(result.get(result.size()-1).getId(),result);
+        return assembleExpertPlanPage(result.get(result.size() - 1).getId(), result);
     }
 
     @Override
@@ -253,8 +271,35 @@ public class ExpertServiceImpl implements ExpertService {
         return result > 0;
     }
 
+    @Override
+    public boolean save(RequestContext requestContext, ExpertInfo convert) {
+        Long id = snowflakeIdGenerator.generateId();
+        if (null == id){
+            throw BusinessException.SAVE_ERROR;
+        }
+        int insert = expertInfoMapper.insertExpertInfo(convert);
+        if (insert > 0){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean delExpertInfo(RequestContext requestContext, Long id) {
+        ExpertInfo expertInfo = expertInfoMapper.getExpertInfoById(id);
+        if (Objects.isNull(expertInfo)) {
+            throw BusinessException.EXPERT_NOT_EXISTS;
+        }
+        int result = expertInfoMapper.delExpertInfo(id);
+        if (result > 0 ){
+            return true;
+        }
+        return false;
+    }
+
     /**
      * 组装数据
+     *
      * @param expertInfo
      * @param workTimes
      * @return
@@ -274,6 +319,7 @@ public class ExpertServiceImpl implements ExpertService {
 
     /**
      * 更新最新内容
+     *
      * @param expert
      * @param originExpert
      */
@@ -322,6 +368,24 @@ public class ExpertServiceImpl implements ExpertService {
         }
         if (StringUtils.isBlank(expert.getSignUrl())) {
             expert.setSignUrl(originExpert.getSignUrl());
+        }
+        if (expert.getSex() == null) {
+            expert.setSex(originExpert.getSex());
+        }
+        if (StringUtils.isBlank(expert.getNation())) {
+            expert.setNation(originExpert.getNation());
+        }
+        if (StringUtils.isBlank(expert.getHighestDegree())) {
+            expert.setHighestDegree(originExpert.getHighestDegree());
+        }
+        if (StringUtils.isBlank(expert.getJobResume())) {
+            expert.setJobResume(originExpert.getJobResume());
+        }
+        if (StringUtils.isBlank(expert.getCategories())) {
+            expert.setCategories(originExpert.getCategories());
+        }
+        if (StringUtils.isBlank(expert.getHonor())) {
+            expert.setHonor(originExpert.getHonor());
         }
     }
 

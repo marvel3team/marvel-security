@@ -126,6 +126,44 @@ public class ExpertController {
     }
 
     /**
+     * 新增专家信息
+     * @param expertInfoReq
+     * @return
+     */
+    @MarvelCheck(auth = true)
+    @RequestMapping(value = "/save_expert_info.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public String saveExpertInfo(ExpertInfoReq expertInfoReq){
+        if (Objects.isNull(expertInfoReq)) {
+            throw BusinessException.INVALID_PARAMS;
+        }
+        boolean result = expertService.save(RequestContext.getRequestContext(), ExpertConvert.convert(expertInfoReq));
+        if (!result) {
+            throw BusinessException.SAVE_ERROR;
+        }
+        return StringUtils.EMPTY;
+    }
+
+    /**
+     * 删除专家信息
+     * @param id
+     * @return
+     */
+    @MarvelCheck(auth = true)
+    @RequestMapping(value = "/del_expert_info.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public String delExpertInfo(@RequestParam(name = "id") Long id){
+        if (id == null) {
+            throw BusinessException.INVALID_PARAMS;
+        }
+        boolean result = expertService.delExpertInfo(RequestContext.getRequestContext(), id);
+        if (!result) {
+            throw BusinessException.DELETE_ERROR;
+        }
+        return StringUtils.EMPTY;
+    }
+
+    /**
      * 设置专家时间
      * @param id 专家ID
      * @param workTimes 时间列表

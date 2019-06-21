@@ -9,6 +9,8 @@ import com.marvel.web.vo.CompanyInfoReqVo;
 import com.marvel.web.vo.CompanyListVo;
 import com.marvel.web.vo.PlanDetailVo;
 
+import java.util.Map;
+
 /**
  * @Classname CompanyService
  * @Description
@@ -104,4 +106,18 @@ public interface CompanyService {
      * @return
      */
     ServiceInfo getService(Long serviceId);
+
+    /**
+     * 新增企业信息
+     * @param companyInfoReqVo
+     * @return
+     */
+    Map<String,Object> saveCompanyInfo(CompanyInfoReqVo companyInfoReqVo);
+
+    /**
+     * 删除企业信息
+     * @param id
+     * @return
+     */
+    String delCompanyInfo(Long id);
 }

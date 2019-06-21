@@ -83,4 +83,20 @@ public interface ExpertService {
      * @return
      */
     boolean createExpertTime(RequestContext requestContext, Long id, List<WorkTimeReq> workTimes);
+
+    /**
+     * 新增专家信息
+     * @param requestContext
+     * @param convert
+     * @return
+     */
+    boolean save(RequestContext requestContext, ExpertInfo convert);
+
+    /**
+     * 删除专家信息
+     * @param requestContext
+     * @param id
+     * @return
+     */
+    boolean delExpertInfo(RequestContext requestContext, Long id);
 }
