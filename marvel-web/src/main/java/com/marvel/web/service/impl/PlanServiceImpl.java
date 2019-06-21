@@ -6,14 +6,21 @@ import com.marvel.framework.context.RequestContext;
 import com.marvel.web.enums.PlanStatus;
 import com.marvel.web.exception.BusinessException;
 import com.marvel.web.mapper.PlanMapper;
+import com.marvel.web.mapper.RespondPlanMapper;
 import com.marvel.web.po.Plan;
+import com.marvel.web.po.RespondPlan;
 import com.marvel.web.service.PlanService;
 import com.marvel.web.vo.RemoteInfoReqVo;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Classname PlanServiceImpl
@@ -29,6 +36,8 @@ public class PlanServiceImpl implements PlanService {
 
     @Resource
     private PlanMapper planMapper;
+    @Resource
+    private RespondPlanMapper respondPlanMapper;
     @Resource
     private SnowflakeIdGenerator snowflakeIdGenerator;
 
@@ -58,6 +67,14 @@ public class PlanServiceImpl implements PlanService {
             plan.setServiceType(remoteInfo.getServiceType());
             plan.setInvestigationCompany(remoteInfo.getInvestigationCompany());
 
+            List<Long> expertIds = remoteInfo.getExpertIds();
+            if (!CollectionUtils.isEmpty(expertIds)) {
+                List<RespondPlan> respondPlans = assembleRespondPlans(plan, expertIds);
+                int insertRows = respondPlanMapper.batchInsert(respondPlans);
+                if (insertRows == 0) {
+                    return false;
+                }
+            }
             int insert = planMapper.insert(plan);
             if (insert > 0 ){
                 return true;
@@ -66,6 +83,27 @@ public class PlanServiceImpl implements PlanService {
             LOGGER.error("PlanService-->createRemoteInfo-->exception, remoteInfo:{}", JSON.toJSON(remoteInfo),e);
         }
         return false;
+    }
+
+    /**
+     * 组装
+     * @param plan
+     * @param expertIds
+     * @return
+     */
+    private List<RespondPlan> assembleRespondPlans(Plan plan, List<Long> expertIds) {
+        List<RespondPlan> respondPlans = new ArrayList<>(expertIds.size());
+        expertIds.stream().forEach(expertId -> {
+            RespondPlan respondPlan = new RespondPlan();
+            respondPlan.setPlanId(plan.getId());
+            respondPlan.setExpertId(expertId);
+            respondPlan.setType(1);
+            respondPlan.setStatus(plan.getStatus());
+            respondPlan.setPlanTime(plan.getPlanTime());
+            respondPlan.setRemark(StringUtils.EMPTY);
+            respondPlans.add(respondPlan);
+        });
+        return respondPlans;
     }
 
     @Override
@@ -95,6 +133,7 @@ public class PlanServiceImpl implements PlanService {
 
             int update = planMapper.update(plan);
             if (update > 0 ){
+                respondPlanMapper.updateStatus(plan.getId(), plan.getStatus(), System.currentTimeMillis());
                 return true;
             }
         }catch (Exception e){

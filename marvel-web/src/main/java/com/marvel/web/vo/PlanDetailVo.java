@@ -77,5 +77,54 @@ public class PlanDetailVo {
      */
     private String expertName;
 
+    /**
+     * 计划名称 - 业务名称
+     */
+    private String planName;
+
+    /**
+     * 企业名称
+     */
+    private String companyName;
+
+    /**
+     * 省
+     */
+    private String province;
+
+    /**
+     * 市
+     */
+    private String city;
+
+    /**
+     * 其他城市
+     */
+    private String otherCity;
+
+    /**
+     * 领域
+     */
+    private String domain;
+
+    /**
+     * 具体领域
+     */
+    private String domainDetails;
+
+    /**
+     * 领域细分
+     */
+    private String domainMince;
+
+    /**
+     * 法人-联系人
+     */
+    private String legalPerson;
+
+    /**
+     * 法人联系方式
+     */
+    private String legalPersonMobile;
 
 }

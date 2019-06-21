@@ -29,6 +29,11 @@ public class RespondPlan implements Serializable {
     private Long planId;
 
     /**
+     * 专家id
+     */
+    private Long expertId;
+
+    /**
      * 计划时间
      */
     private Long planTime;

@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * @Classname RemoteInfoReqVo
  * @Description
@@ -110,4 +112,9 @@ public class RemoteInfoReqVo {
      * 排查企业
      */
     private String investigationCompany;
+
+    /**
+     * 专家ID
+     */
+    private List<Long> expertIds;
 }

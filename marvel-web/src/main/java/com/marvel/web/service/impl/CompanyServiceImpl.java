@@ -177,6 +177,16 @@ public class CompanyServiceImpl implements CompanyService {
             bureauMap = bureauList.stream().collect(Collectors.toMap(Bureau::getId, temp -> temp, (e1, e2) -> e1));
         }
 
+        List<Long> companyIds = planList.stream().map(temp -> {
+            return temp.getCompanyId();
+        }).collect(Collectors.toList());
+
+        List<CompanyStandard> companyStandards = companyStandardMapper.getCompanyByIds(companyIds);
+        Map<Long, CompanyStandard> companyStandardsMap = new HashMap<>();
+        if (!CollectionUtils.isEmpty(companyStandards)) {
+            companyStandardsMap = companyStandards.stream().collect(Collectors.toMap(CompanyStandard::getId, temp -> temp, (e1, e2) -> e1));
+        }
+
         List<PlanDetailVo> resultList = new ArrayList<>();
 
         for (Plan plan : planList) {
@@ -185,6 +195,17 @@ public class CompanyServiceImpl implements CompanyService {
 
             PlanDetailVo planDetailVo = new PlanDetailVo();
             planDetailVo.setId(plan.getId());
+            planDetailVo.setPlanName(plan.getName());
+            CompanyStandard standard = companyStandardsMap.get(plan.getCompanyId());
+            planDetailVo.setCompanyName(standard == null ? StringUtils.EMPTY : standard.getName());
+            planDetailVo.setProvince(plan.getProvince());
+            planDetailVo.setCity(plan.getCity());
+            planDetailVo.setOtherCity(plan.getOtherCity());
+            planDetailVo.setDomain(plan.getDomain());
+            planDetailVo.setDomainDetails(plan.getDomainDetails());
+            planDetailVo.setDomainMince(plan.getDomainMince());
+            planDetailVo.setLegalPerson(standard == null ? StringUtils.EMPTY : standard.getLegalPerson());
+            planDetailVo.setLegalPersonMobile(standard == null ? StringUtils.EMPTY : standard.getLegalPersonMobile());
             planDetailVo.setBureauName(null == bureau ? "" : bureau.getName());
             if (null != respondPlan) {
                 planDetailVo.setFinishStatus(respondPlan.getStatus());
