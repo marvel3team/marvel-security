@@ -23,7 +23,9 @@ public interface PlanMapper {
     @Insert("INSERT INTO t_plan(id, company_id, bureau_id, plan_time, time_slot, staff_id, plan_subject, " +
             "superversion_level, status, name, type_name, province, city, other_city, service_content, domain, domain_details, domain_mince, service_type, investigation_company) " +
             "VALUES(#{param.id}, #{param.companyId}," +
-            "#{param.bureauId}, #{param.planTime}, #{param.timeSlot}, #{param.staffId}, #{param.planSubject}, #{param.superversionLevel},#{param.status})")
+            "#{param.bureauId}, #{param.planTime}, #{param.timeSlot}, #{param.staffId}, #{param.planSubject}, #{param.superversionLevel},#{param.status}," +
+            "#{param.name},#{param.typeName},#{param.province},#{param.city},#{param.otherCity},#{param.serviceContent},#{param.domain},#{param.domainDetails}," +
+            "#{param.domainMince},#{param.serviceType},#{param.investigationCompany})")
     int insert(@Param("param") Plan plan);
 
 
