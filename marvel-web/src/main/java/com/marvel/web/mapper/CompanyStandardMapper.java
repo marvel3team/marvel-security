@@ -55,7 +55,7 @@ public interface CompanyStandardMapper {
      * @date: 2019/4/22 下午10:45
      */
     @SelectProvider(type = CompanySqlBuilder.class, method = "findPageCount")
-    long getCompanyCount(@Param("type") Integer companyType);
+    long getCompanyCount(Integer type);
 
     /**
      * 分页查询列表
