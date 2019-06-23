@@ -7,6 +7,7 @@ import org.apache.ibatis.jdbc.SQL;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @Classname CompanyStandardMapper
@@ -154,8 +155,10 @@ public interface CompanyStandardMapper {
 
         public static String findPageCount(final Integer type) {
             StringBuilder sql = new StringBuilder();
-            sql.append("SELECT count(1) FROM t_company_standard where ");
-            sql.append("type = ").append(type);
+            sql.append("SELECT count(1) FROM t_company_standard where 1=1");
+            if (Objects.nonNull(type)) {
+                sql.append(" and type = ").append(type);
+            }
             return sql.toString();
         }
 
