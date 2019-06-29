@@ -94,7 +94,7 @@ public class CompanyController {
     @MarvelCheck(auth = true)
     @RequestMapping(value = "/get_plan_list.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public PageBean<PlanDetailVo> getPlanList(@RequestParam(name = "cursor",required = false,defaultValue = "-1") Integer cursor,
+    public PageBean<PlanDetailVo> getPlanList(@RequestParam(name = "cursor",required = false,defaultValue = "-1") Long cursor,
                                               @RequestParam(name = "count",required = false,defaultValue = "20")Integer count,
                                               @RequestParam(name = "id",required = false,defaultValue = "-1") Long id){
         if (null == id || id < 0){

@@ -55,7 +55,7 @@ public interface CompanyService {
      * @author andy
      * @date 2019/4/23 下午11:13
      */
-    PageBean<PlanDetailVo> getPlanList(Integer cursor, Integer count, Long id);
+    PageBean<PlanDetailVo> getPlanList(Long cursor, Integer count, Long id);
 
     /**
      * Description: 服务列表
