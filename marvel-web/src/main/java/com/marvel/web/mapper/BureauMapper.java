@@ -46,7 +46,7 @@ public interface BureauMapper {
          */
         public static String selectByIds(Map map) {
             List<Long> ids = (List<Long>) map.get("list");
-            StringBuilder sql = new StringBuilder("select id,area_id ,company_id ,mobile,remark");
+            StringBuilder sql = new StringBuilder("select id,area_id,name,company_id ,mobile,remark");
             sql.append(" from t_bureau_info where");
             sql.append(" id in ").append("(");
             for (Long id : ids) {
