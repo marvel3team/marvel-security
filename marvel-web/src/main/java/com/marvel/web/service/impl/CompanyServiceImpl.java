@@ -148,12 +148,8 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public PageBean<PlanDetailVo> getPlanList(Integer cursor, Integer count, Long id) {
-        int total = planMapper.getCompanyPlanCount(id);
-        if (total == 0) {
-            return assemblePlanDetailPage(-1, new ArrayList<>());
-        }
-        List<Plan> planList = planMapper.getCompanyPlanList(id, count * (cursor - 1), count);
+    public PageBean<PlanDetailVo> getPlanList(Long cursor, Integer count, Long id) {
+        List<Plan> planList = planMapper.getCompanyPlanList(id, cursor, count);
         if (null == planList || planList.size() == 0) {
             return assemblePlanDetailPage(-1, new ArrayList<>());
         }
@@ -220,7 +216,10 @@ public class CompanyServiceImpl implements CompanyService {
             resultList.add(planDetailVo);
 
         }
-        long nextCursor = PaginationUtils.nextCursor(cursor, count, total);
+        long nextCursor = -1;
+        if (planList.size() >= count) {
+            nextCursor = planList.get(planList.size() - 1).getId();
+        }
         return assemblePlanDetailPage(nextCursor, resultList);
     }
 

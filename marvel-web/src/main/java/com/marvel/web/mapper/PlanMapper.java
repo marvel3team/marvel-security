@@ -83,12 +83,27 @@ public interface PlanMapper {
 
     /**
      * 分页查询
-     * @param id
-     * @param page
+     * @param companyId
+     * @param cursor
      * @param count
      * @return
      */
-    @Select("select * from t_plan where company_id=#{companyId} order by id desc limit #{page},#{count}")
+    @SelectProvider(type = SqlBuilder.class, method = "buildFindByPage")
     @ResultMap("planMap")
-    List<Plan> getCompanyPlanList(@Param("companyId") Long id, @Param("page") Integer page, @Param("count") Integer count);
+    List<Plan> getCompanyPlanList(Long companyId, Long cursor, Integer count);
+
+
+    class SqlBuilder {
+        public static String buildFindByPage(final Long companyId, final Long cursor, final Integer count) {
+            StringBuilder sql = new StringBuilder("select * from t_plan where 1=1");
+            if (companyId != null) {
+                sql.append(" and company_id=").append(companyId);
+            }
+            if (cursor != null && cursor > 0) {
+                sql.append(" and id < " + cursor);
+            }
+            sql.append(" order by id desc limit " + count);
+            return sql.toString();
+        }
+    }
 }
