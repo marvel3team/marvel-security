@@ -76,6 +76,7 @@ public class CompanyServiceImpl implements CompanyService {
             if (CollectionUtils.isEmpty(standardList)) {
                 return assemblePageBean(-1, new ArrayList<>());
             }
+
             if (standardList.size() < count) {
                 return assemblePageBean(-1, standardList);
             }
@@ -463,6 +464,21 @@ public class CompanyServiceImpl implements CompanyService {
     private PageBean<CompanyListVo> assemblePageBean(long nextCursor, List<CompanyStandard> listVoList) {
         PageBean<CompanyListVo> pageBean = new PageBean<>();
         pageBean.setNextCursor(nextCursor);
+
+        //组装base数据
+        List<CompanyBase> companyBases = Lists.newArrayList();
+        if (!CollectionUtils.isEmpty(listVoList)) {
+            List<Long> companyIds = listVoList.stream().map(standard -> {
+                return standard.getId();
+            }).collect(Collectors.toList());
+            companyBases = companyBaseMapper.getCompanyBases(companyIds);
+        }
+        Map<Long, CompanyBase> companyBaseMap = new HashMap<>();
+        if (!CollectionUtils.isEmpty(companyBases)) {
+            companyBaseMap = companyBases.stream().collect(Collectors.toMap(CompanyBase::getId, temp -> temp, (e1, e2) -> e1));
+        }
+
+        Map<Long, CompanyBase> finalCompanyBaseMap = companyBaseMap;
         List<CompanyListVo> listVos = listVoList.stream().map(temp -> {
             CompanyListVo companyListVo = new CompanyListVo();
             companyListVo.setAreaId(temp.getAreaId());
@@ -474,6 +490,19 @@ public class CompanyServiceImpl implements CompanyService {
             companyListVo.setId(temp.getId());
             companyListVo.setName(temp.getName());
             companyListVo.setRegistedCapital(new BigDecimal(temp.getRegistedCapital()).divide(new BigDecimal(100)).toPlainString());
+            if (finalCompanyBaseMap.containsKey(temp.getId())) {
+                CompanyBase companyBase = finalCompanyBaseMap.get(temp.getId());
+                if (Objects.nonNull(companyBase)) {
+                    companyListVo.setIndustryType(IndustryType.valueOf(companyBase.getIndustryType()) == null ? "" : IndustryType.valueOf(companyBase.getIndustryType()).desc());
+                    companyListVo.setSafetyLevel(SafetyLevel.valueOf(companyBase.getSafetyLevel()) == null ? "" : SafetyLevel.valueOf(companyBase.getSafetyLevel()).desc());
+                    companyListVo.setCertificateStartTime(companyBase.getCertificateStartTime());
+                    companyListVo.setCertificateEndTime(companyBase.getCertificateEndTime());
+                    companyListVo.setMajorRiskSources(companyBase.getMajorRiskSources());
+                    companyListVo.setHigherRiskSources(companyBase.getHigherRiskSources());
+                    companyListVo.setGeneralRiskSources(companyBase.getGeneralRiskSources());
+                    companyListVo.setLowRiskSources(companyBase.getLowRiskSources());
+                }
+            }
             return companyListVo;
         }).collect(Collectors.toList());
         pageBean.setList(listVos);
