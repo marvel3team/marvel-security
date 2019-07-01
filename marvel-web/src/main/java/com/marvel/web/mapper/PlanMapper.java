@@ -102,8 +102,12 @@ public interface PlanMapper {
             if (companyId != null) {
                 sql.append(" and company_id=").append(companyId);
             }
-            if (Objects.nonNull(status) && PlanStatus.FINISH.value() == status) {
-                sql.append(" and status = ").append(status);
+            if (Objects.nonNull(status)) {
+                if (PlanStatus.FINISH.value() == status) {
+                    sql.append(" and status = ").append(status);
+                } else {
+                    sql.append(" and status != ").append(PlanStatus.FINISH.value());
+                }
             }
             if (cursor != null && cursor > 0) {
                 sql.append(" and id < " + cursor);
