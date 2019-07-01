@@ -8,6 +8,7 @@ import org.apache.ibatis.jdbc.SQL;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * @Classname CompanyStandardMapper
@@ -30,6 +31,10 @@ public interface CompanyStandardMapper {
             @Result(property = "id", column = "id"),
             @Result(property = "name", column = "name"),
             @Result(property = "areaId", column = "area_id"),
+            @Result(property = "province", column = "province"),
+            @Result(property = "city", column = "city"),
+            @Result(property = "otherCity", column = "other_city"),
+            @Result(property = "address", column = "address"),
             @Result(property = "type", column = "type"),
             @Result(property = "industryId", column = "industry_id"),
             @Result(property = "registedCapital", column = "registed_capital"),
@@ -41,8 +46,8 @@ public interface CompanyStandardMapper {
     })
     CompanyStandard getCompanyById(Long id);
 
-    @Insert("INSERT INTO t_company_standard(id, name, area_id, type, industry_id, registed_capital, legal_person, legal_person_mobile, business_type_code, email, business_license_id) VALUES(" +
-            "#{standard.id}, #{standard.name}, #{standard.areaId}, #{standard.type}, #{standard.industryId}, #{standard.registedCapital}, #{standard.legalPerson}, #{standard.legalPersonMobile}, #{standard.businessTypeCode}" +
+    @Insert("INSERT INTO t_company_standard(id, name, area_id, province, city, other_city, address, type, industry_id, registed_capital, legal_person, legal_person_mobile, business_type_code, email, business_license_id) VALUES(" +
+            "#{standard.id}, #{standard.name}, #{standard.areaId}, #{standard.province}, #{standard.city}, #{standard.otherCity}, #{standard.address}, #{standard.type}, #{standard.industryId}, #{standard.registedCapital}, #{standard.legalPerson}, #{standard.legalPersonMobile}, #{standard.businessTypeCode}" +
             ", #{standard.email}, #{standard.businessLicenseId})")
     int save(@Param("standard") CompanyStandard companyStandard);
 
@@ -99,6 +104,16 @@ public interface CompanyStandardMapper {
     @DeleteProvider(type = CompanySqlBuilder.class, method = "delete")
     int deleteCompanyStandard(Long id);
 
+    /**
+     * 根据name查询信息
+     *
+     * @param name
+     * @return
+     */
+    @SelectProvider(type = CompanySqlBuilder.class, method = "selectByName")
+    @ResultMap(value = "standardMap")
+    CompanyStandard getCompanyByName(String name);
+
 
     class CompanySqlBuilder {
 
@@ -129,7 +144,7 @@ public interface CompanyStandardMapper {
          */
         public static String selectByIds(Map map) {
             List<Long> companyIds = (List<Long>) map.get("list");
-            StringBuilder sql = new StringBuilder("SELECT id, name, area_id, type, industry_id, registed_capital, legal_person, legal_person_mobile, business_type_code, email, business_license_id FROM t_company_standard where ");
+            StringBuilder sql = new StringBuilder("SELECT id, name, area_id, province, city, other_city, address, type, industry_id, registed_capital, legal_person, legal_person_mobile, business_type_code, email, business_license_id FROM t_company_standard where ");
             sql.append(" id in ").append("(");
             for (Long id : companyIds) {
                 sql.append(id).append(",");
@@ -147,9 +162,24 @@ public interface CompanyStandardMapper {
          */
         public static String selectById(final Long id) {
             StringBuilder sql = new StringBuilder();
-            sql.append("SELECT id, name, area_id, type, industry_id, registed_capital, legal_person, legal_person_mobile, business_type_code, email, business_license_id");
+            sql.append("SELECT id, name, area_id, province, city, other_city, address, type, industry_id, registed_capital, legal_person, legal_person_mobile, business_type_code, email, business_license_id");
             sql.append(" from  t_company_standard where ");
             sql.append("id = ").append(id);
+            return sql.toString();
+        }
+
+        /**
+         * 根据name查询
+         *
+         * @param name
+         * @return
+         */
+        public static String selectByName(final String name) {
+            StringBuilder sql = new StringBuilder();
+            sql.append("SELECT id, name, area_id, province, city, other_city, address, type, industry_id, registed_capital, legal_person, legal_person_mobile, business_type_code, email, business_license_id");
+            sql.append(" from  t_company_standard where ");
+            sql.append("name = '").append(name).append("'");
+            sql.append(" limit 1");
             return sql.toString();
         }
 
@@ -174,6 +204,18 @@ public interface CompanyStandardMapper {
                     UPDATE("t_company_standard");
                     if (companyStandard.getAreaId() != null) {
                         SET("area_id = " + companyStandard.getAreaId());
+                    }
+                    if (StringUtils.isNotBlank(companyStandard.getProvince())) {
+                        SET("province = " + companyStandard.getProvince());
+                    }
+                    if (StringUtils.isNotBlank(companyStandard.getCity())) {
+                        SET("city = " + companyStandard.getCity());
+                    }
+                    if (StringUtils.isNotBlank(companyStandard.getOtherCity())) {
+                        SET("other_city = " + companyStandard.getCity());
+                    }
+                    if (StringUtils.isNotBlank(companyStandard.getAddress())) {
+                        SET("address = " + companyStandard.getAddress());
                     }
                     if (companyStandard.getIndustryId() != null) {
                         SET("industry_id = " + companyStandard.getIndustryId());

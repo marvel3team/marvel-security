@@ -86,6 +86,8 @@ public class CompanyController {
      * @Title getPlanList
      * @Description 根据企业id查询公司下所有计划
      * @param id
+     * @param name
+     * @param status 是否完成 1完成 2未完成
      * @return com.marvel.web.vo.CompanyDetailVo
      * @throws
      * @author andy
@@ -96,12 +98,14 @@ public class CompanyController {
     @ResponseBody
     public PageBean<PlanDetailVo> getPlanList(@RequestParam(name = "cursor",required = false,defaultValue = "-1") Long cursor,
                                               @RequestParam(name = "count",required = false,defaultValue = "20")Integer count,
-                                              @RequestParam(name = "id",required = false,defaultValue = "-1") Long id){
-        if (null == id || id < 0){
-            LOGGER.error("CompanyController-->getPlanList-->parameter invalid,id:{}",id);
+                                              @RequestParam(name = "id",required = false,defaultValue = "-1") Long id,
+                                              @RequestParam(name = "name",required = false, defaultValue = "") String name,
+                                              @RequestParam(name = "status", required = false, defaultValue = "1") Integer status){
+        if ((null == id || id < 0 ) && StringUtils.isBlank(name)){
+            LOGGER.error("CompanyController-->getPlanList-->parameter invalid,id:{}, name:{}",id,name);
             throw BusinessException.INVALID_PARAMS;
         }
-        return companyService.getPlanList(cursor,count,id);
+        return companyService.getPlanList(cursor,count,id,name,status);
     }
 
     /***

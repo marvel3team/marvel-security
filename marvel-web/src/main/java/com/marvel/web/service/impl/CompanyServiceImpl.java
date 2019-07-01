@@ -149,8 +149,12 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public PageBean<PlanDetailVo> getPlanList(Long cursor, Integer count, Long id) {
-        List<Plan> planList = planMapper.getCompanyPlanList(id, cursor, count);
+    public PageBean<PlanDetailVo> getPlanList(Long cursor, Integer count, Long id, String name, Integer status) {
+        if (Objects.isNull(id) && id <= 0) {
+            CompanyStandard companyStandard = companyStandardMapper.getCompanyByName(name);
+            id = companyStandard.getId();
+        }
+        List<Plan> planList = planMapper.getCompanyPlanList(id, status, cursor, count);
         if (null == planList || planList.size() == 0) {
             return assemblePlanDetailPage(-1, new ArrayList<>());
         }
@@ -195,9 +199,14 @@ public class CompanyServiceImpl implements CompanyService {
             planDetailVo.setPlanName(plan.getName());
             CompanyStandard standard = companyStandardsMap.get(plan.getCompanyId());
             planDetailVo.setCompanyName(standard == null ? StringUtils.EMPTY : standard.getName());
-            planDetailVo.setProvince(plan.getProvince());
-            planDetailVo.setCity(plan.getCity());
-            planDetailVo.setOtherCity(plan.getOtherCity());
+            planDetailVo.setProvince(standard == null ? StringUtils.EMPTY : standard.getProvince());
+            planDetailVo.setCity(standard == null ? StringUtils.EMPTY : standard.getCity());
+            planDetailVo.setOtherCity(standard == null ? StringUtils.EMPTY : standard.getOtherCity());
+            planDetailVo.setAddress(standard == null ? StringUtils.EMPTY : standard.getAddress());
+            if (standard != null && standard.getIndustryId() > 0) {
+                IndustryType industryType = IndustryType.valueOf(standard.getIndustryId().intValue());
+                planDetailVo.setIndustryType(industryType == null ? StringUtils.EMPTY : industryType.desc());
+            }
             planDetailVo.setDomain(plan.getDomain());
             planDetailVo.setDomainDetails(plan.getDomainDetails());
             planDetailVo.setDomainMince(plan.getDomainMince());

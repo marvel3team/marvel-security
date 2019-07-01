@@ -1,9 +1,11 @@
 package com.marvel.web.mapper;
 
+import com.marvel.web.enums.PlanStatus;
 import com.marvel.web.po.Plan;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @Classname
@@ -84,20 +86,24 @@ public interface PlanMapper {
     /**
      * 分页查询
      * @param companyId
+     * @param status
      * @param cursor
      * @param count
      * @return
      */
     @SelectProvider(type = SqlBuilder.class, method = "buildFindByPage")
     @ResultMap("planMap")
-    List<Plan> getCompanyPlanList(Long companyId, Long cursor, Integer count);
+    List<Plan> getCompanyPlanList(Long companyId, Integer status, Long cursor, Integer count);
 
 
     class SqlBuilder {
-        public static String buildFindByPage(final Long companyId, final Long cursor, final Integer count) {
+        public static String buildFindByPage(final Long companyId, final Integer status, final Long cursor, final Integer count) {
             StringBuilder sql = new StringBuilder("select * from t_plan where 1=1");
             if (companyId != null) {
                 sql.append(" and company_id=").append(companyId);
+            }
+            if (Objects.nonNull(status) && PlanStatus.FINISH.value() == status) {
+                sql.append(" and status = ").append(status);
             }
             if (cursor != null && cursor > 0) {
                 sql.append(" and id < " + cursor);

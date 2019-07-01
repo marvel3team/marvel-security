@@ -67,6 +67,7 @@ public class PlanDetailVo {
      */
     private Integer finishStatus;
 
+
     /**
      * 完成时间
      */
@@ -101,6 +102,16 @@ public class PlanDetailVo {
      * 其他城市
      */
     private String otherCity;
+
+    /**
+     * address
+     */
+    private String address;
+
+    /**
+     * 行业类型
+     */
+    private String industryType;
 
     /**
      * 领域

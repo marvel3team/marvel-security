@@ -48,6 +48,8 @@ public interface CompanyService {
      * @param cursor
      * @param count
      * @param id
+     * @param name
+     * @param status
      * @return
      * @throws
      * @Title
@@ -55,7 +57,7 @@ public interface CompanyService {
      * @author andy
      * @date 2019/4/23 下午11:13
      */
-    PageBean<PlanDetailVo> getPlanList(Long cursor, Integer count, Long id);
+    PageBean<PlanDetailVo> getPlanList(Long cursor, Integer count, Long id, String name, Integer status);
 
     /**
      * Description: 服务列表
