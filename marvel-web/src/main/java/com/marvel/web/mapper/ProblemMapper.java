@@ -31,7 +31,7 @@ public interface ProblemMapper {
 
     class SqlBuilder {
         public static String buildFindByPage(final Integer status, final Long cursor, final Integer count) {
-            StringBuilder sql = new StringBuilder("SELECT id, plan_id, rule_id, expert_id, project_id, project_name, problem_content, corrective_action, term, status, update_time FROM t_problem_info where 1=1");
+            StringBuilder sql = new StringBuilder("SELECT id, plan_id as planId, rule_id as ruleId, expert_id as expertId, project_id as projectId, project_name as projectName, problem_content as problemContent, corrective_action as correctiveAction, term, status, update_time as updateTime FROM t_problem_info where 1=1");
             if (status != null && status > 0) {
                 sql.append(" and status = " + status);
             }
