@@ -46,7 +46,7 @@ public class ProblemServiceImpl implements ProblemService {
         problem.setStatus(1);
         problem.setUpdateTime(System.currentTimeMillis());
         int result = problemPicMapper.batchInsert(getList(problem));
-        if (result > 1) {
+        if (result >= 1) {
             result = problemMapper.save(problem);
         }
         if (result < 1) {
