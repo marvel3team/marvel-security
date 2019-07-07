@@ -49,7 +49,8 @@ public class ProblemServiceImpl implements ProblemService {
         if (result >= 1) {
             result = problemMapper.save(problem);
         }
-        if (result < 1) {
+        if (result < 1
+        ) {
             throw BusinessException.SAVE_ERROR;
         }
         return problem;
@@ -72,7 +73,7 @@ public class ProblemServiceImpl implements ProblemService {
     }
 
     @Override
-    public PageBean<Problem> getByPage(RequestContext requestContext, Integer status, Long cursor, Integer count) {
+    public PageBean<Problem> getByPage(RequestContext requestContext, Integer status, Long planId, Long cursor, Integer count) {
         PageBean<Problem> result = new PageBean<>();
         result.setCount(count);
         if (status == null || status <= 0) {
@@ -80,7 +81,7 @@ public class ProblemServiceImpl implements ProblemService {
             result.setList(Lists.newArrayList());
             return result;
         }
-        List<Problem> list = problemMapper.findByPage(status, cursor, count);
+        List<Problem> list = problemMapper.findByPage(status, planId, cursor, count);
         if (CollectionUtils.isEmpty(list)) {
             result.setNextCursor(-1L);
             result.setList(Lists.newArrayList());

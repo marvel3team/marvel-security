@@ -15,5 +15,5 @@ public interface ProblemService {
 
     boolean update(RequestContext requestContext, Problem convert);
 
-    PageBean<Problem> getByPage(RequestContext requestContext, Integer status, Long cursor, Integer count);
+    PageBean<Problem> getByPage(RequestContext requestContext, Integer status, Long planId, Long cursor, Integer count);
 }

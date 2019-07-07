@@ -27,13 +27,16 @@ public interface ProblemMapper {
     int update(@Param("problem") Problem problem);
 
     @SelectProvider(type = SqlBuilder.class, method = "buildFindByPage")
-    List<Problem> findByPage(Integer status, Long cursor, Integer count);
+    List<Problem> findByPage(Integer status, Long planId, Long cursor, Integer count);
 
     class SqlBuilder {
-        public static String buildFindByPage(final Integer status, final Long cursor, final Integer count) {
+        public static String buildFindByPage(final Integer status, final Long planId, final Long cursor, final Integer count) {
             StringBuilder sql = new StringBuilder("SELECT id, plan_id as planId, rule_id as ruleId, expert_id as expertId, project_id as projectId, project_name as projectName, problem_content as problemContent, corrective_action as correctiveAction, term, status, update_time as updateTime FROM t_problem_info where 1=1");
             if (status != null && status > 0) {
                 sql.append(" and status = " + status);
+            }
+            if (planId != null && planId > 0) {
+                sql.append(" and plan_id = " + planId);
             }
             if (cursor != null && cursor > 0) {
                 sql.append(" and id < " + cursor);

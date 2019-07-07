@@ -58,11 +58,12 @@ public class ProblemController {
     @ResponseBody
     public PageBean<Problem> getRectifyProblemList(@RequestParam(name = "cursor", required = false, defaultValue = "-1") Long cursor,
                                           @RequestParam(name = "count", required = false, defaultValue = "10") Integer count,
-                                          @RequestParam(name = "status") Integer status){
+                                          @RequestParam(name = "status", required = false) Integer status,
+                                          @RequestParam(name = "planId", required = false) Long planId){
         if (count == null) {
             count = Constants.DEFAULT_COUNT;
         }
-        PageBean<Problem> result = problemService.getByPage(RequestContext.getRequestContext(), status, cursor, count);
+        PageBean<Problem> result = problemService.getByPage(RequestContext.getRequestContext(), status, planId, cursor, count);
         return result;
     }
 
