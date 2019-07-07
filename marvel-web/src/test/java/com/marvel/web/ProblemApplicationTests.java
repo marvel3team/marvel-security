@@ -54,7 +54,7 @@ public class ProblemApplicationTests extends BaseTestUtils{
     @Test
     public void findByPage(){
         Assert.assertNotNull(problemMapper);
-        List<Problem> list = problemMapper.findByPage(2, null, 10);
+        List<Problem> list = problemMapper.findByPage(2, null, null, 10);
         Assert.assertNotNull(list);
     }
 

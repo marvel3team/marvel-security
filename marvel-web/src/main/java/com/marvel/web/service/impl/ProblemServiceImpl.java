@@ -76,11 +76,6 @@ public class ProblemServiceImpl implements ProblemService {
     public PageBean<Problem> getByPage(RequestContext requestContext, Integer status, Long planId, Long cursor, Integer count) {
         PageBean<Problem> result = new PageBean<>();
         result.setCount(count);
-        if (status == null || status <= 0) {
-            result.setNextCursor(-1L);
-            result.setList(Lists.newArrayList());
-            return result;
-        }
         List<Problem> list = problemMapper.findByPage(status, planId, cursor, count);
         if (CollectionUtils.isEmpty(list)) {
             result.setNextCursor(-1L);
