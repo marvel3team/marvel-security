@@ -58,7 +58,7 @@ public class ProblemController {
     @ResponseBody
     public PageBean<Problem> getRectifyProblemList(@RequestParam(name = "cursor", required = false, defaultValue = "-1") Long cursor,
                                           @RequestParam(name = "count", required = false, defaultValue = "10") Integer count,
-                                          @RequestParam(name = "Integer") Integer status){
+                                          @RequestParam(name = "status") Integer status){
         if (count == null) {
             count = Constants.DEFAULT_COUNT;
         }
