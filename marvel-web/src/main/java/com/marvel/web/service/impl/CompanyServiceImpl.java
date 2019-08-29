@@ -371,6 +371,7 @@ public class CompanyServiceImpl implements CompanyService {
         companyStandard.setBusinessLicenseId(companyInfoReqVo.getBusinessLicenseNo());
         companyStandard.setRegistedCapital(StringUtils.isBlank(companyInfoReqVo.getRegistedCapital()) ? null : new BigDecimal(companyInfoReqVo.getRegistedCapital()).multiply(new BigDecimal(100)).longValue());
         companyStandard.setLegalPerson(companyInfoReqVo.getLegalPreson());
+        companyStandard.setType(1);
         companyStandard.setLegalPersonMobile(companyInfoReqVo.getMobile());
         companyStandard.setEmail(companyInfoReqVo.getEmail());
         companyStandard.setName(companyInfoReqVo.getName());

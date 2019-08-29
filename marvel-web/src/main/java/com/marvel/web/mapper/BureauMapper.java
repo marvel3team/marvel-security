@@ -36,6 +36,13 @@ public interface BureauMapper {
     int update(Bureau bureau);
 
 
+    @InsertProvider(type = BureauSqlBuilder.class, method = "insert")
+    int insert(Bureau bureau);
+
+    @DeleteProvider(type = BureauSqlBuilder.class, method = "delete")
+    int delete(Long id);
+
+
     class BureauSqlBuilder {
 
         /**
@@ -82,6 +89,37 @@ public interface BureauMapper {
             }
             sql.deleteCharAt(sql.length() -1);
             sql.append(" where id = ").append(bureau.getId());
+            return sql.toString();
+        }
+
+        public static String insert(Bureau bureau) {
+            StringBuilder sql = new StringBuilder("insert into t_bureau_info values (");
+            if (bureau.getId() != null) {
+                sql.append(bureau.getId()).append(",");
+            }
+            if (bureau.getAreaId() != null) {
+                sql.append(bureau.getAreaId()).append(",");
+            }
+            if (bureau.getCompanyId() != null){
+                sql.append(bureau.getCompanyId()).append(",");
+            }
+            if (StringUtils.isNotBlank(bureau.getName())){
+                sql.append("'").append(bureau.getName()).append("',");
+            }
+            if (StringUtils.isNotBlank(bureau.getMobile())){
+                sql.append("'").append(bureau.getMobile()).append("',");
+            }
+            if (StringUtils.isNotBlank(bureau.getRemark())){
+                sql.append("'").append(bureau.getRemark()).append("',");
+            }
+            sql.deleteCharAt(sql.length() -1);
+            sql.append(")");
+            return sql.toString();
+        }
+
+        public static String delete(final Long id){
+            StringBuilder sql = new StringBuilder("delete from t_bureau_info where id = ");
+            sql.append(id);
             return sql.toString();
         }
     }

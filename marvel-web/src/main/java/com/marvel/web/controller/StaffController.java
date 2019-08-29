@@ -37,7 +37,7 @@ public class StaffController {
     @MarvelCheck(auth = true)
     @RequestMapping(value = "/update_staff_info.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String updateStaffInfo(StaffInfoReq staffInfoReq){
+    public String updateStaffInfo(@RequestBody StaffInfoReq staffInfoReq){
         if (Objects.isNull(staffInfoReq) || staffInfoReq.getId() == null) {
             throw BusinessException.INVALID_PARAMS;
         }

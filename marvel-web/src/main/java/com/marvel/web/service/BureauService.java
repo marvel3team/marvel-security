@@ -1,6 +1,9 @@
 package com.marvel.web.service;
 
+import com.marvel.web.vo.BureauCompanyVo;
 import com.marvel.web.vo.BureauInfoReqVo;
+
+import java.util.Map;
 
 /**
  * @Classname BureauService
@@ -18,4 +21,24 @@ public interface BureauService {
      * @return
      */
     String updateBureauInfo(BureauInfoReqVo bureauInfoReqVo);
+
+    /**
+     * 新增科局人员信息
+     * @param bureauInfoReqVo
+     * @return
+     */
+    String addBureauInfo(BureauInfoReqVo bureauInfoReqVo);
+
+    /**
+     * 删除科局人员信息
+     * @param id
+     * @return
+     */
+    String delBureauInfo(Long id);
+
+    String saveBureauCompanyInfo(BureauCompanyVo bureauCompanyVo);
+
+    String updateBureauCompanyInfo(BureauCompanyVo bureauCompanyVo);
+
+    String delBureauCompanyInfo(Long id);
 }

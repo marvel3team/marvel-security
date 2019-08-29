@@ -33,7 +33,7 @@ public class ProblemController {
     @MarvelCheck(auth = true)
     @RequestMapping(value = "/add_rectify_problem.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String addRectifyProblem(RectifyProblemReq rectifyProblemReq){
+    public String addRectifyProblem(@RequestBody RectifyProblemReq rectifyProblemReq){
         checkParams(rectifyProblemReq);
         problemService.save(RequestContext.getRequestContext(), ProblemConvert.convert(rectifyProblemReq));
         return StringUtils.EMPTY;
@@ -42,7 +42,7 @@ public class ProblemController {
     @MarvelCheck(auth = true)
     @RequestMapping(value = "/update_rectify_problem.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String updateRectifyProblem(RectifyProblemReq rectifyProblemReq){
+    public String updateRectifyProblem(@RequestBody RectifyProblemReq rectifyProblemReq){
         if (Objects.isNull(rectifyProblemReq) || rectifyProblemReq.getProblemId() == null) {
             throw BusinessException.INVALID_PARAMS;
         }
