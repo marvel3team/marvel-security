@@ -5,7 +5,6 @@ import com.marvel.web.exception.BusinessException;
 import com.marvel.web.mapper.BureauMapper;
 import com.marvel.web.mapper.CompanyStandardMapper;
 import com.marvel.web.po.Bureau;
-import com.marvel.web.po.CompanyBase;
 import com.marvel.web.po.CompanyStandard;
 import com.marvel.web.service.BureauService;
 import com.marvel.web.vo.BureauCompanyVo;
@@ -93,16 +92,15 @@ public class BureauServiceImpl implements BureauService {
         }
         CompanyStandard companyStandard = new CompanyStandard();
         companyStandard.setId(id);
-        companyStandard.setAreaId(companyInfoReqVo.getAreaId() == null ? companyStandard.getAreaId() : companyInfoReqVo.getAreaId());
-        companyStandard.setBusinessLicenseId(companyInfoReqVo.getBusinessCode());
-        companyStandard.setBusinessLicenseId(companyInfoReqVo.getBusinessLicenseNo());
-        companyStandard.setRegistedCapital(StringUtils.isBlank(companyInfoReqVo.getRegistedCapital()) ? null : new BigDecimal(companyInfoReqVo.getRegistedCapital()).multiply(new BigDecimal(100)).longValue());
-        companyStandard.setLegalPerson(companyInfoReqVo.getLegalPreson());
-        companyStandard.setLegalPersonMobile(companyInfoReqVo.getMobile());
-        companyStandard.setEmail(companyInfoReqVo.getEmail());
+        companyStandard.setAreaId(bureauCompanyVo.getAreaId() == null ? companyStandard.getAreaId() : bureauCompanyVo.getAreaId());
+        companyStandard.setBusinessLicenseId(bureauCompanyVo.getBusinessCode());
+        companyStandard.setBusinessLicenseId(bureauCompanyVo.getBusinessLicenseNo());
+        companyStandard.setRegistedCapital(StringUtils.isBlank(bureauCompanyVo.getRegistedCapital()) ? null : new BigDecimal(bureauCompanyVo.getRegistedCapital()).multiply(new BigDecimal(100)).longValue());
+        companyStandard.setLegalPerson(bureauCompanyVo.getLegalPreson());
+        companyStandard.setLegalPersonMobile(bureauCompanyVo.getMobile());
+        companyStandard.setEmail(bureauCompanyVo.getEmail());
         companyStandard.setType(3);
-        companyStandard.setName(companyInfoReqVo.getName());
-        companyStandard.setIndustryId(companyInfoReqVo.getIndustryId());
+        companyStandard.setName(bureauCompanyVo.getName());
 
         int insert = companyStandardMapper.save(companyStandard);
         if (insert < 0){
@@ -125,7 +123,6 @@ public class BureauServiceImpl implements BureauService {
         companyStandard.setLegalPersonMobile(bureauCompanyVo.getMobile());
         companyStandard.setEmail(bureauCompanyVo.getEmail());
         companyStandard.setName(bureauCompanyVo.getName());
-        companyStandard.setIndustryId(bureauCompanyVo.getIndustryId());
         int update = companyStandardMapper.updateCompanyStandard(companyStandard);
         if (update < 1) {
             throw BusinessException.UPDATE_ERROR;
