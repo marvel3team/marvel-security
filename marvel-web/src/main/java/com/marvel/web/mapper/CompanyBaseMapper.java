@@ -6,7 +6,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.jdbc.SQL;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -82,6 +81,7 @@ public interface CompanyBaseMapper {
     List<CompanyBase> getCompanyBases(@Param("list") List<Long> companyIds);
 
     class CompanyBaseSqlBuilder {
+
 
         /**
          * 更新
