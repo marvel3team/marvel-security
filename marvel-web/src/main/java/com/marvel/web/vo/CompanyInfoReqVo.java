@@ -61,7 +61,7 @@ public class CompanyInfoReqVo {
     /**
      * 营业执照编码
      */
-    private String businessLicenseNo;
+    private String businessLicenseId;
 
     /**
      * 行业id
