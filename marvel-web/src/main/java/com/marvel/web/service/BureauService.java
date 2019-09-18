@@ -3,6 +3,7 @@ package com.marvel.web.service;
 import com.marvel.web.vo.BureauCompanyVo;
 import com.marvel.web.vo.BureauInfoReqVo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -47,5 +48,5 @@ public interface BureauService {
      * @param id
      * @return
      */
-    String getBureauUserInfoList(Long id);
+    List<BureauInfoReqVo> getBureauUserInfoList(Long id);
 }

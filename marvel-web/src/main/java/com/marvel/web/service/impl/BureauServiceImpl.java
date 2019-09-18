@@ -9,11 +9,15 @@ import com.marvel.web.po.CompanyStandard;
 import com.marvel.web.service.BureauService;
 import com.marvel.web.vo.BureauCompanyVo;
 import com.marvel.web.vo.BureauInfoReqVo;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Classname BureauServiceImpl
@@ -144,7 +148,19 @@ public class BureauServiceImpl implements BureauService {
     }
 
     @Override
-    public String getBureauUserInfoList(Long id) {
-        return null;
+    public List<BureauInfoReqVo> getBureauUserInfoList(Long id) {
+        List<Bureau> bureauList = bureauMapper.getBureauByCompanyId(id);
+        if (CollectionUtils.isEmpty(bureauList)){
+            return new ArrayList<>();
+        }
+        return bureauList.stream().map(temp->{
+            BureauInfoReqVo reqVo = new BureauInfoReqVo();
+            reqVo.setId(temp.getId());
+            reqVo.setAreaId(temp.getAreaId());
+            reqVo.setMobile(temp.getMobile());
+            reqVo.setName(temp.getName());
+            reqVo.setRemark(temp.getRemark());
+            return reqVo;
+        }).collect(Collectors.toList());
     }
 }

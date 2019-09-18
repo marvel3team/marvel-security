@@ -43,6 +43,18 @@ public interface BureauMapper {
     int delete(Long id);
 
 
+    @SelectProvider(type = BureauSqlBuilder.class,method = "selectByCompanyId")
+    @Results(id = "bureauMap",value = {
+            @Result(property = "id",column = "id"),
+            @Result(property = "areaId",column = "area_id"),
+            @Result(property = "companyId",column = "company_id"),
+            @Result(property = "name",column = "name"),
+            @Result(property = "mobile",column = "mobile"),
+            @Result(property = "remark",column = "remark")
+    })
+    List<Bureau> getBureauByCompanyId(Long id);
+
+
     class BureauSqlBuilder {
 
         /**
@@ -67,6 +79,13 @@ public interface BureauMapper {
             StringBuilder sql = new StringBuilder("select id,area_id,company_id,name,mobile,remark ");
             sql.append(" from t_bureau_info ");
             sql.append("where id = ").append(id);
+            return sql.toString();
+        }
+
+        public static String selectByCompanyId(final Long id){
+            StringBuilder sql = new StringBuilder("select id,area_id,company_id,name,mobile,remark ");
+            sql.append(" from t_bureau_info ");
+            sql.append("where company_id = ").append(id);
             return sql.toString();
         }
 

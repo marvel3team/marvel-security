@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @Classname BureauController
  * @Description
@@ -31,14 +33,15 @@ public class BureauController {
 
     /**
      * 修改科局人员信息
+     *
      * @param bureauInfoReqVo
      * @return
      */
     @MarvelCheck(auth = true)
     @RequestMapping(value = "/update_bureau_info.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String updateBureauInfo(@RequestBody BureauInfoReqVo bureauInfoReqVo){
-        if (!checkParameter(bureauInfoReqVo)){
+    public String updateBureauInfo(@RequestBody BureauInfoReqVo bureauInfoReqVo) {
+        if (!checkParameter(bureauInfoReqVo)) {
             LOGGER.error("BureauController-->updateBureauInfo-->parameter invalid parameter,reqBody:{}", JSON.toJSON(bureauInfoReqVo));
             throw BusinessException.INVALID_PARAMS;
         }
@@ -47,14 +50,15 @@ public class BureauController {
 
     /**
      * 新增科局人员信息
+     *
      * @param bureauInfoReqVo
      * @return
      */
     @MarvelCheck(auth = true)
     @RequestMapping(value = "/add_bureau_info.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String addBureauInfo(@RequestBody BureauInfoReqVo bureauInfoReqVo){
-        if (!checkParameter(bureauInfoReqVo)){
+    public String addBureauInfo(@RequestBody BureauInfoReqVo bureauInfoReqVo) {
+        if (!checkParameter(bureauInfoReqVo)) {
             LOGGER.error("BureauController-->addBureauInfo-->parameter invalid parameter,reqBody:{}", JSON.toJSON(bureauInfoReqVo));
             throw BusinessException.INVALID_PARAMS;
         }
@@ -63,25 +67,32 @@ public class BureauController {
 
     /**
      * 删除科局人员信息
+     *
      * @param id
      * @return
      */
     @MarvelCheck(auth = true)
     @RequestMapping(value = "/del_bureau_info.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String delBureauInfo(@RequestParam(name = "id") Long id){
-        if (null == id){
+    public String delBureauInfo(@RequestParam(name = "id") Long id) {
+        if (null == id) {
             LOGGER.error("BureauController-->delBureauInfo-->parameter invalid parameter,reqBody:{}", id);
             throw BusinessException.INVALID_PARAMS;
         }
         return bureauService.delBureauInfo(id);
     }
 
+    /**
+     * 查询科局所有的人员
+     *
+     * @param id
+     * @return
+     */
     @MarvelCheck(auth = true)
     @RequestMapping(value = "/get_bureau_user_info.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String getBureauUserInfoList(@RequestParam(name = "id") Long id){
-        if (null == id){
+    public List<BureauInfoReqVo> getBureauUserInfoList(@RequestParam(name = "id") Long id) {
+        if (null == id) {
             LOGGER.error("BureauController-->getBureauUserInfoList-->parameter invalid parameter,reqBody:{}", id);
             throw BusinessException.INVALID_PARAMS;
         }
@@ -90,19 +101,19 @@ public class BureauController {
 
 
     /**
-     * @Title saveBureauCompanyInfo
-     * @Description 新增科局公司信息
      * @param bureauCompanyVo
      * @return java.lang.String
      * @throws
+     * @Title saveBureauCompanyInfo
+     * @Description 新增科局公司信息
      * @author andy
      * @date 2019/4/22 下午11:49
      */
     @MarvelCheck(auth = true)
     @RequestMapping(value = "/save_bureau_company_info.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String saveBureauCompanyInfo(@RequestBody BureauCompanyVo bureauCompanyVo){
-        if (!checkBureauParameter(bureauCompanyVo)){
+    public String saveBureauCompanyInfo(@RequestBody BureauCompanyVo bureauCompanyVo) {
+        if (!checkBureauParameter(bureauCompanyVo)) {
             LOGGER.error("BureauController-->saveBureauCompanyInfo-->parameter invalid parameter,reqBody:{}", JSON.toJSON(bureauCompanyVo));
             throw BusinessException.INVALID_PARAMS;
         }
@@ -110,38 +121,39 @@ public class BureauController {
     }
 
     /**
-     * @Title updateBureauCompanyInfo
-     * @Description修改科局公司信息
      * @param bureauCompanyVo
      * @return java.lang.String
      * @throws
+     * @Title updateBureauCompanyInfo
+     * @Description修改科局公司信息
      * @author andy
      * @date 2019/4/22 下午11:49
      */
     @MarvelCheck(auth = true)
     @RequestMapping(value = "/update_bureau_company_info.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String updateBureauCompanyInfo(@RequestBody BureauCompanyVo bureauCompanyVo){
-        if (!checkBureauParameter(bureauCompanyVo)){
+    public String updateBureauCompanyInfo(@RequestBody BureauCompanyVo bureauCompanyVo) {
+        if (!checkBureauParameter(bureauCompanyVo)) {
             LOGGER.error("BureauController-->updateBureauCompanyInfo-->parameter invalid parameter,reqBody:{}", JSON.toJSON(bureauCompanyVo));
             throw BusinessException.INVALID_PARAMS;
         }
         return bureauService.updateBureauCompanyInfo(bureauCompanyVo);
     }
+
     /**
-     * @Title delBureauCompanyInfo
-     * @Description删除科局公司信息
      * @param id
      * @return java.lang.String
      * @throws
+     * @Title delBureauCompanyInfo
+     * @Description删除科局公司信息
      * @author andy
      * @date 2019/4/22 下午11:49
      */
     @MarvelCheck(auth = true)
     @RequestMapping(value = "/del_bureau_company_info.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String delBureauCompanyInfo(@RequestParam(name =  "id") Long id){
-        if (null == id){
+    public String delBureauCompanyInfo(@RequestParam(name = "id") Long id) {
+        if (null == id) {
             LOGGER.error("BureauController-->delBureauCompanyInfo-->parameter invalid parameter,reqBody:{}", id);
             throw BusinessException.INVALID_PARAMS;
         }
@@ -149,7 +161,7 @@ public class BureauController {
     }
 
     private boolean checkBureauParameter(BureauCompanyVo bureauCompanyVo) {
-        if (StringUtils.isBlank(bureauCompanyVo.getName())){
+        if (StringUtils.isBlank(bureauCompanyVo.getName())) {
             return false;
         }
         return true;
@@ -157,11 +169,12 @@ public class BureauController {
 
     /**
      * 校验参数
+     *
      * @param bureauInfoReqVo
      * @return
      */
     private boolean checkParameter(BureauInfoReqVo bureauInfoReqVo) {
-        if (bureauInfoReqVo.getAreaId() == null || StringUtils.isBlank(bureauInfoReqVo.getMobile()) || StringUtils.isBlank(bureauInfoReqVo.getName())){
+        if (bureauInfoReqVo.getAreaId() == null || StringUtils.isBlank(bureauInfoReqVo.getMobile()) || StringUtils.isBlank(bureauInfoReqVo.getName())) {
             return false;
         }
         return true;
