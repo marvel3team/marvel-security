@@ -261,7 +261,7 @@ public class CompanyServiceImpl implements CompanyService {
         }
         companyStandard.setAreaId(companyInfoReqVo.getAreaId() == null ? companyStandard.getAreaId() : companyInfoReqVo.getAreaId());
         companyStandard.setBusinessLicenseId(companyInfoReqVo.getBusinessCode());
-        companyStandard.setBusinessLicenseId(companyInfoReqVo.getBusinessLicenseNo());
+        companyStandard.setBusinessLicenseId(companyInfoReqVo.getBusinessLicenseId());
         companyStandard.setRegistedCapital(StringUtils.isBlank(companyInfoReqVo.getRegistedCapital()) ? null : new BigDecimal(companyInfoReqVo.getRegistedCapital()).multiply(new BigDecimal(100)).longValue());
         companyStandard.setLegalPerson(companyInfoReqVo.getLegalPreson());
         companyStandard.setLegalPersonMobile(companyInfoReqVo.getMobile());
@@ -368,7 +368,7 @@ public class CompanyServiceImpl implements CompanyService {
         companyStandard.setId(id);
         companyStandard.setAreaId(companyInfoReqVo.getAreaId() == null ? companyStandard.getAreaId() : companyInfoReqVo.getAreaId());
         companyStandard.setBusinessLicenseId(companyInfoReqVo.getBusinessCode());
-        companyStandard.setBusinessLicenseId(companyInfoReqVo.getBusinessLicenseNo());
+        companyStandard.setBusinessLicenseId(companyInfoReqVo.getBusinessLicenseId());
         companyStandard.setRegistedCapital(StringUtils.isBlank(companyInfoReqVo.getRegistedCapital()) ? null : new BigDecimal(companyInfoReqVo.getRegistedCapital()).multiply(new BigDecimal(100)).longValue());
         companyStandard.setLegalPerson(companyInfoReqVo.getLegalPreson());
         companyStandard.setType(1);
