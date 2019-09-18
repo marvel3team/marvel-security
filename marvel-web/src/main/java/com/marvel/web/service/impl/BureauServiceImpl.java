@@ -142,4 +142,9 @@ public class BureauServiceImpl implements BureauService {
         }
         return "{}";
     }
+
+    @Override
+    public String getBureauUserInfoList(Long id) {
+        return null;
+    }
 }

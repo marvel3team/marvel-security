@@ -77,6 +77,17 @@ public class BureauController {
         return bureauService.delBureauInfo(id);
     }
 
+    @MarvelCheck(auth = true)
+    @RequestMapping(value = "/get_bureau_user_info.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public String getBureauUserInfoList(@RequestParam(name = "id") Long id){
+        if (null == id){
+            LOGGER.error("BureauController-->getBureauUserInfoList-->parameter invalid parameter,reqBody:{}", id);
+            throw BusinessException.INVALID_PARAMS;
+        }
+        return bureauService.getBureauUserInfoList(id);
+    }
+
 
     /**
      * @Title saveBureauCompanyInfo

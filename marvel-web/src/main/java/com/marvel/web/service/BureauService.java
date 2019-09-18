@@ -41,4 +41,11 @@ public interface BureauService {
     String updateBureauCompanyInfo(BureauCompanyVo bureauCompanyVo);
 
     String delBureauCompanyInfo(Long id);
+
+    /**
+     * 根据科举id查询科剧下所有的人员信息
+     * @param id
+     * @return
+     */
+    String getBureauUserInfoList(Long id);
 }
