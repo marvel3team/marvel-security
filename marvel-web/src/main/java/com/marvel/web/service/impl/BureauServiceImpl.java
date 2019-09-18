@@ -1,22 +1,27 @@
 package com.marvel.web.service.impl;
 
+import com.google.common.collect.Lists;
+import com.marvel.common.models.PageBean;
 import com.marvel.common.uuid.SnowflakeIdGenerator;
+import com.marvel.web.enums.IndustryType;
+import com.marvel.web.enums.SafetyLevel;
 import com.marvel.web.exception.BusinessException;
 import com.marvel.web.mapper.BureauMapper;
 import com.marvel.web.mapper.CompanyStandardMapper;
 import com.marvel.web.po.Bureau;
+import com.marvel.web.po.CompanyBase;
 import com.marvel.web.po.CompanyStandard;
 import com.marvel.web.service.BureauService;
 import com.marvel.web.vo.BureauCompanyVo;
 import com.marvel.web.vo.BureauInfoReqVo;
-import org.apache.commons.collections4.CollectionUtils;
+import com.marvel.web.vo.CompanyListVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -148,12 +153,37 @@ public class BureauServiceImpl implements BureauService {
     }
 
     @Override
-    public List<BureauInfoReqVo> getBureauUserInfoList(Long id) {
-        List<Bureau> bureauList = bureauMapper.getBureauByCompanyId(id);
-        if (CollectionUtils.isEmpty(bureauList)){
-            return new ArrayList<>();
+    public PageBean<BureauInfoReqVo> getBureauUserInfoList(Long id,Long cursor,Integer count) {
+
+        long total = bureauMapper.getBureauCountByCompanyId(id);
+        if (total == 0) {
+            return assemblePageBean(-1, new ArrayList<>());
         }
-        return bureauList.stream().map(temp->{
+        List<Bureau> bureauList = bureauMapper.getBureauByCompanyId(id,cursor, count);
+        if (CollectionUtils.isEmpty(bureauList)) {
+            return assemblePageBean(-1, new ArrayList<>());
+        }
+
+        if (bureauList.size() < total) {
+            return assemblePageBean(-1, bureauList);
+        }
+        return assemblePageBean(bureauList.get(bureauList.size() - 1).getId(), bureauList);
+
+    }
+
+    /**
+     * 组装返回数据
+     *
+     * @param nextCursor
+     * @param bureauList
+     * @return
+     */
+    private PageBean<BureauInfoReqVo> assemblePageBean(long nextCursor, List<Bureau> bureauList) {
+        PageBean<BureauInfoReqVo> pageBean = new PageBean<>();
+        pageBean.setNextCursor(nextCursor);
+
+        //组装base数据
+        List<BureauInfoReqVo> resultList  = bureauList.stream().map(temp->{
             BureauInfoReqVo reqVo = new BureauInfoReqVo();
             reqVo.setId(temp.getId());
             reqVo.setAreaId(temp.getAreaId());
@@ -162,5 +192,7 @@ public class BureauServiceImpl implements BureauService {
             reqVo.setRemark(temp.getRemark());
             return reqVo;
         }).collect(Collectors.toList());
+        pageBean.setList(resultList);
+        return pageBean;
     }
 }

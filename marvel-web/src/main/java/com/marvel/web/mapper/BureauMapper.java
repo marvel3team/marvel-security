@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @Classname BureauMapper
@@ -43,19 +44,27 @@ public interface BureauMapper {
     int delete(Long id);
 
 
-    @SelectProvider(type = BureauSqlBuilder.class,method = "selectByCompanyId")
-    @Results(id = "bureauMap",value = {
-            @Result(property = "id",column = "id"),
-            @Result(property = "areaId",column = "area_id"),
-            @Result(property = "companyId",column = "company_id"),
-            @Result(property = "name",column = "name"),
-            @Result(property = "mobile",column = "mobile"),
-            @Result(property = "remark",column = "remark")
-    })
-    List<Bureau> getBureauByCompanyId(Long id);
+    @SelectProvider(type = CompanyStandardMapper.CompanySqlBuilder.class, method = "findByPage")
+    @ResultMap(value = "bureauMap")
+    List<Bureau> getBureauByCompanyId(Long id,Long cursor,Integer count);
+
+    /**
+     * 查询总条数
+     * @param id
+     * @return
+     */
+    @SelectProvider(type = BureauSqlBuilder.class, method = "findPageCount")
+    long getBureauCountByCompanyId(Long id);
 
 
     class BureauSqlBuilder {
+
+        public static String findPageCount(final Long id) {
+            StringBuilder sql = new StringBuilder();
+            sql.append("SELECT count(1) FROM t_bureau_info where company_id = ");
+            sql.append(id);
+            return sql.toString();
+        }
 
         /**
          * 查询
@@ -82,10 +91,14 @@ public interface BureauMapper {
             return sql.toString();
         }
 
-        public static String selectByCompanyId(final Long id){
+        public static String findByPage(final Long id,final Long cursor,final Integer count){
             StringBuilder sql = new StringBuilder("select id,area_id,company_id,name,mobile,remark ");
             sql.append(" from t_bureau_info ");
             sql.append("where company_id = ").append(id);
+            if (cursor != null && cursor > 0) {
+                sql.append(" and id < " + cursor);
+            }
+            sql.append(" order by id desc limit " + count);
             return sql.toString();
         }
 

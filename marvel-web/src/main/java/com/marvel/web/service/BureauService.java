@@ -1,5 +1,6 @@
 package com.marvel.web.service;
 
+import com.marvel.common.models.PageBean;
 import com.marvel.web.vo.BureauCompanyVo;
 import com.marvel.web.vo.BureauInfoReqVo;
 
@@ -48,5 +49,5 @@ public interface BureauService {
      * @param id
      * @return
      */
-    List<BureauInfoReqVo> getBureauUserInfoList(Long id);
+    PageBean<BureauInfoReqVo> getBureauUserInfoList(Long id,Long cursor,Integer count);
 }

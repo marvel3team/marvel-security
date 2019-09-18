@@ -1,11 +1,13 @@
 package com.marvel.web.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.marvel.common.models.PageBean;
 import com.marvel.framework.annotation.MarvelCheck;
 import com.marvel.web.exception.BusinessException;
 import com.marvel.web.service.BureauService;
 import com.marvel.web.vo.BureauCompanyVo;
 import com.marvel.web.vo.BureauInfoReqVo;
+import com.marvel.web.vo.CompanyListVo;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,12 +93,14 @@ public class BureauController {
     @MarvelCheck(auth = true)
     @RequestMapping(value = "/get_bureau_user_info.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public List<BureauInfoReqVo> getBureauUserInfoList(@RequestParam(name = "id") Long id) {
+    public PageBean<BureauInfoReqVo> getBureauUserInfoList(@RequestParam(name = "cursor",required = false,defaultValue = "-1") Long cursor,
+                                                           @RequestParam(name = "count",required = false,defaultValue = "10")Integer count,
+                                                           @RequestParam(name = "id") Long id) {
         if (null == id) {
             LOGGER.error("BureauController-->getBureauUserInfoList-->parameter invalid parameter,reqBody:{}", id);
             throw BusinessException.INVALID_PARAMS;
         }
-        return bureauService.getBureauUserInfoList(id);
+        return bureauService.getBureauUserInfoList(id,cursor,count);
     }
 
 
