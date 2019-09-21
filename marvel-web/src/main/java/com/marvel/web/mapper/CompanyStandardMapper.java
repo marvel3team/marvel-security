@@ -203,19 +203,19 @@ public interface CompanyStandardMapper {
                 {
                     UPDATE("t_company_standard");
                     if (companyStandard.getAreaId() != null) {
-                        SET("area_id = " + companyStandard.getAreaId());
+                        SET("area_id = " + companyStandard.getAreaId() + "'");
                     }
                     if (StringUtils.isNotBlank(companyStandard.getProvince())) {
-                        SET("province = " + companyStandard.getProvince());
+                        SET("province = '" + companyStandard.getProvince() + "'");
                     }
                     if (StringUtils.isNotBlank(companyStandard.getCity())) {
-                        SET("city = " + companyStandard.getCity());
+                        SET("city = '" + companyStandard.getCity() + "'");
                     }
                     if (StringUtils.isNotBlank(companyStandard.getOtherCity())) {
-                        SET("other_city = " + companyStandard.getCity());
+                        SET("other_city = '" + companyStandard.getCity() + "'");
                     }
                     if (StringUtils.isNotBlank(companyStandard.getAddress())) {
-                        SET("address = " + companyStandard.getAddress());
+                        SET("address = '" + companyStandard.getAddress() + "'");
                     }
                     if (companyStandard.getIndustryId() != null) {
                         SET("industry_id = " + companyStandard.getIndustryId());
