@@ -203,7 +203,7 @@ public interface CompanyStandardMapper {
                 {
                     UPDATE("t_company_standard");
                     if (companyStandard.getAreaId() != null) {
-                        SET("area_id = " + companyStandard.getAreaId() + "'");
+                        SET("area_id = " + companyStandard.getAreaId());
                     }
                     if (StringUtils.isNotBlank(companyStandard.getProvince())) {
                         SET("province = '" + companyStandard.getProvince() + "'");
