@@ -134,7 +134,7 @@ public class BureauController {
      * @date 2019/4/22 下午11:49
      */
     @MarvelCheck(auth = true)
-    @RequestMapping(value = "/update_bureau_company_info.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @RequestMapping(value = "/update_bureau_company_info.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String updateBureauCompanyInfo(@RequestBody BureauCompanyVo bureauCompanyVo) {
         if (!checkBureauParameter(bureauCompanyVo)) {
