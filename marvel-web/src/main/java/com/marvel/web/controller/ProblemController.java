@@ -42,7 +42,7 @@ public class ProblemController {
     @MarvelCheck(auth = true)
     @RequestMapping(value = "/update_rectify_problem.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String updateRectifyProblem(@RequestBody RectifyProblemReq rectifyProblemReq){
+    public String updateRectifyProblem(RectifyProblemReq rectifyProblemReq){
         if (Objects.isNull(rectifyProblemReq) || rectifyProblemReq.getProblemId() == null) {
             throw BusinessException.INVALID_PARAMS;
         }

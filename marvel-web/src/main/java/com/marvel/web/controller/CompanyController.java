@@ -252,7 +252,7 @@ public class CompanyController {
     @MarvelCheck(auth = true)
     @RequestMapping(value = "/save_company_info.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public Map<String,Object> saveCompanyInfo(@RequestBody CompanyInfoReqVo companyInfoReqVo){
+    public Map<String,Object> saveCompanyInfo(CompanyInfoReqVo companyInfoReqVo){
         if (!checkParameter(companyInfoReqVo)){
             LOGGER.error("CompanyController-->saveCompanyInfo-->parameter invalid parameter,reqBody:{}", JSON.toJSON(companyInfoReqVo));
             throw BusinessException.INVALID_PARAMS;
