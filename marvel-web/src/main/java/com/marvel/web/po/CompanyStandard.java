@@ -36,22 +36,22 @@ public class CompanyStandard implements Serializable {
     /**
      * 省
      */
-    private String province;
+    private String province = "";
 
     /**
      * 市，地区
      */
-    private String city;
+    private String city = "";
 
     /**
      * 县，其他城市
      */
-    private String otherCity;
+    private String otherCity = "";
 
     /**
      * 详细地址
      */
-    private String address;
+    private String address = "";
 
    /**
      * 企业类型 1 被检查公司  2 检查公司 3 科局公司 4 专家公司
@@ -71,27 +71,27 @@ public class CompanyStandard implements Serializable {
     /**
      * 法人名称
      */
-    private String legalPerson;
+    private String legalPerson = "";
 
     /**
      * 法人电话
      */
-    private String legalPersonMobile;
+    private String legalPersonMobile = "";
 
     /**
      * 经营类型
      */
-    private String businessTypeCode;
+    private String businessTypeCode = "";
 
     /**
      * 邮箱
      */
-    private String email;
+    private String email = "";
 
     /**
      * 营业执照编码
      */
-    private String businessLicenseId;
+    private String businessLicenseId = "";
 
 
 
