@@ -26,12 +26,12 @@ public class CompanyStandard implements Serializable {
     /**
      * 企业名称
      */
-    private String name;
+    private String name = "";
 
     /**
      * 地区id
      */
-    private Integer areaId;
+    private Integer areaId = -1;
 
     /**
      * 省
@@ -53,20 +53,20 @@ public class CompanyStandard implements Serializable {
      */
     private String address = "";
 
-   /**
+    /**
      * 企业类型 1 被检查公司  2 检查公司 3 科局公司 4 专家公司
      */
-    private Integer type;
+    private Integer type = 1;
 
     /**
      * 行业id
      */
-    private Long industryId;
+    private Long industryId = -1L;
 
     /**
      * 注册资本（分）
      */
-    private Long registedCapital;
+    private Long registedCapital = 0L;
 
     /**
      * 法人名称
@@ -92,7 +92,6 @@ public class CompanyStandard implements Serializable {
      * 营业执照编码
      */
     private String businessLicenseId = "";
-
 
 
 }

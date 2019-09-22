@@ -13,6 +13,7 @@ import org.junit.Test;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author andy
@@ -52,18 +53,33 @@ public class CompanyApplicationTests  extends BaseTestUtils{
     @Test
     public void updateCompanyInfo(){
         CompanyInfoReqVo updateCompanyInfo = new CompanyInfoReqVo();
-        updateCompanyInfo.setId(1l);
+        updateCompanyInfo.setId(625484575346262016L);
         updateCompanyInfo.setIndustryId(2l);
         updateCompanyInfo.setAreaId(123);
         updateCompanyInfo.setBusinessCode("G12138");
-        updateCompanyInfo.setBusinessLicenseNo("TG101010101");
+        updateCompanyInfo.setBusinessLicenseId("TG101010101");
         updateCompanyInfo.setMobile("1111111111");
         updateCompanyInfo.setName("哈里波提");
-        updateCompanyInfo.setLegalPreson("哈利");
+        updateCompanyInfo.setLegalPerson("哈利");
         updateCompanyInfo.setRegistedCapital("3000000");
         updateCompanyInfo.setEmail("xxxx@gmail.com");
         String update = companyService.updateCompanyInfo(updateCompanyInfo);
         Assert.assertEquals("{}",update);
+    }
+
+    @Test
+    public void addCompanyInfo(){
+        CompanyInfoReqVo updateCompanyInfo = new CompanyInfoReqVo();
+        updateCompanyInfo.setIndustryId(2l);
+        updateCompanyInfo.setAreaId(123);
+        updateCompanyInfo.setBusinessCode("G12138");
+        updateCompanyInfo.setBusinessLicenseId("TG101010101");
+        updateCompanyInfo.setMobile("1111111111");
+        updateCompanyInfo.setName("哈里波提");
+        updateCompanyInfo.setLegalPerson("哈利");
+        updateCompanyInfo.setRegistedCapital("3000000");
+        updateCompanyInfo.setEmail("xxxx@gmail.com");
+        Map<String,Object> update = companyService.saveCompanyInfo(updateCompanyInfo);
     }
 
     @Test

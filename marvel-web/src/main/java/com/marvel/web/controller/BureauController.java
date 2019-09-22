@@ -178,7 +178,7 @@ public class BureauController {
      * @return
      */
     private boolean checkParameter(BureauInfoReqVo bureauInfoReqVo) {
-        if (bureauInfoReqVo.getAreaId() == null || StringUtils.isBlank(bureauInfoReqVo.getMobile()) || StringUtils.isBlank(bureauInfoReqVo.getName())) {
+        if (bureauInfoReqVo.getAreaId() == null || StringUtils.isBlank(bureauInfoReqVo.getMobile()) || StringUtils.isBlank(bureauInfoReqVo.getName()) || null == bureauInfoReqVo.getCompanyId()) {
             return false;
         }
         return true;

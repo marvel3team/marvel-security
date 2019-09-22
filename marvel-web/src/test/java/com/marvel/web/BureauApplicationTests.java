@@ -1,5 +1,7 @@
 package com.marvel.web;
 
+import com.alibaba.fastjson.JSON;
+import com.marvel.common.models.PageBean;
 import com.marvel.web.service.BureauService;
 import com.marvel.web.vo.BureauInfoReqVo;
 import org.junit.Assert;
@@ -25,19 +27,47 @@ public class BureauApplicationTests extends BaseTestUtils{
     @Test
     public void updateBureau(){
         Assert.assertNotNull(bureauService);
-        BureauInfoReqVo infoReqVo = assembleBureauInfo();
-        Assert.assertNotNull(infoReqVo);
+        BureauInfoReqVo infoReqVo = assembleBureauInfo(1);
+        infoReqVo.setName("神");
+        infoReqVo.setId(625456843300274176L);
         String result = bureauService.updateBureauInfo(infoReqVo);
         Assert.assertEquals("{}",result);
     }
 
+    @Test
+    public void saveBureau(){
+        Assert.assertNotNull(bureauService);
+        for (int i = 0; i < 20; i++) {
+            BureauInfoReqVo infoReqVo = assembleBureauInfo(i);
+            Assert.assertNotNull(infoReqVo);
+            String add = bureauService.addBureauInfo(infoReqVo);
+            Assert.assertEquals("{}",add);
+        }
 
-    private BureauInfoReqVo assembleBureauInfo(){
+    }
+
+    @Test
+    public void delBureau(){
+        Assert.assertNotNull(bureauService);
+        String del = bureauService.delBureauInfo(625456843300274176L);
+        Assert.assertEquals("{}",del);
+    }
+
+    @Test
+    public void getBureauUsers(){
+        Assert.assertNotNull(bureauService);
+        PageBean pageBean = bureauService.getBureauUserInfoList(12333L,-1L,10);
+        System.out.println(JSON.toJSONString(pageBean));
+    }
+
+
+    private BureauInfoReqVo assembleBureauInfo(int i){
         BureauInfoReqVo reqVo = new BureauInfoReqVo();
-        reqVo.setId(1l);
         reqVo.setAreaId(124);
-        reqVo.setMobile("12345678909");
-        reqVo.setRemark("测试下");
+        reqVo.setName("科举人员"+i);
+        reqVo.setCompanyId(12333L);
+        reqVo.setMobile("123456789"+i);
+        reqVo.setRemark("");
         return reqVo;
     }
 }

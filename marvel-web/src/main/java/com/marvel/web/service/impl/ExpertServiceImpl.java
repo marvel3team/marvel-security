@@ -100,10 +100,10 @@ public class ExpertServiceImpl implements ExpertService {
                 expertInfoVo.setIdCardNo(expertInfo.getIdCardNo());
                 expertInfoVo.setWorkCompany(expertInfo.getWorkCompany());
                 expertInfoVo.setWorkAddress(expertInfo.getWorkAddress());
-                expertInfoVo.setWorkLife(expertInfo.getWorkLife());
+                expertInfoVo.setWorkLife(expertInfo.getWorkLife() == -1 ? null : expertInfo.getWorkLife());
                 expertInfoVo.setPositionalTitle(expertInfo.getPositionalTitle());
-                expertInfoVo.setIsSyndic(expertInfo.getIsSyndic());
-                expertInfoVo.setLevel(expertInfo.getLevel());
+                expertInfoVo.setIsSyndic(expertInfo.getIsSyndic() == -1 ? null : expertInfo.getIsSyndic());
+                expertInfoVo.setLevel(expertInfo.getLevel() == -1 ? null : expertInfo.getLevel());
                 expertInfoVo.setEvaluateRange(expertInfo.getEvaluateRange());
                 expertInfoVo.setCollage(expertInfo.getCollage());
                 expertInfoVo.setHomeAddress(expertInfo.getHomeAddress());
@@ -111,7 +111,7 @@ public class ExpertServiceImpl implements ExpertService {
                 expertInfoVo.setRemark(expertInfo.getRemark());
                 //TODO 需要组装地址
                 expertInfoVo.setSignUrl(expertInfo.getSignUrl());
-                expertInfoVo.setSex(Sex.valueOf(expertInfo.getSex()) == null ? "未知" : Sex.valueOf(expertInfo.getSex()).desc());
+                expertInfoVo.setSex(Sex.valueOf(expertInfo.getSex()) == null || expertInfo.getSex() == -1 ? "未知" : Sex.valueOf(expertInfo.getSex()).desc());
                 expertInfoVo.setHonor(expertInfo.getHonor());
                 expertInfoVo.setHighestDegree(expertInfo.getHighestDegree());
                 expertInfoVo.setJobResume(expertInfo.getJobResume());
@@ -147,10 +147,10 @@ public class ExpertServiceImpl implements ExpertService {
         expertInfoVo.setIdCardNo(expertInfo.getIdCardNo());
         expertInfoVo.setWorkCompany(expertInfo.getWorkCompany());
         expertInfoVo.setWorkAddress(expertInfo.getWorkAddress());
-        expertInfoVo.setWorkLife(expertInfo.getWorkLife());
+        expertInfoVo.setWorkLife(expertInfo.getWorkLife() == -1 ? null : expertInfo.getWorkLife());
         expertInfoVo.setPositionalTitle(expertInfo.getPositionalTitle());
-        expertInfoVo.setIsSyndic(expertInfo.getIsSyndic());
-        expertInfoVo.setLevel(expertInfo.getLevel());
+        expertInfoVo.setIsSyndic(expertInfo.getIsSyndic() == -1 ? null : expertInfo.getIsSyndic());
+        expertInfoVo.setLevel(expertInfo.getLevel() == -1 ? null : expertInfo.getLevel());
         expertInfoVo.setEvaluateRange(expertInfo.getEvaluateRange());
         expertInfoVo.setCollage(expertInfo.getCollage());
         expertInfoVo.setHomeAddress(expertInfo.getHomeAddress());
@@ -158,7 +158,7 @@ public class ExpertServiceImpl implements ExpertService {
         expertInfoVo.setRemark(expertInfo.getRemark());
         //TODO 需要组装地址
         expertInfoVo.setSignUrl(expertInfo.getSignUrl());
-        expertInfoVo.setSex(Sex.valueOf(expertInfo.getSex()) == null ? "未知" : Sex.valueOf(expertInfo.getSex()).desc());
+        expertInfoVo.setSex(Sex.valueOf(expertInfo.getSex()) == null || expertInfo.getSex() == -1 ? "未知" : Sex.valueOf(expertInfo.getSex()).desc());
         expertInfoVo.setHonor(expertInfo.getHonor());
         expertInfoVo.setHighestDegree(expertInfo.getHighestDegree());
         expertInfoVo.setJobResume(expertInfo.getJobResume());
@@ -217,7 +217,7 @@ public class ExpertServiceImpl implements ExpertService {
     }
 
     @Override
-    public boolean update(RequestContext requestContext, ExpertInfo expert) {
+    public boolean update(ExpertInfo expert) {
         Long id = expert.getId();
         ExpertInfo originExpert = expertInfoMapper.getExpertInfoById(id);
         if (Objects.isNull(originExpert)) {
@@ -272,26 +272,27 @@ public class ExpertServiceImpl implements ExpertService {
     }
 
     @Override
-    public boolean save(RequestContext requestContext, ExpertInfo convert) {
+    public boolean save(ExpertInfo convert) {
         Long id = snowflakeIdGenerator.generateId();
-        if (null == id){
+        if (null == id) {
             throw BusinessException.SAVE_ERROR;
         }
+        convert.setId(id);
         int insert = expertInfoMapper.insertExpertInfo(convert);
-        if (insert > 0){
+        if (insert > 0) {
             return true;
         }
         return false;
     }
 
     @Override
-    public boolean delExpertInfo(RequestContext requestContext, Long id) {
+    public boolean delExpertInfo(Long id) {
         ExpertInfo expertInfo = expertInfoMapper.getExpertInfoById(id);
         if (Objects.isNull(expertInfo)) {
             throw BusinessException.EXPERT_NOT_EXISTS;
         }
         int result = expertInfoMapper.delExpertInfo(id);
-        if (result > 0 ){
+        if (result > 0) {
             return true;
         }
         return false;

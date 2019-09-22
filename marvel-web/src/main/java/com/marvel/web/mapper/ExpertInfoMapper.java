@@ -52,19 +52,22 @@ public interface ExpertInfoMapper {
      * @return
      */
     @UpdateProvider(type = ExpertSqlBuilder.class, method = "update")
-    int update(@Param("expert") ExpertInfo expert);
+    int update(ExpertInfo expert);
 
     /**
      * 插入
+     *
      * @param convert
      * @return
      */
-    @InsertProvider(type = ExpertSqlBuilder.class, method = "insert")
+    @Insert("insert into t_expert_info(id,name,id_card_no,company_id,work_company,work_address,work_life,positional_title,is_syndic,level,evaluate_range,collage,home_address,mobile,remark,sign_url,sex,nation,highest_degree,job_resume,categories,honor) values" +
+            "(#{expert.id},#{expert.name},#{expert.idCardNo},#{expert.companyId},#{expert.workCompany},#{expert.workAddress},#{expert.workLife},#{expert.positionalTitle},#{expert.isSyndic},#{expert.level},#{expert.evaluateRange},#{expert.collage},#{expert.homeAddress},#{expert.mobile},#{expert.remark},#{expert.signUrl},#{expert.sex},#{expert.nation},#{expert.highestDegree},#{expert.jobResume},#{expert.categories},#{expert.honor})")
     int insertExpertInfo(@Param("expert") ExpertInfo convert);
 
 
     /**
      * 删除
+     *
      * @param id
      * @return
      */
@@ -76,7 +79,7 @@ public interface ExpertInfoMapper {
 
 
         public static String selectById(final Long id) {
-            StringBuilder sql = new StringBuilder("SELECT id, name, id_card_no as idCardNo, company_id as companyId, work_company as workCompany, work_address as workAddress, work_life as workLife, positional_title as positionalTitle, is_syndic as isSyndic, level, evaluate_range as evaluate, collage, home_address as homeAddress, mobile, remark, sign_url as signUrl, sex, nation, highest_degree as highestDegree, job_resume as jobResume, categories, honor FROM t_expert_info where 1=1");
+            StringBuilder sql = new StringBuilder("SELECT id, name, id_card_no as idCardNo, company_id as companyId, work_company as workCompany, work_address as workAddress, work_life as workLife, positional_title as positionalTitle, is_syndic as isSyndic, level, evaluate_range as evaluateRange, collage, home_address as homeAddress, mobile, remark, sign_url as signUrl, sex, nation, highest_degree as highestDegree, job_resume as jobResume, categories, honor FROM t_expert_info where 1=1");
             sql.append(" and id = ").append(id);
             return sql.toString();
         }
@@ -87,7 +90,7 @@ public interface ExpertInfoMapper {
         }
 
         public static String findByPage(final Long cursor, final Integer count) {
-            StringBuilder sql = new StringBuilder("SELECT id, name, id_card_no as idCardNo, company_id as companyId, work_company as workCompany, work_address as workAddress, work_life as workLife, positional_title as positionalTitle, is_syndic as isSyndic, level, evaluate_range as evaluate, collage, home_address as homeAddress, mobile, remark, sign_url as signUrl, sex, nation, highest_degree as highestDegree, job_resume as jobResume, categories, honor FROM t_expert_info where 1=1");
+            StringBuilder sql = new StringBuilder("SELECT id, name, id_card_no as idCardNo, company_id as companyId, work_company as workCompany, work_address as workAddress, work_life as workLife, positional_title as positionalTitle, is_syndic as isSyndic, level, evaluate_range as evaluateRange, collage, home_address as homeAddress, mobile, remark, sign_url as signUrl, sex, nation, highest_degree as highestDegree, job_resume as jobResume, categories, honor FROM t_expert_info where 1=1");
             if (cursor != null && cursor > 0) {
                 sql.append(" and id < " + cursor);
             }
@@ -142,7 +145,7 @@ public interface ExpertInfoMapper {
             if (StringUtils.isNotBlank(expertInfo.getSignUrl())) {
                 sql.append("sign_url = '").append(expertInfo.getSignUrl()).append("',");
             }
-            if (expertInfo.getSex()==null) {
+            if (expertInfo.getSex() == null) {
                 sql.append("sex = '").append(expertInfo.getSex()).append("',");
             }
             if (StringUtils.isNotBlank(expertInfo.getNation())) {
@@ -167,80 +170,8 @@ public interface ExpertInfoMapper {
         }
 
 
-        public static String insert(ExpertInfo expertInfo) {
-            StringBuilder sql = new StringBuilder("insert into t_expert_info values（ ");
-            sql.append(expertInfo.getId()).append(",");
-            if (StringUtils.isNotBlank(expertInfo.getName())) {
-                sql.append(expertInfo.getName()).append("',");
-            }
-            if (StringUtils.isNotBlank(expertInfo.getIdCardNo())) {
-                sql.append(expertInfo.getIdCardNo()).append("',");
-            }
-            if (expertInfo.getCompanyId() != null) {
-                sql.append(expertInfo.getCompanyId()).append(",");
-            }
-            if (StringUtils.isNotBlank(expertInfo.getWorkCompany())) {
-                sql.append(expertInfo.getWorkCompany()).append("',");
-            }
-            if (StringUtils.isNotBlank(expertInfo.getWorkAddress())) {
-                sql.append(expertInfo.getWorkAddress()).append("',");
-            }
-            if (expertInfo.getWorkLife() != null) {
-                sql.append(expertInfo.getWorkLife()).append(",");
-            }
-            if (StringUtils.isNotBlank(expertInfo.getPositionalTitle())) {
-                sql.append(expertInfo.getPositionalTitle()).append("',");
-            }
-            if (expertInfo.getIsSyndic() != null) {
-                sql.append(expertInfo.getIsSyndic()).append(",");
-            }
-            if (expertInfo.getLevel() != null) {
-                sql.append(expertInfo.getLevel()).append(",");
-            }
-            if (StringUtils.isNotBlank(expertInfo.getEvaluateRange())) {
-                sql.append(expertInfo.getEvaluateRange()).append("',");
-            }
-            if (StringUtils.isNotBlank(expertInfo.getCollage())) {
-                sql.append(expertInfo.getCollage()).append("',");
-            }
-            if (StringUtils.isNotBlank(expertInfo.getHomeAddress())) {
-                sql.append(expertInfo.getHomeAddress()).append("',");
-            }
-            if (StringUtils.isNotBlank(expertInfo.getMobile())) {
-                sql.append(expertInfo.getMobile()).append("',");
-            }
-            if (StringUtils.isNotBlank(expertInfo.getRemark())) {
-                sql.append(expertInfo.getRemark()).append("',");
-            }
-            if (StringUtils.isNotBlank(expertInfo.getSignUrl())) {
-                sql.append(expertInfo.getSignUrl()).append("',");
-            }
-            if (expertInfo.getSex()==null) {
-                sql.append(expertInfo.getSex()).append("',");
-            }
-            if (StringUtils.isNotBlank(expertInfo.getNation())) {
-                sql.append(expertInfo.getNation()).append("',");
-            }
-            if (StringUtils.isNotBlank(expertInfo.getHighestDegree())) {
-                sql.append(expertInfo.getHighestDegree()).append("',");
-            }
-            if (StringUtils.isNotBlank(expertInfo.getJobResume())) {
-                sql.append(expertInfo.getJobResume()).append("',");
-            }
-            if (StringUtils.isNotBlank(expertInfo.getCategories())) {
-                sql.append(expertInfo.getCategories()).append("',");
-            }
-            if (StringUtils.isNotBlank(expertInfo.getHonor())) {
-                sql.append(expertInfo.getHonor()).append("',");
-            }
 
-            sql.deleteCharAt(sql.length() - 1);
-            sql.append(")");
-            return sql.toString();
-        }
-
-
-        public static String delete(Long id){
+        public static String delete(Long id) {
             StringBuilder sql = new StringBuilder("delete from  t_expert_info where id =  ");
             sql.append(id);
             return sql.toString();

@@ -47,7 +47,7 @@ public class BureauServiceImpl implements BureauService {
     @Override
     public String updateBureauInfo(BureauInfoReqVo bureauInfoReqVo) {
         Bureau bureau = bureauMapper.getBureauById(bureauInfoReqVo.getId());
-        if (null == bureau){
+        if (null == bureau) {
             throw BusinessException.BUREAU_NOT_EXISTS;
         }
         bureau.setAreaId(bureauInfoReqVo.getAreaId());
@@ -55,7 +55,7 @@ public class BureauServiceImpl implements BureauService {
         bureau.setMobile(bureauInfoReqVo.getMobile());
         bureau.setRemark(bureauInfoReqVo.getRemark());
         int update = bureauMapper.update(bureau);
-        if (update < 1){
+        if (update < 1) {
             throw BusinessException.UPDATE_ERROR;
         }
         return "{}";
@@ -64,17 +64,18 @@ public class BureauServiceImpl implements BureauService {
     @Override
     public String addBureauInfo(BureauInfoReqVo bureauInfoReqVo) {
         Long id = snowflakeIdGenerator.generateId();
-        if (id == null){
+        if (id == null) {
             throw BusinessException.SAVE_ERROR;
         }
         Bureau bureau = new Bureau();
         bureau.setId(id);
         bureau.setAreaId(bureauInfoReqVo.getAreaId());
         bureau.setName(bureauInfoReqVo.getName());
+        bureau.setCompanyId(bureauInfoReqVo.getCompanyId());
         bureau.setMobile(bureauInfoReqVo.getMobile());
         bureau.setRemark(bureauInfoReqVo.getRemark());
         int insert = bureauMapper.insert(bureau);
-        if (insert < 1){
+        if (insert < 1) {
             throw BusinessException.SAVE_ERROR;
         }
         return "{}";
@@ -83,11 +84,11 @@ public class BureauServiceImpl implements BureauService {
     @Override
     public String delBureauInfo(Long id) {
         Bureau bureau = bureauMapper.getBureauById(id);
-        if (null == bureau){
+        if (null == bureau) {
             throw BusinessException.BUREAU_NOT_EXISTS;
         }
         int insert = bureauMapper.delete(id);
-        if (insert < 1){
+        if (insert < 1) {
             throw BusinessException.DELETE_ERROR;
         }
         return "{}";
@@ -96,7 +97,7 @@ public class BureauServiceImpl implements BureauService {
     @Override
     public String saveBureauCompanyInfo(BureauCompanyVo bureauCompanyVo) {
         Long id = snowflakeIdGenerator.generateId();
-        if (id == null){
+        if (id == null) {
             throw BusinessException.SAVE_ERROR;
         }
         CompanyStandard companyStandard = new CompanyStandard();
@@ -104,7 +105,7 @@ public class BureauServiceImpl implements BureauService {
         companyStandard.setAreaId(bureauCompanyVo.getAreaId() == null ? companyStandard.getAreaId() : bureauCompanyVo.getAreaId());
         companyStandard.setBusinessLicenseId(bureauCompanyVo.getBusinessCode());
         companyStandard.setBusinessLicenseId(bureauCompanyVo.getBusinessLicenseNo());
-        companyStandard.setRegistedCapital(StringUtils.isBlank(bureauCompanyVo.getRegistedCapital()) ? null : new BigDecimal(bureauCompanyVo.getRegistedCapital()).multiply(new BigDecimal(100)).longValue());
+        companyStandard.setRegistedCapital(StringUtils.isBlank(bureauCompanyVo.getRegistedCapital()) ? -1 : new BigDecimal(bureauCompanyVo.getRegistedCapital()).multiply(new BigDecimal(100)).longValue());
         companyStandard.setLegalPerson(bureauCompanyVo.getLegalPreson());
         companyStandard.setLegalPersonMobile(bureauCompanyVo.getMobile());
         companyStandard.setEmail(bureauCompanyVo.getEmail());
@@ -112,7 +113,7 @@ public class BureauServiceImpl implements BureauService {
         companyStandard.setName(bureauCompanyVo.getName());
 
         int insert = companyStandardMapper.save(companyStandard);
-        if (insert < 0){
+        if (insert < 0) {
             throw BusinessException.SAVE_ERROR;
         }
         return "{}";
@@ -142,24 +143,24 @@ public class BureauServiceImpl implements BureauService {
     @Override
     public String delBureauCompanyInfo(Long id) {
         CompanyStandard companyStandard = companyStandardMapper.getCompanyById(id);
-        if (null == companyStandard){
+        if (null == companyStandard) {
             throw BusinessException.COMPANY_NOT_EXISTS;
         }
         int delete = companyStandardMapper.deleteCompanyStandard(id);
-        if (delete < 1){
+        if (delete < 1) {
             throw BusinessException.DELETE_ERROR;
         }
         return "{}";
     }
 
     @Override
-    public PageBean<BureauInfoReqVo> getBureauUserInfoList(Long id,Long cursor,Integer count) {
+    public PageBean<BureauInfoReqVo> getBureauUserInfoList(Long id, Long cursor, Integer count) {
 
         long total = bureauMapper.getBureauCountByCompanyId(id);
         if (total == 0) {
             return assemblePageBean(-1, new ArrayList<>());
         }
-        List<Bureau> bureauList = bureauMapper.getBureauByCompanyId(id,cursor, count);
+        List<Bureau> bureauList = bureauMapper.getBureauByCompanyId(id, cursor, count);
         if (CollectionUtils.isEmpty(bureauList)) {
             return assemblePageBean(-1, new ArrayList<>());
         }
@@ -183,12 +184,13 @@ public class BureauServiceImpl implements BureauService {
         pageBean.setNextCursor(nextCursor);
 
         //组装base数据
-        List<BureauInfoReqVo> resultList  = bureauList.stream().map(temp->{
+        List<BureauInfoReqVo> resultList = bureauList.stream().map(temp -> {
             BureauInfoReqVo reqVo = new BureauInfoReqVo();
             reqVo.setId(temp.getId());
-            reqVo.setAreaId(temp.getAreaId());
+            reqVo.setAreaId(temp.getAreaId() == -1 ? null : temp.getAreaId());
             reqVo.setMobile(temp.getMobile());
             reqVo.setName(temp.getName());
+            reqVo.setCompanyId(temp.getCompanyId() == -1 ? null : temp.getCompanyId());
             reqVo.setRemark(temp.getRemark());
             return reqVo;
         }).collect(Collectors.toList());

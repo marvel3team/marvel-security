@@ -118,7 +118,7 @@ public class ExpertController {
         if (Objects.isNull(expertInfoReq) || expertInfoReq.getId() == null) {
             throw BusinessException.INVALID_PARAMS;
         }
-        boolean result = expertService.update(RequestContext.getRequestContext(), ExpertConvert.convert(expertInfoReq));
+        boolean result = expertService.update(ExpertConvert.convert(expertInfoReq));
         if (!result) {
             throw BusinessException.UPDATE_ERROR;
         }
@@ -137,7 +137,10 @@ public class ExpertController {
         if (Objects.isNull(expertInfoReq)) {
             throw BusinessException.INVALID_PARAMS;
         }
-        boolean result = expertService.save(RequestContext.getRequestContext(), ExpertConvert.convert(expertInfoReq));
+        if (null == expertInfoReq.getCompanyId() || -1 == expertInfoReq.getCompanyId() || StringUtils.isBlank(expertInfoReq.getName())){
+            throw BusinessException.INVALID_PARAMS;
+        }
+        boolean result = expertService.save(ExpertConvert.convert(expertInfoReq));
         if (!result) {
             throw BusinessException.SAVE_ERROR;
         }
@@ -156,7 +159,7 @@ public class ExpertController {
         if (id == null) {
             throw BusinessException.INVALID_PARAMS;
         }
-        boolean result = expertService.delExpertInfo(RequestContext.getRequestContext(), id);
+        boolean result = expertService.delExpertInfo(id);
         if (!result) {
             throw BusinessException.DELETE_ERROR;
         }

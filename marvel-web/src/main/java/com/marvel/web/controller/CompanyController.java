@@ -294,7 +294,7 @@ public class CompanyController {
         if (companyInfoReqVo.getAreaId() == null){
             return false;
         }
-        if (StringUtils.isBlank(companyInfoReqVo.getRegistedCapital()) || StringUtils.isBlank(companyInfoReqVo.getLegalPreson())){
+        if (StringUtils.isBlank(companyInfoReqVo.getRegistedCapital()) || StringUtils.isBlank(companyInfoReqVo.getLegalPerson())){
             return false;
         }
         if (StringUtils.isBlank(companyInfoReqVo.getMobile()) || StringUtils.isBlank(companyInfoReqVo.getBusinessCode()) || StringUtils.isBlank(companyInfoReqVo.getEmail())){

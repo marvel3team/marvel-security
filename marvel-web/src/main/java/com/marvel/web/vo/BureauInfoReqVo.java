@@ -24,7 +24,7 @@ public class BureauInfoReqVo {
     /**
      * 地区id
      */
-    private Integer areaId;
+    private Integer areaId = -1;
 
     /**
      * 名称
@@ -34,10 +34,15 @@ public class BureauInfoReqVo {
     /**
      * 手机号
      */
-    private String mobile;
+    private String mobile = "";
 
     /**
      * 备注
      */
-    private String remark;
+    private String remark = "";
+
+    /**
+     * 公司id
+     */
+    private Long companyId = -1L;
 }

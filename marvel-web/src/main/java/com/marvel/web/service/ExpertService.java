@@ -47,13 +47,12 @@ public interface ExpertService {
     /**
      * Description: 更新专家信息
      *
-     * @param requestContext
      * @param convert
      * @return
      * @Date 下午11:04 2019/4/27
      * @Author zhongjie
      **/
-    boolean update(RequestContext requestContext, ExpertInfo convert);
+    boolean update(ExpertInfo convert);
 
     /**
      * Description: 修改专家时间
@@ -86,17 +85,15 @@ public interface ExpertService {
 
     /**
      * 新增专家信息
-     * @param requestContext
      * @param convert
      * @return
      */
-    boolean save(RequestContext requestContext, ExpertInfo convert);
+    boolean save(ExpertInfo convert);
 
     /**
      * 删除专家信息
-     * @param requestContext
      * @param id
      * @return
      */
-    boolean delExpertInfo(RequestContext requestContext, Long id);
+    boolean delExpertInfo( Long id);
 }

@@ -37,14 +37,14 @@ public interface BureauMapper {
     int update(Bureau bureau);
 
 
-    @InsertProvider(type = BureauSqlBuilder.class, method = "insert")
-    int insert(Bureau bureau);
+    @Insert("insert into t_bureau_info(id,area_id,company_id,name,mobile,remark) values (#{bureau.id},#{bureau.areaId},#{bureau.companyId},#{bureau.name},#{bureau.mobile},#{bureau.remark})")
+    int insert(@Param("bureau") Bureau bureau);
 
     @DeleteProvider(type = BureauSqlBuilder.class, method = "delete")
     int delete(Long id);
 
 
-    @SelectProvider(type = CompanyStandardMapper.CompanySqlBuilder.class, method = "findByPage")
+    @SelectProvider(type = BureauSqlBuilder.class, method = "findByPage")
     @ResultMap(value = "bureauMap")
     List<Bureau> getBureauByCompanyId(Long id,Long cursor,Integer count);
 
@@ -124,30 +124,6 @@ public interface BureauMapper {
             return sql.toString();
         }
 
-        public static String insert(Bureau bureau) {
-            StringBuilder sql = new StringBuilder("insert into t_bureau_info values (");
-            if (bureau.getId() != null) {
-                sql.append(bureau.getId()).append(",");
-            }
-            if (bureau.getAreaId() != null) {
-                sql.append(bureau.getAreaId()).append(",");
-            }
-            if (bureau.getCompanyId() != null){
-                sql.append(bureau.getCompanyId()).append(",");
-            }
-            if (StringUtils.isNotBlank(bureau.getName())){
-                sql.append("'").append(bureau.getName()).append("',");
-            }
-            if (StringUtils.isNotBlank(bureau.getMobile())){
-                sql.append("'").append(bureau.getMobile()).append("',");
-            }
-            if (StringUtils.isNotBlank(bureau.getRemark())){
-                sql.append("'").append(bureau.getRemark()).append("',");
-            }
-            sql.deleteCharAt(sql.length() -1);
-            sql.append(")");
-            return sql.toString();
-        }
 
         public static String delete(final Long id){
             StringBuilder sql = new StringBuilder("delete from t_bureau_info where id = ");

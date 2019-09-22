@@ -28,9 +28,9 @@ public interface CompanyBaseMapper {
     @Select("select id, production_day as productionDay, total_invest as totalInvest, fixed_invest as fixedInvest, last_year_income as lastYearIncome, factory_area as factoryArea, " +
             "covered_area as coveredArea, raw_stock_dosage as rawStockDosage, accessories_dosage as accessoriesDosage, yearly_capacity as yearlyCapacity, output_unit as outputUnit,  " +
             "is_special_equipment as isSpecialEquipment, is_distribution_room as isDistributionRoom, is_transformer as isTransformer, is_stan_certificate as isStanCertificate,  " +
-            "stan_certificate_type as stanCertificate, stan_certificate_id as stanCertificateId, is_declare_online as isDeclareOnline, is_safe_proof as isSafeProof,  " +
+            "stan_certificate_type as stanCertificateType, stan_certificate_id as stanCertificateId, is_declare_online as isDeclareOnline, is_safe_proof as isSafeProof,  " +
             "safe_proof_archive_no as safeProofArchiveNo, work_system as workSystem, production_department_peoples as productionDepartmentPeoples, office_peoples as officePeoples,  " +
-            "work_days_yearly as workDaysYearly, industry_type as industryType, safety_level as safetyLevel, certificate_start_time as certificateStartTime, certificate_end_time as certificateEndTime, " +
+            "work_days_yearly as yearlyWorkDays, industry_type as industryType, safety_level as safetyLevel, certificate_start_time as certificateStartTime, certificate_end_time as certificateEndTime, " +
             "major_risk_sources as majorRiskSources, higher_risk_sources as higherRiskSources, general_risk_sources as generalRiskSources, low_risk_sources as lowRiskSources from t_company_base_info where id = #{id}")
     CompanyBase getCompanBaseById(@Param("id") Long id);
 
@@ -41,7 +41,14 @@ public interface CompanyBaseMapper {
      * @param companyBase
      * @return
      */
-    @InsertProvider(type = CompanyBaseSqlBuilder.class, method = "insert")
+    @Insert("insert into t_company_base_info values (" +
+            "#{companyBase.id},#{companyBase.productionDay},#{companyBase.totalInvest},#{companyBase.fixedInvest},#{companyBase.lastYearIncome},#{companyBase.factoryArea},#{companyBase.coveredArea}," +
+            "#{companyBase.rawStockDosage},#{companyBase.accessoriesDosage},#{companyBase.yearlyCapacity}," +
+            "#{companyBase.outputUnit},#{companyBase.isSpecialEquipment},#{companyBase.isDistributionRoom},#{companyBase.isTransformer},#{companyBase.isStanCertificate}," +
+            "#{companyBase.stanCertificateType},#{companyBase.stanCertificateId},#{companyBase.isDeclareOnline},#{companyBase.isSafeProof}," +
+            "#{companyBase.safeProofArchiveNo},#{companyBase.workSystem},#{companyBase.productionDepartmentPeoples},#{companyBase.officePeoples}," +
+            "#{companyBase.yearlyWorkDays},#{companyBase.industryType},#{companyBase.safetyLevel},#{companyBase.certificateStartTime},#{companyBase.certificateEndTime},#{companyBase.majorRiskSources}," +
+            "#{companyBase.higherRiskSources},#{companyBase.generalRiskSources},#{companyBase.lowRiskSources})")
     int insertCompanyBase(@Param("companyBase") CompanyBase companyBase);
 
 
@@ -52,7 +59,7 @@ public interface CompanyBaseMapper {
      * @return
      */
     @UpdateProvider(type = CompanyBaseSqlBuilder.class, method = "update")
-    int updateCompanyBase(@Param("companyBase") CompanyBase companyBase);
+    int updateCompanyBase(CompanyBase companyBase);
 
 
     /**
@@ -69,9 +76,9 @@ public interface CompanyBaseMapper {
             "select id, production_day as productionDay, total_invest as totalInvest, fixed_invest as fixedInvest, last_year_income as lastYearIncome, factory_area as factoryArea, " +
                     "covered_area as coveredArea, raw_stock_dosage as rawStockDosage, accessories_dosage as accessoriesDosage, yearly_capacity as yearlyCapacity, output_unit as outputUnit,  " +
                     "is_special_equipment as isSpecialEquipment, is_distribution_room as isDistributionRoom, is_transformer as isTransformer, is_stan_certificate as isStanCertificate,  " +
-                    "stan_certificate_type as stanCertificate, stan_certificate_id as stanCertificateId, is_declare_online as isDeclareOnline, is_safe_proof as isSafeProof,  " +
+                    "stan_certificate_type as stanCertificateType, stan_certificate_id as stanCertificateId, is_declare_online as isDeclareOnline, is_safe_proof as isSafeProof,  " +
                     "safe_proof_archive_no as safeProofArchiveNo, work_system as workSystem, production_department_peoples as productionDepartmentPeoples, office_peoples as officePeoples,  " +
-                    "work_days_yearly as workDaysYearly, industry_type as industryType, safety_level as safetyLevel, certificate_start_time as certificateStartTime, certificate_end_time as certificateEndTime, " +
+                    "work_days_yearly as yearlyWorkDays, industry_type as industryType, safety_level as safetyLevel, certificate_start_time as certificateStartTime, certificate_end_time as certificateEndTime, " +
                     "major_risk_sources as majorRiskSources, higher_risk_sources as higherRiskSources, general_risk_sources as generalRiskSources, low_risk_sources as lowRiskSources from t_company_base_info where id in",
             "<foreach collection='list' item='id' open='(' separator=',' close=')'>",
             "#{id}",
@@ -138,14 +145,14 @@ public interface CompanyBaseMapper {
                     if (StringUtils.isNotBlank(companyBase.getStanCertificateType())) {
                         SET("stan_certificate_type = '" + companyBase.getStanCertificateType() + "'");
                     }
-                    if (companyBase.getStanCertificateId() != null) {
+                    if (StringUtils.isNotBlank(companyBase.getStanCertificateId())) {
                         SET("stan_certificate_id = " + companyBase.getStanCertificateId());
                     }
                     if (companyBase.getIsDeclareOnline() != null) {
                         SET("is_declare_online = " + companyBase.getIsDeclareOnline());
                     }
                     if (companyBase.getIsSafeProof() != null) {
-                        SET("is_safe_proof = '" + companyBase.getIsSafeProof() + "'");
+                        SET("is_safe_proof = " + companyBase.getIsSafeProof());
                     }
                     if (StringUtils.isNotBlank(companyBase.getSafeProofArchiveNo())) {
                         SET("safe_proof_archive_no = '" + companyBase.getSafeProofArchiveNo() + "'");
@@ -174,129 +181,22 @@ public interface CompanyBaseMapper {
                     if (companyBase.getCertificateEndTime() != null) {
                         SET("certificate_end_time = " + companyBase.getCertificateEndTime());
                     }
-                    if (companyBase.getMajorRiskSources() != null) {
+                    if (StringUtils.isNotBlank(companyBase.getMajorRiskSources())) {
                         SET("major_risk_sources = " + companyBase.getMajorRiskSources());
                     }
-                    if (companyBase.getHigherRiskSources() != null) {
+                    if (StringUtils.isNotBlank(companyBase.getHigherRiskSources())) {
                         SET("higher_risk_sources = " + companyBase.getHigherRiskSources());
                     }
-                    if (companyBase.getGeneralRiskSources() != null) {
+                    if (StringUtils.isNotBlank(companyBase.getGeneralRiskSources())) {
                         SET("general_risk_sources = " + companyBase.getGeneralRiskSources());
                     }
-                    if (companyBase.getLowRiskSources() != null) {
+                    if (StringUtils.isNotBlank(companyBase.getLowRiskSources())) {
                         SET("low_risk_sources = " + companyBase.getLowRiskSources());
                     }
 
                     WHERE("id = " + companyBase.getId());
                 }
             }.toString();
-        }
-
-        /**
-         * 新增
-         *
-         * @param companyBase
-         * @return
-         */
-        public static String insert(final CompanyBase companyBase) {
-            StringBuilder sql = new StringBuilder();
-            sql.append("insert into t_company_base_info values (");
-
-            if (companyBase.getProductionDay() != null) {
-                sql.append(companyBase.getProductionDay()).append(",");
-            }
-            if (companyBase.getTotalInvest() != null) {
-                sql.append(companyBase.getTotalInvest());
-            }
-            if (companyBase.getFixedInvest() != null) {
-                sql.append(companyBase.getFixedInvest());
-            }
-            if (companyBase.getLastYearIncome() != null) {
-                sql.append(companyBase.getLastYearIncome());
-            }
-            if (companyBase.getFactoryArea() != null) {
-                sql.append(companyBase.getFactoryArea()).append(",");
-            }
-            if (companyBase.getCoveredArea() != null) {
-                sql.append(companyBase.getCoveredArea()).append(",");
-            }
-            if (companyBase.getRawStockDosage() != null) {
-                sql.append(companyBase.getRawStockDosage()).append(",");
-            }
-            if (companyBase.getAccessoriesDosage() != null) {
-                sql.append(companyBase.getAccessoriesDosage()).append(",");
-            }
-            if (companyBase.getYearlyCapacity() != null) {
-                sql.append(companyBase.getYearlyCapacity()).append(",");
-            }
-            if (companyBase.getOutputUnit() != null) {
-                sql.append(companyBase.getOutputUnit()).append(",");
-            }
-            if (companyBase.getIsSpecialEquipment() != null) {
-                sql.append(companyBase.getIsSpecialEquipment()).append(",");
-            }
-            if (companyBase.getIsDistributionRoom() != null) {
-                sql.append(companyBase.getIsDistributionRoom()).append(",");
-            }
-            if (companyBase.getIsTransformer() != null) {
-                sql.append(companyBase.getIsTransformer()).append(",");
-            }
-            if (companyBase.getIsStanCertificate() != null) {
-                sql.append(companyBase.getIsStanCertificate()).append(",");
-            }
-            if (StringUtils.isNotBlank(companyBase.getStanCertificateType())) {
-                sql.append(companyBase.getStanCertificateType()).append(",");
-            }
-            if (companyBase.getStanCertificateId() != null) {
-                sql.append(companyBase.getStanCertificateId()).append(",");
-            }
-            if (companyBase.getIsDeclareOnline() != null) {
-                sql.append(companyBase.getIsDeclareOnline()).append(",");
-            }
-            if (companyBase.getIsSafeProof() != null) {
-                sql.append(companyBase.getIsSafeProof()).append(",");
-            }
-            if (StringUtils.isNotBlank(companyBase.getSafeProofArchiveNo())) {
-                sql.append(companyBase.getSafeProofArchiveNo()).append(",");
-            }
-            if (companyBase.getWorkSystem() != null) {
-                sql.append(companyBase.getWorkSystem()).append(",");
-            }
-            if (companyBase.getProductionDepartmentPeoples() != null) {
-                sql.append(companyBase.getProductionDepartmentPeoples()).append(",");
-            }
-            if (companyBase.getOfficePeoples() != null) {
-                sql.append(companyBase.getOfficePeoples()).append(",");
-            }
-            if (companyBase.getYearlyWorkDays() != null) {
-                sql.append(companyBase.getYearlyWorkDays()).append(",");
-            }
-            if (companyBase.getIndustryType() != null) {
-                sql.append(companyBase.getIndustryType()).append(",");
-            }
-            if (companyBase.getSafetyLevel() != null) {
-                sql.append(companyBase.getSafetyLevel()).append(",");
-            }
-            if (companyBase.getCertificateStartTime() != null) {
-                sql.append(companyBase.getCertificateStartTime()).append(",");
-            }
-            if (companyBase.getCertificateEndTime() != null) {
-                sql.append(companyBase.getCertificateEndTime()).append(",");
-            }
-            if (companyBase.getMajorRiskSources() != null) {
-                sql.append(companyBase.getMajorRiskSources()).append(",");
-            }
-            if (companyBase.getHigherRiskSources() != null) {
-                sql.append(companyBase.getHigherRiskSources()).append(",");
-            }
-            if (companyBase.getGeneralRiskSources() != null) {
-                sql.append(companyBase.getGeneralRiskSources()).append(",");
-            }
-            if (companyBase.getLowRiskSources() != null) {
-                sql.append(companyBase.getLowRiskSources()).append(",");
-            }
-            sql.append(")");
-            return sql.toString();
         }
 
 
