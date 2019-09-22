@@ -231,7 +231,7 @@ public class CompanyController {
     @MarvelCheck(auth = true)
     @RequestMapping(value = "/update_company_info.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String updateCompanyInfo(@RequestBody CompanyInfoReqVo companyInfoReqVo){
+    public String updateCompanyInfo(CompanyInfoReqVo companyInfoReqVo){
         if (!checkParameter(companyInfoReqVo) || companyInfoReqVo.getId() == null){
             LOGGER.error("CompanyController-->updateCompanyInfo-->parameter invalid parameter,reqBody:{}", JSON.toJSON(companyInfoReqVo));
             throw BusinessException.INVALID_PARAMS;

@@ -42,7 +42,7 @@ public class BureauController {
     @MarvelCheck(auth = true)
     @RequestMapping(value = "/update_bureau_info.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String updateBureauInfo(@RequestBody BureauInfoReqVo bureauInfoReqVo) {
+    public String updateBureauInfo(BureauInfoReqVo bureauInfoReqVo) {
         if (!checkParameter(bureauInfoReqVo)) {
             LOGGER.error("BureauController-->updateBureauInfo-->parameter invalid parameter,reqBody:{}", JSON.toJSON(bureauInfoReqVo));
             throw BusinessException.INVALID_PARAMS;
@@ -59,7 +59,7 @@ public class BureauController {
     @MarvelCheck(auth = true)
     @RequestMapping(value = "/add_bureau_info.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String addBureauInfo(@RequestBody BureauInfoReqVo bureauInfoReqVo) {
+    public String addBureauInfo(BureauInfoReqVo bureauInfoReqVo) {
         if (!checkParameter(bureauInfoReqVo)) {
             LOGGER.error("BureauController-->addBureauInfo-->parameter invalid parameter,reqBody:{}", JSON.toJSON(bureauInfoReqVo));
             throw BusinessException.INVALID_PARAMS;
@@ -116,7 +116,7 @@ public class BureauController {
     @MarvelCheck(auth = true)
     @RequestMapping(value = "/save_bureau_company_info.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String saveBureauCompanyInfo(@RequestBody BureauCompanyVo bureauCompanyVo) {
+    public String saveBureauCompanyInfo(BureauCompanyVo bureauCompanyVo) {
         if (!checkBureauParameter(bureauCompanyVo)) {
             LOGGER.error("BureauController-->saveBureauCompanyInfo-->parameter invalid parameter,reqBody:{}", JSON.toJSON(bureauCompanyVo));
             throw BusinessException.INVALID_PARAMS;
@@ -136,7 +136,7 @@ public class BureauController {
     @MarvelCheck(auth = true)
     @RequestMapping(value = "/update_bureau_company_info.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String updateBureauCompanyInfo(@RequestBody BureauCompanyVo bureauCompanyVo) {
+    public String updateBureauCompanyInfo(BureauCompanyVo bureauCompanyVo) {
         if (!checkBureauParameter(bureauCompanyVo)) {
             LOGGER.error("BureauController-->updateBureauCompanyInfo-->parameter invalid parameter,reqBody:{}", JSON.toJSON(bureauCompanyVo));
             throw BusinessException.INVALID_PARAMS;

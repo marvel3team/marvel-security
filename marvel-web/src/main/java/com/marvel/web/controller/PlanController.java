@@ -42,7 +42,7 @@ public class PlanController {
     @MarvelCheck(auth = true)
     @RequestMapping(value = "/create_remote_info.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String createRemoteInfo(@RequestBody RemoteInfoReqVo remoteInfo){
+    public String createRemoteInfo(RemoteInfoReqVo remoteInfo){
 
         if (checkParameter(remoteInfo)){
             throw BusinessException.INVALID_PARAMS;

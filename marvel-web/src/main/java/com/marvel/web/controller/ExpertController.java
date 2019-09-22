@@ -114,7 +114,7 @@ public class ExpertController {
     @MarvelCheck(auth = true)
     @RequestMapping(value = "/update_expert_info.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String updateExpertInfo(@RequestBody ExpertInfoReq expertInfoReq){
+    public String updateExpertInfo(ExpertInfoReq expertInfoReq){
         if (Objects.isNull(expertInfoReq) || expertInfoReq.getId() == null) {
             throw BusinessException.INVALID_PARAMS;
         }

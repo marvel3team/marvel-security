@@ -33,7 +33,7 @@ public class ProblemController {
     @MarvelCheck(auth = true)
     @RequestMapping(value = "/add_rectify_problem.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String addRectifyProblem(@RequestBody RectifyProblemReq rectifyProblemReq){
+    public String addRectifyProblem(RectifyProblemReq rectifyProblemReq){
         checkParams(rectifyProblemReq);
         problemService.save(RequestContext.getRequestContext(), ProblemConvert.convert(rectifyProblemReq));
         return StringUtils.EMPTY;
