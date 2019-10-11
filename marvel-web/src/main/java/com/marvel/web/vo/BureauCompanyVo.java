@@ -32,36 +32,36 @@ public class BureauCompanyVo {
     /**
      * 地区id
      */
-    private Integer areaId;
+    private Integer areaId = -1;
 
     /**
      * 注册资本
      */
-    private String registedCapital;
+    private String registedCapital = "";
 
     /**
      * 法人
      */
-    private String legalPreson;
+    private String legalPreson = "";
 
     /**
      * 手机号
      */
-    private String mobile;
+    private String mobile = "";
 
     /**
      * 经营类型编码
      */
-    private String businessCode;
+    private String businessCode = "";
 
     /**
      * 邮箱
      */
-    private String email;
+    private String email = "";
 
 
     /**
      * 营业执照编码
      */
-    private String businessLicenseNo;
+    private String businessLicenseNo = "";
 }

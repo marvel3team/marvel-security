@@ -24,12 +24,12 @@ public class ExpertInfo {
     /**
      * 专家名称
      */
-    private String name;
+    private String name = "";
 
     /**
      * 身份证号
      */
-    private String idCardNo;
+    private String idCardNo = "";
 
     /**
      * 公司id
@@ -39,90 +39,90 @@ public class ExpertInfo {
     /**
      * 公司名称
      */
-    private String workCompany;
+    private String workCompany = "";
 
     /**
      * 工作地址
      */
-    private String workAddress;
+    private String workAddress = "";
 
     /**
      * 工作年限
      */
-    private Integer workLife;
+    private Integer workLife = 0;
 
     /**
      * 职称
      */
-    private String positionalTitle;
+    private String positionalTitle = "";
 
     /**
      * 是否评审员 1 是 2 否
      */
-    private Integer isSyndic;
+    private Integer isSyndic = 2;
 
     /**
      * 级别
      */
-    private Integer level;
+    private Integer level = 0;
 
     /**
      * 评审范围
      */
-    private String evaluateRange;
+    private String evaluateRange = "";
 
     /**
      * 专业
      */
-    private String collage;
+    private String collage = "";
 
     /**
      * 居住地址
      */
-    private String homeAddress;
+    private String homeAddress = "";
 
     /**
      * 手机号
      */
-    private String mobile;
+    private String mobile = "";
 
     /**
      * 备注
      */
-    private String remark;
+    private String remark = "";
 
     /**
      * 签名照片地址
      */
-    private String signUrl;
+    private String signUrl = "";
 
     /**
      * 性别 1 男 2 女
      */
-    private Integer sex;
+    private Integer sex = 1;
 
     /**
      * 民族
      */
-    private String nation;
+    private String nation = "";
 
     /**
      * 最高学历
      */
-    private String highestDegree;
+    private String highestDegree = "";
 
     /**
      * 工作履历
      */
-    private String jobResume;
+    private String jobResume = "";
 
     /**
      * 专业类别
      */
-    private String categories;
+    private String categories = "";
 
     /**
      * 荣誉
      */
-    private String honor;
+    private String honor = "";
 }

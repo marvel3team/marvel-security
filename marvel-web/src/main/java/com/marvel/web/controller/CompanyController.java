@@ -288,19 +288,9 @@ public class CompanyController {
      * @return
      */
     private boolean checkParameter(CompanyInfoReqVo companyInfoReqVo) {
-        if (companyInfoReqVo.getId() == null){
+        if (StringUtils.isBlank(companyInfoReqVo.getName())){
             return false;
         }
-        if (companyInfoReqVo.getAreaId() == null){
-            return false;
-        }
-        if (StringUtils.isBlank(companyInfoReqVo.getRegistedCapital()) || StringUtils.isBlank(companyInfoReqVo.getLegalPerson())){
-            return false;
-        }
-        if (StringUtils.isBlank(companyInfoReqVo.getMobile()) || StringUtils.isBlank(companyInfoReqVo.getBusinessCode()) || StringUtils.isBlank(companyInfoReqVo.getEmail())){
-            return false;
-        }
-
         return true;
     }
 

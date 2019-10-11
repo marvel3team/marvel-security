@@ -45,7 +45,7 @@ public class CompanyApplicationTests  extends BaseTestUtils{
     @Test
     public void getCompanyInfo(){
         Assert.assertNotNull(companyService);
-        long id = 1;
+        long id = 631420431642918912l;
         CompanyDetailVo companyDetailVo = companyService.getCompanyInfo(id);
         Assert.assertNotNull(companyDetailVo);
     }
@@ -53,14 +53,14 @@ public class CompanyApplicationTests  extends BaseTestUtils{
     @Test
     public void updateCompanyInfo(){
         CompanyInfoReqVo updateCompanyInfo = new CompanyInfoReqVo();
-        updateCompanyInfo.setId(625484575346262016L);
+        updateCompanyInfo.setId(631420431642918912L);
         updateCompanyInfo.setIndustryId(2l);
         updateCompanyInfo.setAreaId(123);
         updateCompanyInfo.setBusinessCode("G12138");
         updateCompanyInfo.setBusinessLicenseId("TG101010101");
         updateCompanyInfo.setMobile("1111111111");
-        updateCompanyInfo.setName("哈里波提");
-        updateCompanyInfo.setLegalPerson("哈利");
+        updateCompanyInfo.setName("哈里波提12");
+        updateCompanyInfo.setLegalPerson("哈利2333");
         updateCompanyInfo.setRegistedCapital("3000000");
         updateCompanyInfo.setEmail("xxxx@gmail.com");
         String update = companyService.updateCompanyInfo(updateCompanyInfo);

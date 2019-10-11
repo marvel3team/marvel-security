@@ -29,76 +29,76 @@ public class CompanyListVo {
     /**
      * 地区编码
      */
-    private Integer areaId;
+    private Integer areaId = -1;
 
     /**
      * 注册资本
      */
-    private String registedCapital;
+    private String registedCapital = "";
 
     /**
      * 法人代表
      */
-    private String legalPerson;
+    private String legalPerson = "";
 
     /**
      * 法人电话
      */
-    private String mobile;
+    private String mobile = "";
 
     /**
      * 经营类型
      */
-    private String businessCode;
+    private String businessCode = "";
 
     /**
      * 邮箱
      */
-    private String email;
+    private String email = "";
 
     /**
      * 营业执照
      */
-    private String businessLicenseId;
+    private String businessLicenseId = "";
 
     /**
      * 行业类型
      */
-    private String industryType;
+    private String industryType = "";
 
     /**
      * 安全等级
      */
-    private String safetyLevel;
+    private String safetyLevel = "";
 
     /**
      * 安全证书到期日期
      */
-    private Long certificateStartTime;
+    private Long certificateStartTime = 0L;
 
     /**
      * 安全证书到期日期
      */
-    private Long certificateEndTime;
+    private Long certificateEndTime = 0L;
 
     /**
      * 重大风险源
      */
-    private String majorRiskSources;
+    private String majorRiskSources = "";
 
     /**
      * 较大风险源
      */
-    private String higherRiskSources;
+    private String higherRiskSources = "";
 
     /**
      * 一般风险源
      */
-    private String generalRiskSources;
+    private String generalRiskSources = "";
 
     /**
      * 低级风险源
      */
-    private String lowRiskSources;
+    private String lowRiskSources = "";
 
 }

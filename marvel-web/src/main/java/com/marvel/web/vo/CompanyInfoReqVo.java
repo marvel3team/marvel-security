@@ -173,11 +173,11 @@ public class CompanyInfoReqVo {
     /**
      * 安全证书到期日期
      */
-    private Long certificateStartTime = -1L;
+    private Long certificateStartTime = 0L;
     /**
      * 安全证书到期日期
      */
-    private Long certificateEndTime = -1L;
+    private Long certificateEndTime = 0L;
     /**
      * 重大风险源
      */

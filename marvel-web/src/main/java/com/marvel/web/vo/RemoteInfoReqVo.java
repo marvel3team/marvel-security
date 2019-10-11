@@ -62,57 +62,57 @@ public class RemoteInfoReqVo implements Serializable {
     /**
      * 业务名称
      */
-    private String name;
+    private String name = "";
 
     /**
      * 业务类型名称
      */
-    private String typeName;
+    private String typeName = "";
 
     /**
      * 省
      */
-    private String province;
+    private String province = "";
 
     /**
      * 市
      */
-    private String city;
+    private String city = "";
 
     /**
      * 其他城市
      */
-    private String otherCity;
+    private String otherCity = "";
 
     /**
      * 服务内容
      */
-    private String serviceContent;
+    private String serviceContent = "";
 
     /**
      * 领域
      */
-    private String domain;
+    private String domain = "";
 
     /**
      * 具体领域
      */
-    private String domainDetails;
+    private String domainDetails = "";
 
     /**
      * 领域细分
      */
-    private String domainMince;
+    private String domainMince = "";
 
     /**
      * 服务方式
      */
-    private String serviceType;
+    private String serviceType = "";
 
     /**
      * 排查企业
      */
-    private String investigationCompany;
+    private String investigationCompany = "";
 
     /**
      * 专家ID
