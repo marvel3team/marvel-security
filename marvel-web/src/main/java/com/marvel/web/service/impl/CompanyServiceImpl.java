@@ -68,11 +68,11 @@ public class CompanyServiceImpl implements CompanyService {
                 throw BusinessException.USER_NO_EXISTS;
             }
 
-            long total = companyStandardMapper.getCompanyCount(UserType.valueOf(user.getType()).value());
+            long total = companyStandardMapper.getCompanyCount(null);
             if (total == 0) {
                 return assemblePageBean(-1, new ArrayList<>());
             }
-            List<CompanyStandard> standardList = companyStandardMapper.getCompanyListPage(UserType.valueOf(user.getType()).value(), cursor, count);
+            List<CompanyStandard> standardList = companyStandardMapper.getCompanyListPage(null, cursor, count);
             if (CollectionUtils.isEmpty(standardList)) {
                 return assemblePageBean(-1, new ArrayList<>());
             }
