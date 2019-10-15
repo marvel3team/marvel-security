@@ -281,9 +281,11 @@ public class CompanyServiceImpl implements CompanyService {
             companyBase = new CompanyBase();
             companyBase.setId(companyInfoReqVo.getId());
             hasBase = true;
-        }else if (null != companyBase){
+        } else if (null != companyBase) {
             canInsert = false;
             hasBase = true;
+        }else {
+            companyBase = new CompanyBase();
         }
 
         companyBase.setProductionDay(companyInfoReqVo.getProductionDay());
@@ -368,6 +370,12 @@ public class CompanyServiceImpl implements CompanyService {
     @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> saveCompanyInfo(CompanyInfoReqVo companyInfoReqVo) {
 
+        Long userId = RequestContext.getRequestContext().getUid();
+        //根据id查询类型
+        User user = userMapper.findByUid(userId);
+        if (null == user) {
+            throw BusinessException.USER_NO_EXISTS;
+        }
         Long id = snowflakeIdGenerator.generateId();
         if (id == null) {
             throw BusinessException.SAVE_ERROR;
@@ -379,7 +387,7 @@ public class CompanyServiceImpl implements CompanyService {
         companyStandard.setBusinessLicenseId(companyInfoReqVo.getBusinessLicenseId());
         companyStandard.setRegistedCapital(StringUtils.isBlank(companyInfoReqVo.getRegistedCapital()) ? 0 : new BigDecimal(companyInfoReqVo.getRegistedCapital()).multiply(new BigDecimal(100)).longValue());
         companyStandard.setLegalPerson(companyInfoReqVo.getLegalPerson());
-        companyStandard.setType(1);
+        companyStandard.setType(user.getType());
         companyStandard.setLegalPersonMobile(companyInfoReqVo.getMobile());
         companyStandard.setEmail(companyInfoReqVo.getEmail());
         companyStandard.setName(companyInfoReqVo.getName());
@@ -486,7 +494,6 @@ public class CompanyServiceImpl implements CompanyService {
     private PageBean<CompanyListVo> assemblePageBean(long nextCursor, List<CompanyStandard> listVoList) {
         PageBean<CompanyListVo> pageBean = new PageBean<>();
         pageBean.setNextCursor(nextCursor);
-
         //组装base数据
         List<CompanyBase> companyBases = Lists.newArrayList();
         if (!CollectionUtils.isEmpty(listVoList)) {

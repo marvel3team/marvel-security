@@ -25,117 +25,117 @@ public class PlanDetailVo {
     /**
      * 科局员工id
      */
-    private Long bureauId;
+    private Long bureauId = -1L;
 
     /**
      * 科局员工名称
      */
-    private String bureauName;
+    private String bureauName = "";
 
     /**
      * 计划时间
      */
-    private Long planTime;
+    private Long planTime = 0L;
 
     /**
      * 计划天数
      */
-    private Integer timeSlat;
+    private Integer timeSlat = 0;
 
     /**
      * 监管等级
      */
-    private Integer superversionLevel;
+    private Integer superversionLevel = 1;
 
     /**
      * 计划科目
      */
-    private String planSubject;
+    private String planSubject = "";
 
     /**
      * 状态
      */
-    private Integer planStatus;
+    private Integer planStatus = 1;
 
     /**
      * 计划方式
      */
-    private Integer respodType;
+    private Integer respodType = 1;
 
     /**
      * 完成状态
      */
-    private Integer finishStatus;
+    private Integer finishStatus = 1;
 
 
     /**
      * 完成时间
      */
-    private Long finishTime;
+    private Long finishTime = 0L;
 
     /**
      * 专家名称
      */
-    private String expertName;
+    private String expertName = "";
 
     /**
      * 计划名称 - 业务名称
      */
-    private String planName;
+    private String planName = "";
 
     /**
      * 企业名称
      */
-    private String companyName;
+    private String companyName = "";
 
     /**
      * 省
      */
-    private String province;
+    private String province = "";
 
     /**
      * 市
      */
-    private String city;
+    private String city = "";
 
     /**
      * 其他城市
      */
-    private String otherCity;
+    private String otherCity = "";
 
     /**
      * address
      */
-    private String address;
+    private String address = "";
 
     /**
      * 行业类型
      */
-    private String industryType;
+    private String industryType = "";
 
     /**
      * 领域
      */
-    private String domain;
+    private String domain = "";
 
     /**
      * 具体领域
      */
-    private String domainDetails;
+    private String domainDetails = "";
 
     /**
      * 领域细分
      */
-    private String domainMince;
+    private String domainMince = "";
 
     /**
      * 法人-联系人
      */
-    private String legalPerson;
+    private String legalPerson = "";
 
     /**
      * 法人联系方式
      */
-    private String legalPersonMobile;
+    private String legalPersonMobile = "";
 
 }

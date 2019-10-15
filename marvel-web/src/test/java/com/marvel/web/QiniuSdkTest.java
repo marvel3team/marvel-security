@@ -1,5 +1,6 @@
 package com.marvel.web;
 
+import com.marvel.common.utils.MD5Utils;
 import com.qiniu.util.Auth;
 
 /**
@@ -18,6 +19,7 @@ public class QiniuSdkTest {
         Auth auth = Auth.create(AK, SK);
         System.out.println(auth.uploadToken("images"));
 
+        System.out.println(MD5Utils.md5Digest("123456".getBytes()));
     }
 
 }
