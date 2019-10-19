@@ -61,8 +61,10 @@ public interface BureauMapper {
 
         public static String findPageCount(final Long id) {
             StringBuilder sql = new StringBuilder();
-            sql.append("SELECT count(1) FROM t_bureau_info where company_id = ");
-            sql.append(id);
+            sql.append("SELECT count(1) FROM t_bureau_info");
+            if (id != null && id > 0) {
+                sql.append(" where company_id = " + id);
+            }
             return sql.toString();
         }
 
@@ -94,7 +96,9 @@ public interface BureauMapper {
         public static String findByPage(final Long id,final Long cursor,final Integer count){
             StringBuilder sql = new StringBuilder("select id,area_id,company_id,name,mobile,remark ");
             sql.append(" from t_bureau_info ");
-            sql.append("where company_id = ").append(id);
+            if (id != null && id > 0) {
+                sql.append("where company_id = ").append(id);
+            }
             if (cursor != null && cursor > 0) {
                 sql.append(" and id < " + cursor);
             }

@@ -95,11 +95,7 @@ public class BureauController {
     @ResponseBody
     public PageBean<BureauInfoReqVo> getBureauUserInfoList(@RequestParam(name = "cursor",required = false,defaultValue = "-1") Long cursor,
                                                            @RequestParam(name = "count",required = false,defaultValue = "10")Integer count,
-                                                           @RequestParam(name = "id") Long id) {
-        if (null == id) {
-            LOGGER.error("BureauController-->getBureauUserInfoList-->parameter invalid parameter,reqBody:{}", id);
-            throw BusinessException.INVALID_PARAMS;
-        }
+                                                           @RequestParam(name = "id", required = false) Long id) {
         return bureauService.getBureauUserInfoList(id,cursor,count);
     }
 
