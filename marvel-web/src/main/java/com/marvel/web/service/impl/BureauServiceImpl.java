@@ -1,21 +1,17 @@
 package com.marvel.web.service.impl;
 
-import com.google.common.collect.Lists;
 import com.marvel.common.models.PageBean;
 import com.marvel.common.uuid.SnowflakeIdGenerator;
-import com.marvel.web.enums.IndustryType;
-import com.marvel.web.enums.SafetyLevel;
 import com.marvel.web.exception.BusinessException;
 import com.marvel.web.mapper.BureauMapper;
 import com.marvel.web.mapper.CompanyStandardMapper;
 import com.marvel.web.po.Bureau;
-import com.marvel.web.po.CompanyBase;
 import com.marvel.web.po.CompanyStandard;
 import com.marvel.web.service.BureauService;
 import com.marvel.web.vo.BureauCompanyVo;
 import com.marvel.web.vo.BureauInfoReqVo;
-import com.marvel.web.vo.CompanyListVo;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -170,6 +166,17 @@ public class BureauServiceImpl implements BureauService {
         }
         return assemblePageBean(bureauList.get(bureauList.size() - 1).getId(), bureauList);
 
+    }
+
+    @Override
+    public BureauInfoReqVo getBureauInfo(Long id) {
+        Bureau bureau = bureauMapper.getBureauById(id);
+        if (bureau == null) {
+            throw BusinessException.BUREAU_NOT_EXISTS;
+        }
+        BureauInfoReqVo bureauInfoReqVo = new BureauInfoReqVo();
+        BeanUtils.copyProperties(bureau, bureauInfoReqVo);
+        return bureauInfoReqVo;
     }
 
     /**

@@ -50,4 +50,11 @@ public interface BureauService {
      * @return
      */
     PageBean<BureauInfoReqVo> getBureauUserInfoList(Long id,Long cursor,Integer count);
+
+    /**
+     * 查询科局人员信息
+     * @param id
+     * @return
+     */
+    BureauInfoReqVo getBureauInfo(Long id);
 }

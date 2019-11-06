@@ -101,6 +101,22 @@ public class BureauController {
 
 
     /**
+     * 查下科局人员信息
+     *
+     * @param id
+     * @return
+     */
+    @MarvelCheck(auth = true)
+    @RequestMapping(value = "/get_bureau_info.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public BureauInfoReqVo getBureauInfo(@RequestParam(name = "id") Long id) {
+        if (id == null || id <= 0) {
+            throw BusinessException.INVALID_PARAMS;
+        }
+        return bureauService.getBureauInfo(id);
+    }
+
+    /**
      * @param bureauCompanyVo
      * @return java.lang.String
      * @throws
