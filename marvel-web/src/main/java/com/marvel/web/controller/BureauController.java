@@ -107,7 +107,7 @@ public class BureauController {
      * @return
      */
     @MarvelCheck(auth = true)
-    @RequestMapping(value = "/get_bureau_info.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/get_bureau_info.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public BureauInfoReqVo getBureauInfo(@RequestParam(name = "id") Long id) {
         if (id == null || id <= 0) {
