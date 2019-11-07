@@ -165,14 +165,13 @@ public class ExpertServiceImpl implements ExpertService {
         expertInfoVo.setNation(expertInfo.getNation());
         expertInfoVo.setCategories(expertInfo.getCategories());
         CompanyStandard companyStandard = companyStandardMapper.getCompanyById(expertInfo.getCompanyId());
-        if (null == companyStandard) {
-            throw BusinessException.EXPERT_NOT_EXISTS;
+        if (companyStandard != null) {
+            CompanyIndustry companyIndustry = companyIndustryMapper.getIndustryById(companyStandard.getIndustryId());
+            if (null == companyIndustry) {
+                return expertInfoVo;
+            }
+            expertInfoVo.setIndustry(companyIndustry.getContent());
         }
-        CompanyIndustry companyIndustry = companyIndustryMapper.getIndustryById(companyStandard.getIndustryId());
-        if (null == companyIndustry) {
-            return expertInfoVo;
-        }
-        expertInfoVo.setIndustry(companyIndustry.getContent());
         //TODO 需要添加地区表
         expertInfoVo.setArea("");
         return expertInfoVo;
